@@ -1,45 +1,36 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import moment from 'moment';
+import Day from './Day';
 
 type Props = {};
 export default class App extends Component<Props> {
   render() {
+    const startOfWeek = moment().day(0);
+    const endOfWeek = moment().day(6);
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerText}>2nd - 9th</Text>
-          <Text style={styles.headerText}>March</Text>
-          <Text style={styles.headerText}>2019</Text>
+          <Text style={styles.headerText}>{startOfWeek.date()} - {endOfWeek.date()}</Text>
+          <Text style={styles.headerText}>{startOfWeek.format('MMM')}</Text>
+          <Text style={styles.headerText}>{startOfWeek.format('YYYY')}</Text>
         </View>
         <View style={styles.main}>
           <View style={styles.row}>
             <View style={styles.col}>
-              <View style={styles.day}>
-                <Text>Sunday</Text>
-              </View>
-              <View style={styles.day}>
-                <Text>Tuesday</Text>
-              </View>
-              <View style={styles.day}>
-                <Text>Thursday</Text>
-              </View>
+              <Day date={startOfWeek} />
+              <Day date={moment().day(2)} />
+              <Day date={moment().day(4)} />
             </View>
             <View style={styles.col}>
-              <View style={styles.day}>
-                <Text>Monday</Text>
-              </View>
-              <View style={styles.day}>
-                <Text>Wednesday</Text>
-              </View>
-              <View style={styles.day}>
-                <Text>Friday</Text>
-              </View>
+              <Day date={moment().day(1)} />
+              <Day date={moment().day(3)} />
+              <Day date={moment().day(5)} />
             </View>
           </View>
           <View style={styles.lastRow}>
-            <View style={styles.day}>
-              <Text>Saturday</Text>
-            </View>
+            <Day date={endOfWeek} />
           </View>
         </View>
       </View>
@@ -96,11 +87,5 @@ const styles = StyleSheet.create({
   },
   col: {
     flex: 1,
-  },
-  day: {
-    flex: 1,
-    backgroundColor: 'yellow',
-    padding: 5,
-    margin: 5,
   },
 });
