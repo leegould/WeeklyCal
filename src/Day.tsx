@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 
 type Props = {
     date: Moment,
-    events: CalendarEvent[],
+    events?: CalendarEvent[],
 };
 
 export default class Day extends PureComponent<Props> {
