@@ -75,20 +75,20 @@ export default class Week extends Component<Props, State> {
           />
         </View>
         <View style={styles.main}>
+          <View style={styles.firstRow}>
+            <Day date={startOfWeek} events={this.state.weekEvents} />
+          </View>
           <View style={styles.row}>
-            <View style={styles.col}>
-              <Day date={startOfWeek} events={this.state.weekEvents} />
-              <Day date={moment().add(2, 'days')} />
-              <Day date={moment().add(4, 'days')} />
-            </View>
             <View style={styles.col}>
               <Day date={moment().add(1, 'days')} />
               <Day date={moment().add(3, 'days')} />
               <Day date={moment().add(5, 'days')} />
             </View>
-          </View>
-          <View style={styles.lastRow}>
-            <Day date={endOfWeek} />
+            <View style={styles.col}>
+              <Day date={moment().add(2, 'days')} />
+              <Day date={moment().add(4, 'days')} />
+              <Day date={moment().add(6, 'days')} />
+            </View>
           </View>
         </View>
       </View>
@@ -135,13 +135,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     backgroundColor: 'grey',
     padding: 5,
-    paddingBottom: 0,
+    paddingTop: 0,
   },
-  lastRow: {
+  firstRow: {
     flex: 1,
     backgroundColor: 'grey',
     paddingHorizontal: 5,
-    paddingBottom: 5,
+    paddingTop: 5,
+    paddingBottom: 0,
   },
   col: {
     flex: 1,
