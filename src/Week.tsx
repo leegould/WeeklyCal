@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button} from 'react-native';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import RNCalendarEvents from 'react-native-calendar-events';
 import Day from './Day';
-import CalendarEvent from './shared';
+import { CalendarDay } from './shared';
 
 type Props = {
   navigation: {
@@ -12,9 +12,7 @@ type Props = {
 };
 
 type State = {
-  startOfWeek: Moment,
-  endOfWeek: Moment,
-  weekEvents: CalendarEvent[],
+  week: CalendarDay[],
 };
 
 export default class Week extends Component<Props, State> {
@@ -24,10 +22,9 @@ export default class Week extends Component<Props, State> {
 
   constructor(props:Props) {
     super(props);
+
     this.state = {
-      startOfWeek: moment(),
-      endOfWeek: moment().add(6, 'days'),
-      weekEvents: [],
+      week: [...Array(7).keys()].map(i => { return { date: moment().add(i, 'days'), events: [] }} ),
     }
   }
 
@@ -37,15 +34,18 @@ export default class Week extends Component<Props, State> {
       console.log('Calendar.Authorized', authResult);
       
       const calendars = await RNCalendarEvents.findCalendars();
+      console.log('componentDidMount', calendars);
 
-      const events = await RNCalendarEvents.fetchAllEvents(
-        this.state.startOfWeek,
-        this.state.endOfWeek,
-      );
-      this.setState({
-        weekEvents: events,
-      });
-      console.log('componentDidMount', calendars, events);
+      const week = await Promise.all(this.state.week.map(async day => {
+        day.events = await RNCalendarEvents.fetchAllEvents(
+          day.date.clone().startOf(),
+          day.date.clone().endOf()
+        );
+        console.log('day', day);
+        return day;
+      }))
+
+      await this.setState({week});
     }
     catch (err) {
       console.log('componentDidMount.error', err);
@@ -60,15 +60,12 @@ export default class Week extends Component<Props, State> {
   // }
 
   render() {
-    const { startOfWeek, endOfWeek } = this.state;
-
     return (
       <View style={styles.container}>
-        {/* <Calendar /> */}
         <View style={styles.header}>
-          <Text style={styles.headerText}>{startOfWeek.date()} - {endOfWeek.date()}</Text>
-          <Text style={styles.headerText}>{startOfWeek.format('MMM')}</Text>
-          <Text style={styles.headerText}>{startOfWeek.format('YYYY')}</Text>
+          <Text style={styles.headerText}>{this.state.week[0].date.date()} - {this.state.week[6].date.date()}</Text>
+          <Text style={styles.headerText}>{this.state.week[0].date.format('MMM')}</Text>
+          <Text style={styles.headerText}>{this.state.week[0].date.format('YYYY')}</Text>
           <Button
             title="Opt"
             onPress={() => this.props.navigation.navigate('Options')}
@@ -76,18 +73,18 @@ export default class Week extends Component<Props, State> {
         </View>
         <View style={styles.main}>
           <View style={styles.firstRow}>
-            <Day date={startOfWeek} events={this.state.weekEvents} />
+            <Day day={this.state.week[0]} isToday />
           </View>
           <View style={styles.row}>
             <View style={styles.col}>
-              <Day date={moment().add(1, 'days')} />
-              <Day date={moment().add(3, 'days')} />
-              <Day date={moment().add(5, 'days')} />
+              <Day day={this.state.week[1]} />
+              <Day day={this.state.week[3]} />
+              <Day day={this.state.week[5]} />
             </View>
             <View style={styles.col}>
-              <Day date={moment().add(2, 'days')} />
-              <Day date={moment().add(4, 'days')} />
-              <Day date={moment().add(6, 'days')} />
+              <Day day={this.state.week[2]} />
+              <Day day={this.state.week[4]} />
+              <Day day={this.state.week[6]} />
             </View>
           </View>
         </View>

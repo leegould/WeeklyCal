@@ -1,7 +1,6 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
-import { Moment } from 'moment';
-import CalendarEvent from './shared';
+import { CalendarDay } from './shared';
 
 const styles = StyleSheet.create({
     container: {
@@ -21,21 +20,31 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    date: Moment,
-    events?: CalendarEvent[],
+    day: CalendarDay,
+    isToday?: boolean,
 };
 
-export default class Day extends PureComponent<Props> {
+export default class Day extends Component<Props> {
+    shouldComponentUpdate(nextProps: Props) {
+        console.log('Day.shouldComponentUpdate', nextProps, nextProps.day.events.length, this.props.day.events.length, nextProps.day.events.length !== this.props.day.events.length);
+        // if (nextProps.day.date !== this.props.day.date || nextProps.day.events.length !== this.props.day.events.length) {
+        //     return true;
+        // }
+        // return false;
+        return true;
+    }
+
     render() {
+        console.log('Day.render', this.props.day);
         return(
             <View style={styles.container}>
                 <View style={styles.row}>
-                    <Text>{this.props.date.format('dddd')}</Text>
-                    <Text>{this.props.date.format('DD')}</Text>
+                    <Text>{this.props.day.date.format('dddd')}</Text>
+                    <Text>{this.props.day.date.format('DD')}</Text>
                 </View>
-                {this.props.events && 
+                {this.props.day.events && 
                     <FlatList
-                        data={this.props.events}
+                        data={this.props.day.events}
                         keyExtractor={(item, index) => `event_key_${index}`}
                         renderItem={({item}) => {
                             console.log('item', item);
