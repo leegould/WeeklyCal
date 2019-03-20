@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
-import { CalendarDay } from './shared';
+import RNCalendarEvents from 'react-native-calendar-events';
+import { CalendarEvent } from './shared';
+import { Moment } from 'moment';
 
 const styles = StyleSheet.create({
     container: {
@@ -20,31 +22,46 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    day: CalendarDay,
+    day: Moment,
     isToday?: boolean,
 };
 
-export default class Day extends Component<Props> {
-    shouldComponentUpdate(nextProps: Props) {
-        console.log('Day.shouldComponentUpdate', nextProps, nextProps.day.events.length, this.props.day.events.length, nextProps.day.events.length !== this.props.day.events.length);
-        // if (nextProps.day.date !== this.props.day.date || nextProps.day.events.length !== this.props.day.events.length) {
-        //     return true;
-        // }
-        // return false;
-        return true;
+type State = {
+    events: CalendarEvent[],
+}
+
+export default class Day extends Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            events: [],
+        }
+    }
+
+    async componentDidMount() {
+        try {
+            const events = await RNCalendarEvents.fetchAllEvents(
+                this.props.day.clone().startOf(),
+                this.props.day.clone().endOf()
+            );
+            
+            await this.setState({events});
+        } catch (err) {
+            console.log('componentDidMount.error', err);
+        }
     }
 
     render() {
-        console.log('Day.render', this.props.day);
+        console.log('Day.render', this.props.day, this.state.events);
         return(
             <View style={styles.container}>
                 <View style={styles.row}>
-                    <Text>{this.props.day.date.format('dddd')}</Text>
-                    <Text>{this.props.day.date.format('DD')}</Text>
+                    <Text>{this.props.day.format('dddd')}</Text>
+                    <Text>{this.props.day.format('DD')}</Text>
                 </View>
-                {this.props.day.events && 
+                {this.state.events && 
                     <FlatList
-                        data={this.props.day.events}
+                        data={this.state.events}
                         keyExtractor={(item, index) => `event_key_${index}`}
                         renderItem={({item}) => {
                             console.log('item', item);
