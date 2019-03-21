@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableWithoutFeedback } from 'react-native';
 import moment, { Moment } from 'moment';
 import RNCalendarEvents from 'react-native-calendar-events';
 import Day from './Day';
-// import { CalendarDay } from './shared';
 
 type Props = {
     navigation: {
@@ -31,10 +30,10 @@ export default class Week extends Component<Props, State> {
     async componentDidMount() {
         try {
             const authResult = await RNCalendarEvents.authorizeEventStore();
-            console.log('Calendar.Authorized', authResult);
+            // console.log('Calendar.Authorized', authResult);
 
             const calendars = await RNCalendarEvents.findCalendars();
-            console.log('componentDidMount.calendars', calendars);
+            // console.log('componentDidMount.calendars', calendars);
         }
         catch (err) {
             console.log('componentDidMount.error', err);
@@ -52,7 +51,12 @@ export default class Week extends Component<Props, State> {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>{this.state.week[0].date()} - {this.state.week[6].date()}</Text>
+                    <TouchableWithoutFeedback onPress={() => {
+                        console.log('onPress');
+                        this.props.navigation.navigate('Calendar', { day: this.state.week[0] });
+                    }}>
+                        <Text style={styles.headerText}>{this.state.week[0].date()} - {this.state.week[6].date()}</Text>
+                    </TouchableWithoutFeedback>
                     <Text style={styles.headerText}>{this.state.week[0].format('MMM')}</Text>
                     <Text style={styles.headerText}>{this.state.week[0].format('YYYY')}</Text>
                     <Button

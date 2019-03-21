@@ -52,7 +52,7 @@ export default class Day extends Component<Props, State> {
     }
 
     render() {
-        console.log('Day.render', this.props.day, this.state.events);
+        // console.log('Day.render', this.props.day, this.state.events);
         return(
             <View style={styles.container}>
                 <View style={styles.row}>
@@ -64,7 +64,7 @@ export default class Day extends Component<Props, State> {
                         data={this.state.events}
                         keyExtractor={(item, index) => `event_key_${index}`}
                         renderItem={({item}) => {
-                            console.log('item', item);
+                            // console.log('item', item);
                             return(<Text>{item.title}</Text>);
                         }}
                     />
