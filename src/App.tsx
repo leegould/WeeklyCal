@@ -1,9 +1,12 @@
 
 import React, { PureComponent } from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
-import Week from './Week';
-import Options from './Options';
-import Calendar from './Calendar';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import allReducers from './reducers';
+import Week from './containers/Week';
+import Options from './components/Options';
+import Calendar from './components/Calendar';
 
 type Props = {
     navigation: {
@@ -12,6 +15,8 @@ type Props = {
         }
     },
 };
+
+const store = createStore(allReducers);
 
 const mapNavigationStateParamsToProps = (SomeComponent: any) => {
     return class extends PureComponent<Props> {
@@ -52,6 +57,10 @@ const AppContainer = createAppContainer(RootStack);
 
 export default class App extends React.PureComponent {
     render() {
-      return <AppContainer />;
+        return (
+            <Provider store={store}>
+                <AppContainer />
+            </Provider>
+        );
     }
 }

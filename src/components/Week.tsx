@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Button, TouchableWithoutFeedback } from 'react-native';
-import moment, { Moment } from 'moment';
+import { Moment } from 'moment';
 import RNCalendarEvents from 'react-native-calendar-events';
 import Day from './Day';
 
@@ -8,57 +8,42 @@ type Props = {
     navigation: {
         navigate: Function,
     }
+    week: {
+        days: Moment[],
+    },
 };
 
-type State = {
-    week: Moment[],
-};
-
-export default class Week extends Component<Props, State> {
+export default class Week extends Component<Props> {
     static navigationOptions = {
         header: null,
     }
 
     constructor(props: Props) {
         super(props);
-
-        this.state = {
-            week: [...Array(7).keys()].map(i => moment().add(i, 'days')),
-        }
     }
 
     async componentDidMount() {
         try {
-            const authResult = await RNCalendarEvents.authorizeEventStore();
-            // console.log('Calendar.Authorized', authResult);
-
-            const calendars = await RNCalendarEvents.findCalendars();
-            // console.log('componentDidMount.calendars', calendars);
+            await RNCalendarEvents.authorizeEventStore();
         }
         catch (err) {
             console.log('componentDidMount.error', err);
         }
     }
 
-    // async addEvent() {
-    // const result = await RNCalendarEvents.saveEvent('Title of event', {
-    //   startDate: '2016-08-19T19:26:00.000Z',
-    //   endDate: '2017-08-19T19:26:00.000Z'
-    // });
-    // }
-
     render() {
+        console.log('props', this.props);
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
                     <TouchableWithoutFeedback onPress={() => {
                         console.log('onPress');
-                        this.props.navigation.navigate('Calendar', { day: this.state.week[0] });
+                        this.props.navigation.navigate('Calendar', { day: this.props.week.days[0] });
                     }}>
-                        <Text style={styles.headerText}>{this.state.week[0].date()} - {this.state.week[6].date()}</Text>
+                        <Text style={styles.headerText}>{this.props.week.days[0].date()} - {this.props.week.days[6].date()}</Text>
                     </TouchableWithoutFeedback>
-                    <Text style={styles.headerText}>{this.state.week[0].format('MMM')}</Text>
-                    <Text style={styles.headerText}>{this.state.week[0].format('YYYY')}</Text>
+                    <Text style={styles.headerText}>{this.props.week.days[0].format('MMM')}</Text>
+                    <Text style={styles.headerText}>{this.props.week.days[0].format('YYYY')}</Text>
                     <Button
                         title="Opt"
                         onPress={() => this.props.navigation.navigate('Options')}
@@ -66,18 +51,18 @@ export default class Week extends Component<Props, State> {
                 </View>
                 <View style={styles.main}>
                     <View style={styles.firstRow}>
-                        <Day day={this.state.week[0]} isToday />
+                        <Day day={this.props.week.days[0]} isToday />
                     </View>
                     <View style={styles.row}>
                         <View style={styles.col}>
-                            <Day day={this.state.week[1]} />
-                            <Day day={this.state.week[3]} />
-                            <Day day={this.state.week[5]} />
+                            <Day day={this.props.week.days[1]} />
+                            <Day day={this.props.week.days[3]} />
+                            <Day day={this.props.week.days[5]} />
                         </View>
                         <View style={styles.col}>
-                            <Day day={this.state.week[2]} />
-                            <Day day={this.state.week[4]} />
-                            <Day day={this.state.week[6]} />
+                            <Day day={this.props.week.days[2]} />
+                            <Day day={this.props.week.days[4]} />
+                            <Day day={this.props.week.days[6]} />
                         </View>
                     </View>
                 </View>
