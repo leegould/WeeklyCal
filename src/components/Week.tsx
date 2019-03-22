@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, Text, View, Button, TouchableWithoutFeedback } from 'react-native';
 import { Moment } from 'moment';
-import RNCalendarEvents from 'react-native-calendar-events';
 import Day from './Day';
 
 type Props = {
@@ -13,22 +12,9 @@ type Props = {
     },
 };
 
-export default class Week extends Component<Props> {
+export default class Week extends PureComponent<Props> {
     static navigationOptions = {
         header: null,
-    }
-
-    constructor(props: Props) {
-        super(props);
-    }
-
-    async componentDidMount() {
-        try {
-            await RNCalendarEvents.authorizeEventStore();
-        }
-        catch (err) {
-            console.log('componentDidMount.error', err);
-        }
     }
 
     render() {
