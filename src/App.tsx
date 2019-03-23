@@ -7,7 +7,7 @@ import RNCalendarEvents from 'react-native-calendar-events';
 import allReducers from './reducers';
 import Week from './containers/Week';
 import Options from './components/Options';
-import Calendar from './components/Calendar';
+import Calendar from './containers/Calendar';
 
 type Props = {
     navigation: {

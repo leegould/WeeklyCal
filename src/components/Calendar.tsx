@@ -8,7 +8,10 @@ type Props = {
     navigation: {
         dispatch: Function,
     },
-    day: Moment,
+    week: {
+        days: Moment[],
+    },
+    onChangeDate: Function,
 };
 
 export default class CalendarModal extends PureComponent<Props> {
@@ -17,8 +20,9 @@ export default class CalendarModal extends PureComponent<Props> {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Calendar
-                    current={this.props.day.date()}
+                    current={this.props.week.days[0].date()}
                     onDayPress={(day: any) => {
+                        this.props.onChangeDate(day);
                         const backAction = NavigationActions.back();
                         this.props.navigation.dispatch(backAction);
                         console.log('selected day', day)

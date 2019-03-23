@@ -4,13 +4,13 @@ export const CHANGE_WEEK_DATE = 'CHANGE_WEEK_DATE';
 
 export type actionType = {
     type: string,
-    date: Moment,
+    payload: any,
 }
 
 export const changeWeekDate = (date: Moment) => {
     const action: actionType = {
         type: CHANGE_WEEK_DATE,
-        date: date,
+        payload: date,
     };
     return action;
 }
