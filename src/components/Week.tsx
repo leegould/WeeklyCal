@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, Text, View, Button, TouchableWithoutFeedback } from 'react-native';
-import { dayState } from '../reducers/week' ;
+import { Moment } from 'moment';
 import Day from './Day';
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
         navigate: Function,
     }
     week: {
-        days: dayState[],
+        days: Moment[],
     },
 };
 
@@ -24,12 +24,12 @@ export default class Week extends PureComponent<Props> {
                 <View style={styles.header}>
                     <TouchableWithoutFeedback onPress={() => {
                         // console.log('onPress');
-                        this.props.navigation.navigate('Calendar', { day: this.props.week.days[0].date });
+                        this.props.navigation.navigate('Calendar', { day: this.props.week.days[0] });
                     }}>
-                        <Text style={styles.headerText}>{this.props.week.days[0].date.date()} - {this.props.week.days[6].date.date()}</Text>
+                        <Text style={styles.headerText}>{this.props.week.days[0].date()} - {this.props.week.days[6].date()}</Text>
                     </TouchableWithoutFeedback>
-                    <Text style={styles.headerText}>{this.props.week.days[0].date.format('MMM')}</Text>
-                    <Text style={styles.headerText}>{this.props.week.days[0].date.format('YYYY')}</Text>
+                    <Text style={styles.headerText}>{this.props.week.days[0].format('MMM')}</Text>
+                    <Text style={styles.headerText}>{this.props.week.days[0].format('YYYY')}</Text>
                     <Button
                         title="Opt"
                         onPress={() => this.props.navigation.navigate('Options')}
