@@ -23,7 +23,7 @@ export default class Week extends PureComponent<Props> {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <TouchableWithoutFeedback onPress={() => {
-                        console.log('onPress');
+                        // console.log('onPress');
                         this.props.navigation.navigate('Calendar', { day: this.props.week.days[0] });
                     }}>
                         <Text style={styles.headerText}>{this.props.week.days[0].date()} - {this.props.week.days[6].date()}</Text>
