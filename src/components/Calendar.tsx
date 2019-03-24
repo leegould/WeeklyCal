@@ -1,15 +1,16 @@
 import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { Calendar } from 'react-native-calendars';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import { NavigationActions } from 'react-navigation';
+import { dayState } from '../reducers/week' ;
 
 type Props = {
     navigation: {
         dispatch: Function,
     },
     week: {
-        days: Moment[],
+        days: dayState[],
     },
     onChangeDate: Function,
 };
@@ -19,7 +20,7 @@ export default class CalendarModal extends PureComponent<Props> {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Calendar
-                    current={this.props.week.days[0].format('YYYY-MM-DD')}
+                    current={this.props.week.days[0].date.format('YYYY-MM-DD')}
                     onDayPress={(day: any) => {
                         // console.log('Calendar.onDayPress', day)
                         this.props.onChangeDate(moment(day.dateString));

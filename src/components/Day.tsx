@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, FlatList} from 'react-native';
 import RNCalendarEvents from 'react-native-calendar-events';
-import { CalendarEvent } from './shared';
+import { calendarEvent } from '../reducers/week';
 import { Moment } from 'moment';
 
 const styles = StyleSheet.create({
@@ -22,46 +22,67 @@ const styles = StyleSheet.create({
 });
 
 type Props = {
-    day: Moment,
+    day: {
+        date: Moment,
+        events: calendarEvent[],
+    },
     isToday?: boolean,
 };
 
-type State = {
-    events: CalendarEvent[],
-}
+// type State = {
+//     day: Moment,
+//     events: calendarEvent[],
+// }
 
-export default class Day extends Component<Props, State> {
-    constructor(props: Props) {
-        super(props);
-        this.state = {
-            events: [],
-        }
-    }
+export default class Day extends Component<Props> {
+    // static getDerivedStateFromProps(nextProps: Props, prevState: State) {
+    //     if(nextProps.day !== prevState.day){
+    //         const events = await RNCalendarEvents.fetchAllEvents(
+    //             nextProps.day.clone().startOf(),
+    //             nextProps.day.clone().endOf()
+    //         );
+    //         console.log('getDerivedStateFromProps', nextProps.day.date.format('DD-MM-YYYY'), prevState.day.format('DD-MM-YYYY'), events);
 
-    async componentDidMount() {
-        try {
-            const events = await RNCalendarEvents.fetchAllEvents(
-                this.props.day.clone().startOf(),
-                this.props.day.clone().endOf()
-            );
+    //         return { 
+    //             day: nextProps.day,
+    //             events,
+    //         };
+    //      }
+    //      else return null;
+    // }
+
+    // constructor(props: Props) {
+    //     super(props);
+    //     this.state = {
+    //         day: props.day,
+    //         events: [],
+    //     }
+    // }
+
+    // async componentDidMount() {
+    //     try {
+    //         const events = await RNCalendarEvents.fetchAllEvents(
+    //             this.props.day.clone().startOf(),
+    //             this.props.day.clone().endOf()
+    //         );
             
-            await this.setState({events});
-        } catch (err) {
-            console.log('componentDidMount.error', err);
-        }
-    }
+    //         await this.setState({events});
+    //     } catch (err) {
+    //         console.log('componentDidMount.error', err);
+    //     }
+    // }
 
     render() {
-        // console.log('Day.render', this.props.day, this.state.events);
+        console.log('Day.render', this.props.day.date.format('DD-MM-YYYY'));
         return(
             <View style={styles.container}>
                 <View style={styles.row}>
-                    <Text>{this.props.day.format('dddd')}</Text>
-                    <Text>{this.props.day.format('DD')}</Text>
+                    <Text>{this.props.day.date.format('dddd')}</Text>
+                    <Text>{this.props.day.date.format('DD')}</Text>
                 </View>
-                {this.state.events && 
+                {this.props.day.events && 
                     <FlatList
-                        data={this.state.events}
+                        data={this.props.day.events}
                         keyExtractor={(item, index) => `event_key_${index}`}
                         renderItem={({item}) => {
                             // console.log('item', item);
