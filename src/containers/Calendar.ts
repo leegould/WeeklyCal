@@ -4,8 +4,8 @@ import Calendar from '../components/Calendar';
 import { changeWeekDate } from '../actions';
 
 const mapStateToProps = (state: any) => {
-    const { week } = state
-    return { week }
+    const { week } = state;
+    return { data: week };
 };
 
 const mapDispatchToProps = (dispatch: any) => ({

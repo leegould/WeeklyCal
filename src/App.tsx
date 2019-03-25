@@ -2,8 +2,9 @@
 import React, { PureComponent } from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import RNCalendarEvents from 'react-native-calendar-events';
+import thunk from 'redux-thunk';
 import allReducers from './reducers';
 import Week from './containers/Week';
 import Options from './components/Options';
@@ -17,7 +18,7 @@ type Props = {
     },
 };
 
-const store = createStore(allReducers);
+const store = createStore(allReducers, applyMiddleware(thunk));
 
 const mapNavigationStateParamsToProps = (SomeComponent: any) => {
     return class extends PureComponent<Props> {
