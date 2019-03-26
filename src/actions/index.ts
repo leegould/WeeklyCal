@@ -15,13 +15,13 @@ export const changeWeekDate = (date: Moment) => {
         try {
             const days = [];
             for (let i = 0;i < 7;i++) {
-                const aDate = moment(date).add(i, 'days');
-                console.log('aDate', aDate);
+                let aDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD'));
+                console.log('aDate', i, date.clone().add(i, 'days').format('DD-MM-YYYY'), aDate);
                 days.push({
                     date: aDate,
                     events: await RNCalendarEvents.fetchAllEvents(
-                        aDate.clone().startOf(),
-                        aDate.clone().endOf()
+                        aDate.startOf(),
+                        aDate.endOf()
                     ),
                 } as Day);
             };
@@ -64,6 +64,7 @@ export const eventsFetchStarted = () => {
 }
 
 export const eventsFetchSuccess = (week: any) => {
+    console.log('eventsFetchSuccess', week);
     const action = {
         type: EVENTS_FETCH_SUCCESS,
         payload: week,
