@@ -15,39 +15,23 @@ export const changeWeekDate = (date: Moment) => {
         try {
             const days = [];
             for (let i = 0;i < 7;i++) {
-                let aDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD'));
-                console.log('aDate', i, date.clone().add(i, 'days').format('DD-MM-YYYY'), aDate);
+                const aDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD'));
+                const startDate = aDate.startOf().format('YYYY-MM-DDTHH:mm:ss.sssZ');
+                const endDate = aDate.endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+                const events = await RNCalendarEvents.fetchAllEvents(
+                    startDate,
+                    endDate,    
+                );
+                // console.log('aDate', aDate, events, startDate, endDate);
                 days.push({
                     date: aDate,
-                    events: await RNCalendarEvents.fetchAllEvents(
-                        aDate.startOf(),
-                        aDate.endOf()
-                    ),
+                    events,
                 } as Day);
             };
-
-            // const events = await RNCalendarEvents.fetchAllEvents(
-            //     days[0].date.clone().startOf(),
-            //     days[6].date.clone().endOf()
-            // );
-
-            // for (let i = 0;i < events.length;i++) {
-            //     const event = events[i];
-            //     console.log('event', event);
-            //     const eventDate = moment(event.startDate).date();
-            //     for(let j = 0; j < days.length;j++) {
-            //         if (eventDate === days[j].date.date()) {
-            //             days[j].events.push(event);
-            //             break;
-            //         }
-            //     }
-            // }
 
             const week = {
                 days
             };
-
-            console.log('week', week);
 
             dispatch(eventsFetchSuccess(week));
         } catch (err) {
