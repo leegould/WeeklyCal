@@ -6,7 +6,8 @@ import { createStore, applyMiddleware } from 'redux';
 import RNCalendarEvents from 'react-native-calendar-events';
 import thunk from 'redux-thunk';
 import allReducers from './reducers';
-import Week from './containers/Week';
+// import Week from './containers/Week';
+import Swiper from './containers/Swiper';
 import Options from './components/Options';
 import Calendar from './containers/Calendar';
 
@@ -32,7 +33,7 @@ const mapNavigationStateParamsToProps = (SomeComponent: any) => {
 }
 
 const MainStack = createStackNavigator({
-    Home: Week,
+    Home: Swiper,
     Options: Options,
 },
 {

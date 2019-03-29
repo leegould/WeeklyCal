@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { Moment } from 'moment';
-import Week from '../components/Week';
+import Swiper from '../components/Swiper';
 import { changeWeekDate } from '../actions';
 
 const mapStateToProps = (state: any) => {
@@ -14,4 +14,4 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Week);
+export default connect(mapStateToProps, mapDispatchToProps)(Swiper);

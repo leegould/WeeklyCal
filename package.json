@@ -13,6 +13,7 @@
     "react-native-calendar-events": "^1.7.0",
     "react-native-calendars": "^1.24.0",
     "react-native-gesture-handler": "^1.1.0",
+    "react-native-swiper": "^1.5.14",
     "react-navigation": "^3.5.1",
     "react-redux": "^6.0.1",
     "redux": "^4.0.1",
