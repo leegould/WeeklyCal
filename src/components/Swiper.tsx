@@ -8,7 +8,8 @@ type Props = {
     navigation: {
         navigate: Function,
     }
-    data: WeekState
+    data: WeekState,
+    onChangeDate: Function,
 };
 
 export default class NavigationSwiper extends PureComponent<Props> {
@@ -16,9 +17,19 @@ export default class NavigationSwiper extends PureComponent<Props> {
         header: null,
     }
 
+    onMomentumScrollEnd = (e, state, context) => {
+        this.props.onChangeDate(this.props.data.week.days[0].date.add(7, 'days'));
+        console.log('onMomentumScrollEnd', e, state, context.state);
+    }
+
     render(){
         return (
-            <Swiper style={styles.wrapper} showsButtons={true}>
+            <Swiper
+                style={styles.wrapper}
+                showsButtons={true}
+                index={1}
+                onMomentumScrollEnd ={this.onMomentumScrollEnd}
+            >
             <View style={styles.slide1}>
                 <Week navigation={this.props.navigation} data={this.props.data}/>
             </View>
@@ -38,20 +49,14 @@ export default class NavigationSwiper extends PureComponent<Props> {
     },
     slide1: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#9DD6EB',
+      backgroundColor: 'blue',
     },
     slide2: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#97CAE5',
+      backgroundColor: 'green',
     },
     slide3: {
       flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#92BBD9',
+      backgroundColor: 'red',
     },
 });
