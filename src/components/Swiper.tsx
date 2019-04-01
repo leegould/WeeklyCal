@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Animated, PanResponder } from 'react-native';
 import Swiper from 'react-native-swiper';
 import Week from './Week';
 import { WeekState } from '../types';
@@ -20,12 +20,22 @@ export default class NavigationSwiper extends PureComponent<Props, State> {
     static navigationOptions = {
         header: null,
     }
+    panResponder: any;
+    position: Animated.ValueXY;
 
     constructor(props: Props) {
         super(props);
         this.state = {
             index: 1
         }
+        this.position = new Animated.ValueXY({ x: 0, y: 0 });
+        this.panResponder = PanResponder.create({
+            onMoveShouldSetPanResponder: (evt, gestureState) => { return Math.abs(gestureState.dx) >= 1 || Math.abs(gestureState.dy) >= 1 },//true,
+            onPanResponderMove: (evt, gestureState) => {
+                console.log("I was moved")
+                this.position.setValue({ x: gestureState.moveX, y: gestureState.moveY })
+            },
+        });
     }
 
     onIndexChanged = async (i:number) => {
@@ -51,23 +61,23 @@ export default class NavigationSwiper extends PureComponent<Props, State> {
 
     render(){
         return (
-            <Swiper
-                style={styles.wrapper}
-                index={1}
-                onIndexChanged={this.onIndexChanged}
-                showsButtons={false}
-                // showsPagination={false}
-            >
-            <View style={styles.slide1}>
+            // <Swiper
+            //     style={styles.wrapper}
+            //     index={1}
+            //     onIndexChanged={this.onIndexChanged}
+            //     showsButtons={false}
+            //     // showsPagination={false}
+            // >
+            // <View style={styles.slide1}>
+            //     <Week navigation={this.props.navigation} data={this.props.data}/>
+            // </View>
+            <Animated.View style={styles.slide2} { ...this.position.getLayout() } {...this.panResponder.panHandlers}>
                 <Week navigation={this.props.navigation} data={this.props.data}/>
-            </View>
-            <View style={styles.slide2}>
-                <Week navigation={this.props.navigation} data={this.props.data}/>
-            </View>
-            <View style={styles.slide3}>
-                <Week navigation={this.props.navigation} data={this.props.data}/>
-            </View>
-            </Swiper>
+            </Animated.View>
+            // <View style={styles.slide3}>
+            //     <Week navigation={this.props.navigation} data={this.props.data}/>
+            // </View>
+            // </Swiper>
         );
     }
 }
