@@ -29,14 +29,19 @@ export default class NavigationSwiper extends PureComponent<Props, State> {
     }
 
     onIndexChanged = async (i:number) => {
-        const isIncreased = i > this.state.index || (this.state.index === 2 && i === 0);
+        const loopedUp = i === 0 && this.state.index === 2;
+        const loopedDown = i === 2 && this.state.index === 0;
+        const isIncreased = loopedUp || (!loopedDown && i > this.state.index);
+        // const isIncreased = (i > this.state.index && i !== 2) || (i === 0 && this.state.index === 2);
+        // const isIncreased = (this.state.index === 2 && i === 0) || (this.state.index !== 0 && i !== 2) || i > this.state.index;
         let days = 7;
         if (!isIncreased) {
             days = -7;
         }
+        console.log('onIndexChanged', i, this.state.index, days);
+        console.log(`up:${loopedUp}, down:${loopedDown} isIncreased:${isIncreased}`)
         this.props.onChangeDate(this.props.data.week.days[0].date.add(days, 'days'));
         await this.setState({index: i});
-        console.log('onIndexChanged', i, isIncreased);
     }
 
     // onMomentumScrollEnd = (e, state, context) => {
@@ -48,9 +53,10 @@ export default class NavigationSwiper extends PureComponent<Props, State> {
         return (
             <Swiper
                 style={styles.wrapper}
-                showsButtons={true}
                 index={1}
                 onIndexChanged={this.onIndexChanged}
+                showsButtons={false}
+                // showsPagination={false}
             >
             <View style={styles.slide1}>
                 <Week navigation={this.props.navigation} data={this.props.data}/>
