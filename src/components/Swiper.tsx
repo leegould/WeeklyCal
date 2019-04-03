@@ -11,18 +11,12 @@ type Props = {
     onChangeDate: Function,
 };
 
-type State = {
-    index: number,
-    zone: string,
-    updating: boolean,
-};
-
-export default class NavigationSwiper extends PureComponent<Props, State> {
+export default class NavigationSwiper extends PureComponent<Props> {
     static navigationOptions = {
         header: null,
     }
 
-    static getDirectionAndColor = ({ moveX, moveY, dx, dy}) => {
+    static getDirectionAndColor = ({ dx, dy}: { dx: number, dy: number}) => {
         const draggedDown = dy > 100;
         const draggedUp = dy < -100;
         const draggedLeft = dx < -100;
@@ -39,7 +33,7 @@ export default class NavigationSwiper extends PureComponent<Props, State> {
           if (draggedRight) dragDirection +=  'right';
         }
       
-        if (dragDirection) return dragDirection;
+        return dragDirection;
     }
 
     panResponder: any;
@@ -47,31 +41,20 @@ export default class NavigationSwiper extends PureComponent<Props, State> {
 
     constructor(props: Props) {
         super(props);
-        this.state = {
-            index: 1,
-            zone: '',
-            updating: false,
-        }
+        
         this.position = new Animated.ValueXY({ x: 0, y: 0 });
         this.panResponder = PanResponder.create({
             onMoveShouldSetPanResponder: (evt, gestureState) => { return Math.abs(gestureState.dx) >= 1 || Math.abs(gestureState.dy) >= 1 },//true,
             onPanResponderMove: async (evt, gestureState) => {
                 const drag = NavigationSwiper.getDirectionAndColor(gestureState);
                 if (drag) {
-                    console.log(`drag '${drag}'`);
-                    if(!this.state.updating) {
+                    if(!this.props.data.isFetching) {
                         if (drag === 'right') {
-                            console.log('drag.right', drag);
                             this.props.onChangeDate(this.props.data.week.days[0].date.add(-7, 'days'));
                         }
                         if (drag === 'left') {
-                            console.log('drag.left', drag);
                             this.props.onChangeDate(this.props.data.week.days[0].date.add(7, 'days'));
                         }
-                        await this.setState({ updating: false });
-                    } else {
-                        console.log('drag.updating', drag);
-                        await this.setState({ zone: drag, updating: true });
                     }
                 }
             },
@@ -87,19 +70,19 @@ export default class NavigationSwiper extends PureComponent<Props, State> {
     }
 }
 
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     wrapper: {
     },
     slide1: {
-      flex: 1,
-      backgroundColor: 'blue',
+        flex: 1,
+        backgroundColor: 'blue',
     },
     slide2: {
-      flex: 1,
-      backgroundColor: 'green',
+        flex: 1,
+        backgroundColor: 'green',
     },
     slide3: {
-      flex: 1,
-      backgroundColor: 'red',
+        flex: 1,
+        backgroundColor: 'red',
     },
 });
