@@ -22,7 +22,15 @@ export default class Week extends PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            fade: new Animated.Value(0),
+            fade: new Animated.Value(1),
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.props.data.isFetching) {
+            this.fadeOut();
+        } else {
+            this.fadeIn();
         }
     }
 
@@ -49,27 +57,23 @@ export default class Week extends PureComponent<Props, State> {
     }
 
     render() {
-
-        if (this.props.data.isFetching) {
-            this.fadeOut();
-        } else {
-            this.fadeIn();
-        }
-
         console.log('props', this.props);
+        const startDate = this.props.data.week.days[0].date;
+        const endDate = this.props.data.week.days[6].date;
+
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
                     <TouchableWithoutFeedback onPress={() => {
                         console.log('onPress', this.props.data.week.days[0]);
-                        this.props.navigation.navigate('Calendar', { day: this.props.data.week.days[0].date });
+                        this.props.navigation.navigate('Calendar', { day: startDate });
                     }}>
                         <Animated.Text style={[styles.headerText, {opacity: this.state.fade}]}>
-                            {this.props.data.week.days[0].date.date()} - {this.props.data.week.days[6].date.date()}
+                            {startDate.date()} - {endDate.date()}
                         </Animated.Text>
                     </TouchableWithoutFeedback>
-                    <Text style={styles.headerText}>{this.props.data.week.days[0].date.format('MMM')}</Text>
-                    <Text style={styles.headerText}>{this.props.data.week.days[0].date.format('YYYY')}</Text>
+                    <Text style={styles.headerText}>{startDate.format('MMM')}</Text>
+                    <Text style={styles.headerText}>{startDate.format('YYYY')}</Text>
                     <Button
                         title="Opt"
                         onPress={() => this.props.navigation.navigate('Options')}

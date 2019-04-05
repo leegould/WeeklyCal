@@ -33,7 +33,15 @@ export default class DayEvents extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            fade: new Animated.Value(0),
+            fade: new Animated.Value(1),
+        }
+    }
+
+    componentDidUpdate() {
+        if (this.props.isFetching) {
+            this.fadeOut();
+        } else {
+            this.fadeIn();
         }
     }
 
@@ -61,13 +69,6 @@ export default class DayEvents extends Component<Props, State> {
 
     render() {
         // console.log('Day.render', this.props.day, this.state.events);
-        
-        // TODO : move this to getderivedstate/componentwillrecieveprops
-        if (this.props.isFetching) {
-            this.fadeOut();
-        } else {
-            this.fadeIn();
-        }
 
         return(
             <View style={styles.container}>
