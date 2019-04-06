@@ -63,7 +63,7 @@ export default class NavigationSwiper extends PureComponent<Props> {
 
     render(){
         return (
-            <Animated.View style={styles.slide2} {...this.panResponder.panHandlers}>
+            <Animated.View style={styles.slide} {...this.panResponder.panHandlers}>
                 <Week navigation={this.props.navigation} data={this.props.data}/>
             </Animated.View>
         );
@@ -71,18 +71,8 @@ export default class NavigationSwiper extends PureComponent<Props> {
 }
 
 const styles = StyleSheet.create({
-    wrapper: {
-    },
-    slide1: {
+    slide: {
         flex: 1,
-        backgroundColor: 'blue',
-    },
-    slide2: {
-        flex: 1,
-        backgroundColor: 'green',
-    },
-    slide3: {
-        flex: 1,
-        backgroundColor: 'red',
+        backgroundColor: 'white',
     },
 });
