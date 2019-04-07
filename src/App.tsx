@@ -9,6 +9,7 @@ import allReducers from './reducers';
 // import Week from './containers/Week';
 import Swiper from './containers/Swiper';
 import Options from './components/Options';
+import Add from './components/Add';
 import Calendar from './containers/Calendar';
 
 type Props = {
@@ -35,6 +36,7 @@ const mapNavigationStateParamsToProps = (SomeComponent: any) => {
 const MainStack = createStackNavigator({
     Home: Swiper,
     Options: Options,
+    Add: Add,
 },
 {
     initialRouteName: "Home",

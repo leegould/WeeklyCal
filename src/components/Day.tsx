@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, FlatList, Animated} from 'react-native';
+import {StyleSheet, Text, View, FlatList, Animated, TouchableWithoutFeedback} from 'react-native';
 import { Day } from '../types';
 
 const styles = StyleSheet.create({
@@ -23,6 +23,9 @@ type Props = {
     isFetching: boolean,
     day: Day,
     isToday?: boolean,
+    navigation: {
+        navigate: Function,
+    }
 };
 
 type State = {
@@ -72,10 +75,15 @@ export default class DayEvents extends Component<Props, State> {
 
         return(
             <View style={styles.container}>
-                <View style={styles.row}>
-                    <Text>{this.props.day.date.format('dddd')}</Text>
-                    <Animated.Text style={{opacity: this.state.fade}}>{this.props.day.date.format('DD')}</Animated.Text>
-                </View>
+                <TouchableWithoutFeedback onPress={() => {
+                        console.log('Day.onPress', this.props.day.date);
+                        this.props.navigation.navigate('Add', { date: this.props.day.date });
+                    }}>
+                    <View style={styles.row}>
+                        <Text>{this.props.day.date.format('dddd')}</Text>
+                        <Animated.Text style={{opacity: this.state.fade}}>{this.props.day.date.format('DD')}</Animated.Text>
+                    </View>
+                </TouchableWithoutFeedback>
                 {this.props.day.events && 
                     <FlatList
                         data={this.props.day.events}

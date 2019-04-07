@@ -7,10 +7,10 @@ export default class Options extends React.PureComponent {
     };
     
     render() {
-      return (
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-          <Text>Options Screen</Text>
-        </View>
-      );
+        return (
+            <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                <Text>Options Screen</Text>
+            </View>
+        );
     }
-  }
+}

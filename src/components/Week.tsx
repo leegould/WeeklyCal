@@ -81,18 +81,18 @@ export default class Week extends PureComponent<Props, State> {
                 </View>
                 <View style={styles.main}>
                     <View style={styles.firstRow}>
-                        <Day day={this.props.data.week.days[0]} isToday isFetching={this.props.data.isFetching} />
+                        <Day day={this.props.data.week.days[0]} isToday isFetching={this.props.data.isFetching} navigation={this.props.navigation} />
                     </View>
                     <View style={styles.row}>
                         <View style={styles.col}>
-                            <Day day={this.props.data.week.days[1]} isFetching={this.props.data.isFetching} />
-                            <Day day={this.props.data.week.days[3]} isFetching={this.props.data.isFetching} />
-                            <Day day={this.props.data.week.days[5]} isFetching={this.props.data.isFetching} />
+                            <Day day={this.props.data.week.days[1]} isFetching={this.props.data.isFetching} navigation={this.props.navigation} />
+                            <Day day={this.props.data.week.days[3]} isFetching={this.props.data.isFetching} navigation={this.props.navigation} />
+                            <Day day={this.props.data.week.days[5]} isFetching={this.props.data.isFetching} navigation={this.props.navigation} />
                         </View>
                         <View style={styles.col}>
-                            <Day day={this.props.data.week.days[2]} isFetching={this.props.data.isFetching} />
-                            <Day day={this.props.data.week.days[4]} isFetching={this.props.data.isFetching} />
-                            <Day day={this.props.data.week.days[6]} isFetching={this.props.data.isFetching} />
+                            <Day day={this.props.data.week.days[2]} isFetching={this.props.data.isFetching} navigation={this.props.navigation} />
+                            <Day day={this.props.data.week.days[4]} isFetching={this.props.data.isFetching} navigation={this.props.navigation} />
+                            <Day day={this.props.data.week.days[6]} isFetching={this.props.data.isFetching} navigation={this.props.navigation} />
                         </View>
                     </View>
                 </View>
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'stretch',
-        backgroundColor: 'white',
+        backgroundColor: '#F5FCFF',
         marginTop: 40,
         marginBottom: 40,
     },
