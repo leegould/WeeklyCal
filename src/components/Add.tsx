@@ -2,6 +2,7 @@ import React from 'react';
 import {TextInput, View, Button, Text} from 'react-native';
 import { Moment } from 'moment';
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 export interface Props {
     date: Moment,
@@ -14,6 +15,13 @@ interface State {
 interface Values {
     description: string;
 };
+
+const ValidationSchema = Yup.object().shape({
+    description: Yup.string()
+        .min(2, 'Too Short!')
+        .max(100, 'Too Long!')
+        .required('Required'),
+});
 
 export default class Add extends React.PureComponent<Props, State> {
     static navigationOptions = {
@@ -32,36 +40,31 @@ export default class Add extends React.PureComponent<Props, State> {
             <View style={{flex: 1, backgroundColor: 'lightgray'}}>
                 <Formik
                     initialValues={{ description: '' }}
-                    validate={(values: Values) => {
-                        let errors: Values = {
-                            description: ''
-                        };
-                        if (!values.description) {
-                          errors.description = 'Required';
-                        }
-                        return errors;
-                    }}
-                    // onSubmit={(values: Values, formikActions) => {
-                    //     console.log('onSubmit.1,', values);
-                    //     setTimeout(() => {
-                    //       console.log('onSubmit', JSON.stringify(values));
-                    //       // Important: Make sure to setSubmitting to false so our loading indicator
-                    //       // goes away.
-                    //       formikActions.setSubmitting(false);
-                    //     }, 3500);
+                    validationSchema={ValidationSchema}
+                    // validate={(values: Values) => {
+                    //     let errors: Values = {
+                    //         description: ''
+                    //     };
+                    //     if (!values.description) {
+                    //       errors.description = 'Required';
+                    //     }
+                    //     return errors;
                     // }}
-                    onSubmit={(values: Values) => console.log('onSubmit', values)}
+                    onSubmit={(values: Values, formikActions) => {
+                        setTimeout(() => {
+                            console.log('onSubmit', JSON.stringify(values));
+                            formikActions.setSubmitting(false); // turn off disabled
+                        }, 500);
+                    }}
                 >
                     {props => (
                         <View style={{ flex: 1, justifyContent: "center", marginHorizontal: 40 }}>
-                            <Text style={{ marginBottom: 20, color: 'grey' }}>
-                                Description
-                            </Text>
                             <TextInput
-                                style={{ height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'orange'}}
+                                style={{ height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'orange', padding: 5 }}
                                 onChangeText={props.handleChange('description')}
                                 onBlur={props.handleBlur('description')}
                                 value={props.values.description}
+                                placeholder="Description"
                             />
                             {props.touched.description && props.errors.description ?
                             <Text style={{ color: 'red' }} >
@@ -69,8 +72,9 @@ export default class Add extends React.PureComponent<Props, State> {
                             </Text>
                             : null }
                             <Button
-                                onPress={() => {console.log('test', props.values, props); props.handleSubmit(); }}
+                                onPress={props.handleSubmit as any}
                                 title="Add"
+                                disabled={props.isSubmitting}
                             />
                         </View>
                     )}
