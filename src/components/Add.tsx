@@ -1,11 +1,14 @@
 import React from 'react';
 import {TextInput, View, Button, Text} from 'react-native';
-import { Moment } from 'moment';
+import moment from 'moment';
 import { Formik } from 'formik';
+import RNCalendarEvents from 'react-native-calendar-events';
 import * as Yup from 'yup';
 
 export interface Props {
-    date: Moment,
+    navigation: {
+        getParam: Function,
+    },
 };
 
 interface State {
@@ -36,23 +39,25 @@ export default class Add extends React.PureComponent<Props, State> {
     }
 
     render() {
+        const { navigation } = this.props;
+        const date = navigation.getParam('date', moment());
+        console.log('Add.render', date, this.props);
+
         return (
             <View style={{flex: 1, backgroundColor: 'lightgray'}}>
                 <Formik
                     initialValues={{ description: '' }}
                     validationSchema={ValidationSchema}
-                    // validate={(values: Values) => {
-                    //     let errors: Values = {
-                    //         description: ''
-                    //     };
-                    //     if (!values.description) {
-                    //       errors.description = 'Required';
-                    //     }
-                    //     return errors;
-                    // }}
                     onSubmit={(values: Values, formikActions) => {
                         setTimeout(() => {
-                            console.log('onSubmit', JSON.stringify(values));
+                            console.log('onSubmit', JSON.stringify(values), this.props);
+
+                            const saveResult = RNCalendarEvents.saveEvent(values.description, {
+                                startDate: date.toISOString(),
+                                endDate: date.toISOString()
+                            });
+                            console.log('saveResult', saveResult);
+
                             formikActions.setSubmitting(false); // turn off disabled
                         }, 500);
                     }}
