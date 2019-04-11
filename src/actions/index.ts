@@ -1,11 +1,14 @@
 import moment, { Moment } from 'moment';
 import RNCalendarEvents from 'react-native-calendar-events';
-import { Day } from '../types';
+import { Day, CalendarEvent } from '../types';
 
 export const CHANGE_WEEK_DATE = 'CHANGE_WEEK_DATE';
 export const EVENTS_FETCH_STARTED = 'EVENTS_FETCH_STARTED';
 export const EVENTS_FETCH_SUCCESS = 'EVENTS_FETCH_SUCCESS';
 export const EVENTS_FETCH_ERROR = 'EVENTS_FETCH_ERROR';
+export const ADD_EVENT_STARTED = 'ADD_EVENT_STARTED';
+export const ADD_EVENT_SUCCESS = 'ADD_EVENT_SUCCESS';
+export const ADD_EVENT_ERROR = 'ADD_EVENT_ERROR';
 
 // https://alligator.io/redux/redux-thunk/
 export const changeWeekDate = (date: Moment) => {
@@ -40,6 +43,23 @@ export const changeWeekDate = (date: Moment) => {
     }
 }
 
+export const addEvent = (event: CalendarEvent) => {
+    return async (dispatch: Function) => {
+        dispatch(addEventStart());
+
+        try {
+            const saveResult = await RNCalendarEvents.saveEvent(event.title, {
+                startDate: event.startDate,
+                endDate: event.endDate,
+            });
+            console.log('saveResult', saveResult);
+            dispatch(addEventSuccess(event));
+        } catch (err) {
+            dispatch(addEventError(err));
+        }
+    }
+}
+
 export const eventsFetchStarted = () => {
     const action = {
         type: EVENTS_FETCH_STARTED,
@@ -59,6 +79,32 @@ export const eventsFetchSuccess = (week: any) => {
 export const eventsFetchError = (error: Error) => {
     const action = {
         type: EVENTS_FETCH_ERROR,
+        payload: {
+            error
+        }
+    }
+    return action;
+}
+
+export const addEventStart = () => {
+    const action = {
+        type: ADD_EVENT_STARTED,
+    }
+    return action;
+}
+
+export const addEventSuccess = (event: any) => {
+    console.log('addEventSuccess', event);
+    const action = {
+        type: ADD_EVENT_SUCCESS,
+        payload: event,
+    }
+    return action;
+}
+
+export const addEventError = (error: Error) => {
+    const action = {
+        type: ADD_EVENT_ERROR,
         payload: {
             error
         }

@@ -9,6 +9,7 @@ export interface Props {
     navigation: {
         getParam: Function,
     },
+    onAddEvent: Function,
 };
 
 interface State {
@@ -52,13 +53,21 @@ export default class Add extends React.PureComponent<Props, State> {
                         setTimeout(() => {
                             console.log('onSubmit', JSON.stringify(values), this.props);
 
-                            const saveResult = RNCalendarEvents.saveEvent(values.description, {
+                            this.props.onAddEvent({
+                                title: values.description,
                                 startDate: date.toISOString(),
-                                endDate: date.toISOString()
+                                endDate: date.toISOString(),
                             });
-                            console.log('saveResult', saveResult);
+                            // const saveResult = RNCalendarEvents.saveEvent(values.description, { // TODO : move this to actions
+                            //     startDate: date.toISOString(), // TODO : add time/all day?
+                            //     endDate: date.toISOString()
+                            // });
+                            // console.log('saveResult', saveResult);
 
                             formikActions.setSubmitting(false); // turn off disabled
+
+                            // TODO : close screen on success..
+                            // TODO : update (should be part of moving to actions)
                         }, 500);
                     }}
                 >
