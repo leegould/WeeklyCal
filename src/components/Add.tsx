@@ -2,7 +2,6 @@ import React from 'react';
 import {TextInput, View, Button, Text} from 'react-native';
 import moment from 'moment';
 import { Formik } from 'formik';
-import RNCalendarEvents from 'react-native-calendar-events';
 import * as Yup from 'yup';
 
 export interface Props {
@@ -42,7 +41,6 @@ export default class Add extends React.PureComponent<Props, State> {
     render() {
         const { navigation } = this.props;
         const date = navigation.getParam('date', moment());
-        console.log('Add.render', date, this.props);
 
         return (
             <View style={{flex: 1, backgroundColor: 'lightgray'}}>
@@ -51,23 +49,15 @@ export default class Add extends React.PureComponent<Props, State> {
                     validationSchema={ValidationSchema}
                     onSubmit={(values: Values, formikActions) => {
                         setTimeout(() => {
-                            console.log('onSubmit', JSON.stringify(values), this.props);
-
                             this.props.onAddEvent({
                                 title: values.description,
                                 startDate: date.toISOString(),
                                 endDate: date.toISOString(),
                             });
-                            // const saveResult = RNCalendarEvents.saveEvent(values.description, { // TODO : move this to actions
-                            //     startDate: date.toISOString(), // TODO : add time/all day?
-                            //     endDate: date.toISOString()
-                            // });
-                            // console.log('saveResult', saveResult);
-
+                            
                             formikActions.setSubmitting(false); // turn off disabled
 
                             // TODO : close screen on success..
-                            // TODO : update (should be part of moving to actions)
                         }, 500);
                     }}
                 >

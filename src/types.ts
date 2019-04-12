@@ -24,7 +24,6 @@ export type Week = {
 
 export type WeekState = {
     isFetching: boolean,
-    didInvalidate: boolean,
     week: {
         days: Day[],
     },

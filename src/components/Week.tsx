@@ -57,7 +57,7 @@ export default class Week extends PureComponent<Props, State> {
     }
 
     render() {
-        console.log('props', this.props);
+        // console.log('props', this.props);
         const startDate = this.props.data.week.days[0].date;
         const endDate = this.props.data.week.days[6].date;
 

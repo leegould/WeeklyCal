@@ -48,12 +48,25 @@ export const addEvent = (event: CalendarEvent) => {
         dispatch(addEventStart());
 
         try {
-            const saveResult = await RNCalendarEvents.saveEvent(event.title, {
+            await RNCalendarEvents.saveEvent(event.title, {
                 startDate: event.startDate,
                 endDate: event.endDate,
             });
-            console.log('saveResult', saveResult);
-            dispatch(addEventSuccess(event));
+
+            const startDate = moment(event.startDate).startOf().format('YYYY-MM-DDTHH:mm:ss.sssZ');
+            const endDate = moment(event.endDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+
+            const dayEvents = await RNCalendarEvents.fetchAllEvents(
+                startDate,
+                endDate,
+            );
+
+            const day = {
+                date: moment(event.startDate),
+                events: dayEvents,
+            } as Day;
+
+            dispatch(addEventSuccess(day));
         } catch (err) {
             dispatch(addEventError(err));
         }

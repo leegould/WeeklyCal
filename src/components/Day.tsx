@@ -76,7 +76,6 @@ export default class DayEvents extends Component<Props, State> {
         return(
             <View style={styles.container}>
                 <TouchableWithoutFeedback onPress={() => {
-                        console.log('Day.onPress', this.props.day.date);
                         this.props.navigation.navigate('Add', { date: this.props.day.date });
                     }}>
                     <View style={styles.row}>
