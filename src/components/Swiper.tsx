@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, Animated, PanResponder } from 'react-native';
+import moment from 'moment';
 import Week from './Week';
 import { WeekState } from '../types';
 
@@ -16,7 +17,7 @@ export default class NavigationSwiper extends PureComponent<Props> {
         header: null,
     }
 
-    static getDirectionAndColor = ({ dx, dy}: { dx: number, dy: number}) => {
+    static getDirectionAndColor = ({ dx, dy }: { dx: number, dy: number }) => {
         const draggedDown = dy > 100;
         const draggedUp = dy < -100;
         const draggedLeft = dx < -100;
@@ -59,9 +60,12 @@ export default class NavigationSwiper extends PureComponent<Props> {
                 }
             },
         });
+
+        this.props.onChangeDate(moment()); // Load initial week.
     }
 
     render(){
+        console.log('data', this.props.data);
         return (
             <Animated.View style={styles.slide} {...this.panResponder.panHandlers}>
                 <Week navigation={this.props.navigation} data={this.props.data}/>

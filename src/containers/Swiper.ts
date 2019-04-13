@@ -10,7 +10,7 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => ({
     onChangeDate: (date: Moment) => {
-      dispatch(changeWeekDate(date));
+        dispatch(changeWeekDate(date));
     },
 });
 
