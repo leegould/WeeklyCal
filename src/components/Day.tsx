@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, FlatList, Animated, TouchableWithoutFeedback} from 'react-native';
+import { Icon } from 'react-native-elements'
 import { Day } from '../types';
 
 const styles = StyleSheet.create({
@@ -70,17 +71,20 @@ export default class DayEvents extends Component<Props, State> {
         ).start();
     }
 
+    onAdd() {
+        this.props.navigation.navigate('Add', { date: this.props.day.date });
+    }
+
     render() {
         // console.log('Day.render', this.props.day, this.state.events);
 
         return(
             <View style={styles.container}>
-                <TouchableWithoutFeedback onPress={() => {
-                        this.props.navigation.navigate('Add', { date: this.props.day.date });
-                    }}>
+                <TouchableWithoutFeedback onPress={() => this.onAdd()}>
                     <View style={styles.row}>
-                        <Text>{this.props.day.date.format('dddd')}</Text>
-                        <Animated.Text style={{opacity: this.state.fade}}>{this.props.day.date.format('DD')}</Animated.Text>
+                        {/* <Text>{this.props.day.date.format('dddd')}</Text> */}
+                        <Animated.Text style={{opacity: this.state.fade}}>{`${this.props.day.date.format('dddd')} ${this.props.day.date.format('DD')}`}</Animated.Text>
+                        <Icon name='add-box' type='material' color='green' onPress={() => this.onAdd()} size={18} />
                     </View>
                 </TouchableWithoutFeedback>
                 {this.props.day.events && 
