@@ -55,6 +55,14 @@ const RootStack = createStackNavigator(
     {
       mode: 'modal',
       headerMode: 'none',
+    //   navigationOptions: {
+    //       headerStyle: {
+    //           backgroundColor: 'orange',
+    //       },
+    //       headerTitleStyle: {
+            
+    //       },
+    //   }
     }
   );
 
