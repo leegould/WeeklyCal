@@ -36,10 +36,13 @@ const MainStack = createStackNavigator({
     Home: Swiper,
     Options: Options,
     Add: Add,
+    Calendar: {
+        screen: mapNavigationStateParamsToProps(Calendar),
+        headerMode: 'screen',
+    },
 },
 {
     initialRouteName: 'Home',
-    headerMode: 'screen',
     navigationOptions: {
         headerStyle: {
             backgroundColor: 'orange',
@@ -47,27 +50,26 @@ const MainStack = createStackNavigator({
     },
 });
 
-const RootStack = createStackNavigator(
-    {
-        Main: {
-            screen: MainStack,
-        },
-        Calendar: {
-            screen: mapNavigationStateParamsToProps(Calendar),
-        },
-    },
-    {
-      mode: 'modal',
-      headerMode: 'none',
-      navigationOptions: {
-          headerStyle: {
-              backgroundColor: 'purple',
-          },
-      }
-    }
-  );
-
-const AppContainer = createAppContainer(RootStack);
+// const RootStack = createStackNavigator(
+//     {
+//         Main: {
+//             screen: MainStack,
+//         },
+//         Calendar: {
+//             screen: mapNavigationStateParamsToProps(Calendar),
+//         },
+//     },
+//     {
+//       mode: 'modal',
+//       headerMode: 'none',
+//       navigationOptions: {
+//           headerStyle: {
+//               backgroundColor: 'purple',
+//           },
+//       }
+//     }
+//   );
+const AppContainer = createAppContainer(MainStack);
 
 export default class App extends React.PureComponent {
     render() {

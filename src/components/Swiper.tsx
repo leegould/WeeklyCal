@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, Animated, PanResponder } from 'react-native';
+import { StyleSheet, Animated, PanResponder, StatusBar } from 'react-native';
 import RNCalendarEvents from 'react-native-calendar-events';
-// import { SafeAreaView } from "react-navigation";
 import moment from 'moment';
 import Week from './Week';
 import { WeekState } from '../types';
+import Header from '../containers/Header';
 
 type Props = {
     navigation: {
@@ -15,8 +15,13 @@ type Props = {
 };
 
 export default class NavigationSwiper extends PureComponent<Props> {
-    static navigationOptions = {
-        header: null,
+    static navigationOptions = ({ navigation }: { navigation: any }) => {
+        return {
+            headerStyle: {
+                backgroundColor: 'purle',
+            },
+            header: <Header navigation={navigation} />,
+        }
     }
 
     static getDirectionAndColor = ({ dx, dy }: { dx: number, dy: number }) => {
@@ -84,25 +89,20 @@ export default class NavigationSwiper extends PureComponent<Props> {
     render(){
         console.log('data', this.props.data);
         return (
-            // <SafeAreaView style={styles.safeArea} forceInset={{
-            //     top: 'never',
-            //     bottom: 'never',
-            //   }}>
-                <Animated.View style={styles.slide} {...this.panResponder.panHandlers}>
-                    <Week navigation={this.props.navigation} data={this.props.data}/>
-                </Animated.View>
-            // </SafeAreaView>
+            <Animated.View style={styles.slide} {...this.panResponder.panHandlers}>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor="#6a51ae"
+                />
+                <Week navigation={this.props.navigation} data={this.props.data}/>
+            </Animated.View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    safeArea: {
-        flex: 1,
-        backgroundColor: 'green',
-    },
     slide: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: 'gray',
     },
 });
