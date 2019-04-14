@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, Animated, PanResponder } from 'react-native';
+import RNCalendarEvents from 'react-native-calendar-events';
 // import { SafeAreaView } from "react-navigation";
 import moment from 'moment';
 import Week from './Week';
@@ -63,6 +64,21 @@ export default class NavigationSwiper extends PureComponent<Props> {
         });
 
         this.props.onChangeDate(moment()); // Load initial week.
+    }
+
+    async componentDidMount() {
+        try {
+            const status = await RNCalendarEvents.authorizationStatus();
+            console.log('status', status);
+            if (status !== 'authorized') {
+                const askForStatus = await RNCalendarEvents.authorizeEventStore();
+                console.log('askForStatus', askForStatus);
+                this.props.onChangeDate(moment()); // Load initial week.
+            }
+        }
+        catch (err) {
+            console.log('componentDidMount.error', err);
+        }
     }
 
     render(){

@@ -3,7 +3,6 @@ import React, { PureComponent } from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import RNCalendarEvents from 'react-native-calendar-events';
 import thunk from 'redux-thunk';
 import allReducers from './reducers';
 // import Week from './containers/Week';
@@ -71,15 +70,6 @@ const RootStack = createStackNavigator(
 const AppContainer = createAppContainer(RootStack);
 
 export default class App extends React.PureComponent {
-    async componentDidMount() {
-        try {
-            await RNCalendarEvents.authorizeEventStore();
-        }
-        catch (err) {
-            console.log('componentDidMount.error', err);
-        }
-    }
-
     render() {
         return (
             <Provider store={store}>
