@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, Animated, PanResponder } from 'react-native';
-import { SafeAreaView } from "react-navigation";
+// import { SafeAreaView } from "react-navigation";
 import moment from 'moment';
 import Week from './Week';
 import { WeekState } from '../types';
@@ -68,14 +68,14 @@ export default class NavigationSwiper extends PureComponent<Props> {
     render(){
         console.log('data', this.props.data);
         return (
-            <SafeAreaView style={styles.safeArea} forceInset={{
-                top: 'never',
-                bottom: 'never',
-              }}>
+            // <SafeAreaView style={styles.safeArea} forceInset={{
+            //     top: 'never',
+            //     bottom: 'never',
+            //   }}>
                 <Animated.View style={styles.slide} {...this.panResponder.panHandlers}>
                     <Week navigation={this.props.navigation} data={this.props.data}/>
                 </Animated.View>
-            </SafeAreaView>
+            // </SafeAreaView>
         );
     }
 }

@@ -39,8 +39,13 @@ const MainStack = createStackNavigator({
     Add: Add,
 },
 {
-    initialRouteName: "Home",
+    initialRouteName: 'Home',
     headerMode: 'screen',
+    navigationOptions: {
+        headerStyle: {
+            backgroundColor: 'orange',
+        }
+    },
 });
 
 const RootStack = createStackNavigator(
@@ -55,14 +60,11 @@ const RootStack = createStackNavigator(
     {
       mode: 'modal',
       headerMode: 'none',
-    //   navigationOptions: {
-    //       headerStyle: {
-    //           backgroundColor: 'orange',
-    //       },
-    //       headerTitleStyle: {
-            
-    //       },
-    //   }
+      navigationOptions: {
+          headerStyle: {
+              backgroundColor: 'purple',
+          },
+      }
     }
   );
 
