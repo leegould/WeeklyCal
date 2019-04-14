@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, FlatList, Animated, TouchableWithoutFeedback} from 'react-native';
+import {StyleSheet, View, FlatList, Animated, TouchableWithoutFeedback} from 'react-native';
 import { Icon } from 'react-native-elements'
 import { Day } from '../types';
 
@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'beige',
         padding: 5,
         margin: 5,
+        borderRadius: 5,
         flexDirection: 'column',
         justifyContent: 'flex-start',
     },

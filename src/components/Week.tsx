@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     headerText: {
-        color: 'grey',
+        color: '#C2272D',
         fontSize: 16,
         justifyContent: 'center',
     },
@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: 'lightgray',
         justifyContent: 'center',
+        fontWeight: 'bold',
     },
     main: {
         flex: 1,
