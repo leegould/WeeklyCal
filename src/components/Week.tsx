@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, Text, View, Button, TouchableWithoutFeedback, Animated } from 'react-native';
+import { StyleSheet, View, Animated, TouchableWithoutFeedback } from 'react-native';
+import { Icon } from 'react-native-elements'
 import { WeekState } from '../types';
 import Day from './Day';
 
@@ -64,20 +65,15 @@ export default class Week extends PureComponent<Props, State> {
         return (
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <TouchableWithoutFeedback onPress={() => {
-                        console.log('onPress', this.props.data.week.days[0]);
-                        this.props.navigation.navigate('Calendar', { day: startDate });
-                    }}>
-                        <Animated.Text style={[styles.headerText, {opacity: this.state.fade}]}>
-                            {startDate.date()} - {endDate.date()}
-                        </Animated.Text>
+                    <Icon name='settings-applications' type='material' color='lightgray' onPress={() => this.props.navigation.navigate('Options')} size={40} />
+                    <TouchableWithoutFeedback onPress={() => { this.props.navigation.navigate('Calendar', { day: startDate }); }}>
+                        <View style={styles.headerMiddle}>
+                            <Animated.Text style={[styles.headerText, {opacity: this.state.fade}]}>
+                                {`${startDate.date()} - ${endDate.date()} ${startDate.format('MMM')} ${startDate.format('YYYY')}`}
+                            </Animated.Text>
+                        </View>
                     </TouchableWithoutFeedback>
-                    <Text style={styles.headerText}>{startDate.format('MMM')}</Text>
-                    <Text style={styles.headerText}>{startDate.format('YYYY')}</Text>
-                    <Button
-                        title="Opt"
-                        onPress={() => this.props.navigation.navigate('Options')}
-                    />
+                    <Icon name='calendar-range' type='material-community' color='lightgray' onPress={() => this.props.navigation.navigate('Calendar', { day: startDate })} size={40} />
                 </View>
                 <View style={styles.main}>
                     <View style={styles.firstRow}>
@@ -117,17 +113,19 @@ const styles = StyleSheet.create({
         padding: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
+        alignItems: 'center',
     },
     headerText: {
-        backgroundColor: 'orange',
-        padding: 3,
-        color: 'black',
+        color: 'grey',
+        fontSize: 16,
+        justifyContent: 'center',
     },
-    midHeader: {
-        backgroundColor: 'white',
-    },
-    rightHeader: {
-        backgroundColor: 'white',
+    headerMiddle: {
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        borderRadius: 5,
+        backgroundColor: 'lightgray',
+        justifyContent: 'center',
     },
     main: {
         flex: 1,
