@@ -14,6 +14,10 @@ type Props = {
 };
 
 export default class CalendarModal extends PureComponent<Props> {
+    static navigationOptions = {
+        headerTitle: 'Week Start',
+    }
+
     render() {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

@@ -19,7 +19,7 @@ export default class NavigationSwiper extends PureComponent<Props> {
     static navigationOptions = ({ navigation }: { navigation: any }) => {
         return {
             headerStyle: {
-                backgroundColor: 'purle',
+                backgroundColor: 'green',
             },
             header: <Header navigation={navigation} />,
         }
@@ -33,13 +33,13 @@ export default class NavigationSwiper extends PureComponent<Props> {
         let dragDirection = '';
       
         if (draggedDown || draggedUp) {
-          if (draggedDown) dragDirection += 'down'
-          if (draggedUp) dragDirection +=  'up';
+            if (draggedDown) dragDirection += 'down'
+            if (draggedUp) dragDirection +=  'up';
         }
       
         if (draggedLeft || draggedRight) {
-          if (draggedLeft) dragDirection += 'left'
-          if (draggedRight) dragDirection +=  'right';
+            if (draggedLeft) dragDirection += 'left'
+            if (draggedRight) dragDirection +=  'right';
         }
       
         return dragDirection;

@@ -16,10 +16,6 @@ type State = {
 };
 
 export default class Header extends PureComponent<Props, State> {
-    static navigationOptions = {
-        header: null,
-    }
-
     constructor(props: Props) {
         super(props);
         this.state = {

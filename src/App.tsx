@@ -5,11 +5,12 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import allReducers from './reducers';
-// import Week from './containers/Week';
 import Swiper from './containers/Swiper';
 import Options from './components/Options';
 import Add from './containers/Add';
 import Calendar from './containers/Calendar';
+
+console.disableYellowBox = true;
 
 type Props = {
     navigation: {
@@ -25,7 +26,7 @@ const mapNavigationStateParamsToProps = (SomeComponent: any) => {
     return class extends PureComponent<Props> {
         static navigationOptions = SomeComponent.navigationOptions; // better use hoist-non-react-statics
         render() {
-            const {navigation, ...otherProps} = this.props
+            const {navigation} = this.props
             const {state: {params}} = navigation
             return <SomeComponent {...this.props} {...params} />
         }
@@ -43,10 +44,17 @@ const MainStack = createStackNavigator({
 },
 {
     initialRouteName: 'Home',
-    navigationOptions: {
+    defaultNavigationOptions: {
         headerStyle: {
-            backgroundColor: 'orange',
-        }
+            backgroundColor: '#C2272D',
+        },
+        headerTitleStyle: {
+            color:'lightgray',
+        },
+        headerBackTitleStyle: {
+            color:'lightgray',
+        },
+        headerTintColor: 'lightgray',
     },
 });
 
@@ -69,6 +77,7 @@ const MainStack = createStackNavigator({
 //       }
 //     }
 //   );
+
 const AppContainer = createAppContainer(MainStack);
 
 export default class App extends React.PureComponent {
