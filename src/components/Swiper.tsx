@@ -5,6 +5,7 @@ import moment from 'moment';
 import Week from './Week';
 import { WeekState } from '../types';
 import Header from '../containers/Header';
+import { SafeAreaView } from 'react-navigation';
 
 type Props = {
     navigation: {
@@ -89,18 +90,24 @@ export default class NavigationSwiper extends PureComponent<Props> {
     render(){
         console.log('data', this.props.data);
         return (
-            <Animated.View style={styles.slide} {...this.panResponder.panHandlers}>
-                <StatusBar
-                    barStyle="light-content"
-                    backgroundColor="#6a51ae"
-                />
-                <Week navigation={this.props.navigation} data={this.props.data}/>
-            </Animated.View>
+            <SafeAreaView style={styles.safeArea}>
+                <Animated.View style={styles.slide} {...this.panResponder.panHandlers}>
+                    <StatusBar
+                        barStyle="light-content"
+                        backgroundColor="#6a51ae"
+                    />
+                    <Week navigation={this.props.navigation} data={this.props.data}/>
+                </Animated.View>
+            </SafeAreaView>
         );
     }
 }
 
 const styles = StyleSheet.create({
+    safeArea: {
+        flex: 1,
+        backgroundColor: 'gray',
+    },
     slide: {
         flex: 1,
         backgroundColor: 'gray',
