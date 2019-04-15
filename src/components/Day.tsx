@@ -90,7 +90,6 @@ export default class DayEvents extends Component<Props, State> {
             <View style={styles.container}>
                 <TouchableWithoutFeedback onPress={() => this.onAdd()}>
                     <View style={styles.row}>
-                        {/* <Text>{this.props.day.date.format('dddd')}</Text> */}
                         <Animated.Text style={[styles.header, {opacity: this.state.fade}]}>{`${this.props.day.date.format('ddd')} ${this.props.day.date.format('DD')}`}</Animated.Text>
                         <Icon name='calendar-plus' type='material-community' color='green' onPress={() => this.onAdd()} size={18} />
                     </View>
@@ -100,7 +99,6 @@ export default class DayEvents extends Component<Props, State> {
                         data={this.props.day.events}
                         keyExtractor={(item, index) => `event_key_${index}`}
                         renderItem={({item}) => {
-                            // console.log('item', item);
                             return(
                                 <Animated.Text style={[styles.eventTitle, {opacity: this.state.fade}]}>
                                     {item.title}
