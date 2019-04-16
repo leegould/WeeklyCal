@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, View, Animated, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Animated, TouchableWithoutFeedback, Text } from 'react-native';
 import { Icon } from 'react-native-elements'
 import { SafeAreaView } from 'react-navigation';
 import { WeekState } from '../types';
@@ -62,13 +62,14 @@ export default class Header extends PureComponent<Props, State> {
                 <View style={styles.header}>
                     <Icon name='settings-applications' type='material' color='lightgray' onPress={() => this.props.navigation.navigate('Options')} size={40} />
                     <TouchableWithoutFeedback onPress={() => { this.props.navigation.navigate('Calendar', { day: startDate }); }}>
-                        <View style={styles.headerMiddle}>
-                            <Animated.Text style={[styles.headerText, {opacity: this.state.fade}]}>
+                        <Animated.View style={[styles.headerMiddle, {opacity: this.state.fade}]}>
+                            <Icon name='calendar-range' type='material-community' color='#C2272D' size={24} />
+                            <Text style={styles.headerText}>
                                 {`${startDate.date()} - ${endDate.date()} ${startDate.format('MMM')} ${startDate.format('YYYY')}`}
-                            </Animated.Text>
-                        </View>
+                            </Text>
+                        </Animated.View>
                     </TouchableWithoutFeedback>
-                    <Icon name='calendar-range' type='material-community' color='lightgray' onPress={() => this.props.navigation.navigate('Calendar', { day: startDate })} size={40} />
+                    <Icon name='calendar-plus' type='material-community' color='lightgray' onPress={() => this.props.navigation.navigate('Add', { date: startDate })} size={40} />
                 </View>
             </SafeAreaView>
         );
@@ -91,13 +92,16 @@ const styles = StyleSheet.create({
         color: '#C2272D',
         fontSize: 16,
         justifyContent: 'center',
+        marginLeft: 5,
     },
     headerMiddle: {
-        paddingHorizontal: 15,
+        paddingLeft: 10,
+        paddingRight: 15,
         paddingVertical: 5,
         borderRadius: 5,
         backgroundColor: 'lightgray',
-        justifyContent: 'center',
+        flexDirection: 'row',
+        alignItems: 'center',
         fontWeight: 'bold',
     },
 });

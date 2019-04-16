@@ -74,7 +74,7 @@ export default class DayEvents extends Component<Props, State> {
             this.state.fade,            
             {
                 toValue: 0,                   
-                duration: 500,              
+                duration: 1000,              
             }
         ).start();
     }
@@ -87,7 +87,7 @@ export default class DayEvents extends Component<Props, State> {
         // console.log('Day.render', this.props.day, this.state.events);
 
         return(
-            <View style={styles.container}>
+            <Animated.View style={[styles.container, {opacity: this.state.fade}]}>
                 <TouchableWithoutFeedback onPress={() => this.onAdd()}>
                     <View style={styles.row}>
                         <Animated.Text style={[styles.header, {opacity: this.state.fade}]}>{`${this.props.day.date.format('ddd')} ${this.props.day.date.format('DD')}`}</Animated.Text>
@@ -107,7 +107,7 @@ export default class DayEvents extends Component<Props, State> {
                         }}
                     />
                 }
-            </View>
+            </Animated.View>
         );
     }
 }
