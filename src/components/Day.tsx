@@ -74,7 +74,7 @@ export default class DayEvents extends Component<Props, State> {
             this.state.fade,            
             {
                 toValue: 0,                   
-                duration: 1000,              
+                duration: 750,              
             }
         ).start();
     }

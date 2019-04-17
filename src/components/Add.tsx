@@ -1,8 +1,9 @@
 import React from 'react';
-import {TextInput, View, Button, Text} from 'react-native';
-import moment from 'moment';
+import {TextInput, View, Button, Text, TouchableOpacity} from 'react-native';
+import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 export interface Props {
     navigation: {
@@ -13,6 +14,9 @@ export interface Props {
 
 interface State {
     description: string,
+    startDate: Moment,
+    isDateTimePickerVisible: boolean,
+    allDay: boolean,
 };
 
 interface Values {
@@ -35,13 +39,25 @@ export default class Add extends React.PureComponent<Props, State> {
         super(props);
         this.state = {
             description: '',
+            startDate: props.navigation.getParam('date', moment()),
+            isDateTimePickerVisible: false,
+            allDay: true,
         }
     }
 
-    render() {
-        const { navigation } = this.props;
-        const date = navigation.getParam('date', moment());
+    showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
 
+    hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+
+    handleDatePicked = (date: Date) => {
+        console.log('A date has been picked: ', date);
+        this.setState({ startDate: moment(date) });
+        this.hideDateTimePicker();
+    };
+
+    toggleAllDay = () => this.setState((previousState) => ({ allDay: !previousState.allDay }));
+
+    render() {
         return (
             <View style={{flex: 1, backgroundColor: 'lightgray'}}>
                 <Formik
@@ -51,8 +67,8 @@ export default class Add extends React.PureComponent<Props, State> {
                         setTimeout(() => {
                             this.props.onAddEvent({
                                 title: values.description,
-                                startDate: date.toISOString(),
-                                endDate: date.toISOString(),
+                                startDate: this.state.startDate.toISOString(),
+                                endDate: this.state.startDate.toISOString(),
                             });
                             
                             formikActions.setSubmitting(false); // turn off disabled
@@ -63,6 +79,17 @@ export default class Add extends React.PureComponent<Props, State> {
                 >
                     {props => (
                         <View style={{ flex: 1, justifyContent: "center", marginHorizontal: 40 }}>
+                            <TouchableOpacity onPress={this.showDateTimePicker}>
+                                <Text>
+                                    {this.state.startDate.format('DD MM YYYY')}
+                                </Text>
+                                {!this.state.allDay &&
+                                <Text>{this.state.startDate.format('HH:MM')}</Text>
+                                }
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={this.toggleAllDay}>
+                                <Text>{`All Day: ${this.state.allDay}`}</Text>
+                            </TouchableOpacity>
                             <TextInput
                                 style={{ height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'orange', padding: 5 }}
                                 onChangeText={props.handleChange('description')}
@@ -83,6 +110,13 @@ export default class Add extends React.PureComponent<Props, State> {
                         </View>
                     )}
                 </Formik>
+                <DateTimePicker
+                    isVisible={this.state.isDateTimePickerVisible}
+                    onConfirm={this.handleDatePicked}
+                    onCancel={this.hideDateTimePicker}
+                    date={this.state.startDate.toDate()}
+                    mode={this.state.allDay ? 'date' : 'datetime'}
+                />
             </View>
         );
     }
