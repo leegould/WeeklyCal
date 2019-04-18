@@ -3,7 +3,8 @@ import {TextInput, View, Button, Text, TouchableOpacity} from 'react-native';
 import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import DateTimePicker from 'react-native-modal-datetime-picker';
+import { CalendarEvent } from '../types';
+import DateTimeButton from './DateTimeButton';
 
 export interface Props {
     navigation: {
@@ -13,18 +14,18 @@ export interface Props {
 };
 
 interface State {
-    description: string,
+    title: string,
     startDate: Moment,
-    isDateTimePickerVisible: boolean,
+    endDate: Moment | null,
     allDay: boolean,
 };
 
 interface Values {
-    description: string;
+    title: string;
 };
 
 const ValidationSchema = Yup.object().shape({
-    description: Yup.string()
+    title: Yup.string()
         .min(2, 'Too Short!')
         .max(100, 'Too Long!')
         .required('Required'),
@@ -38,38 +39,46 @@ export default class Add extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            description: '',
-            startDate: props.navigation.getParam('date', moment()),
-            isDateTimePickerVisible: false,
+            title: '',
+            startDate: (props.navigation.getParam('date', moment()) as Moment).startOf('day').add(12, 'hours'),
+            endDate: null,
             allDay: true,
         }
     }
 
-    showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+    toggleAllDay = () => this.setState((previousState) => {
+        let endDate = null;
+        if (previousState.allDay) {
+            endDate = previousState.startDate.clone().add(1, 'hour');
+            console.log('endDate', endDate);
+        }
 
-    hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
-
-    handleDatePicked = (date: Date) => {
-        console.log('A date has been picked: ', date);
-        this.setState({ startDate: moment(date) });
-        this.hideDateTimePicker();
-    };
-
-    toggleAllDay = () => this.setState((previousState) => ({ allDay: !previousState.allDay }));
+        return ({
+            allDay: !previousState.allDay,
+            endDate,
+        });
+    });
 
     render() {
         return (
             <View style={{flex: 1, backgroundColor: 'lightgray'}}>
                 <Formik
-                    initialValues={{ description: '' }}
+                    initialValues={{ title: '' }}
                     validationSchema={ValidationSchema}
                     onSubmit={(values: Values, formikActions) => {
                         setTimeout(() => {
-                            this.props.onAddEvent({
-                                title: values.description,
-                                startDate: this.state.startDate.toISOString(),
-                                endDate: this.state.startDate.toISOString(),
-                            });
+                            const event: CalendarEvent = {
+                                title: values.title,
+                                startDate: this.state.startDate.toDate(),
+                                endDate: null,
+                                allDay: true,
+                            };
+                            if (!this.state.allDay && this.state.endDate) {
+                                event.allDay = false;
+                                event.endDate = this.state.endDate.toDate();
+                            }
+
+                            this.props.onAddEvent(event);
                             
                             formikActions.setSubmitting(false); // turn off disabled
 
@@ -79,27 +88,23 @@ export default class Add extends React.PureComponent<Props, State> {
                 >
                     {props => (
                         <View style={{ flex: 1, justifyContent: "center", marginHorizontal: 40 }}>
-                            <TouchableOpacity onPress={this.showDateTimePicker}>
-                                <Text>
-                                    {this.state.startDate.format('DD MM YYYY')}
-                                </Text>
-                                {!this.state.allDay &&
-                                <Text>{this.state.startDate.format('HH:MM')}</Text>
-                                }
-                            </TouchableOpacity>
+                            <DateTimeButton showTime={this.state.allDay} date={this.state.startDate} onDateChanged={(date: Moment) => this.setState({startDate: date})} />
                             <TouchableOpacity onPress={this.toggleAllDay}>
                                 <Text>{`All Day: ${this.state.allDay}`}</Text>
                             </TouchableOpacity>
+                            {!this.state.allDay && this.state.endDate &&
+                            <DateTimeButton showTime={this.state.allDay} date={this.state.endDate} onDateChanged={(date: Moment) => this.setState({endDate: date})} />
+                            }
                             <TextInput
                                 style={{ height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'orange', padding: 5 }}
-                                onChangeText={props.handleChange('description')}
-                                onBlur={props.handleBlur('description')}
-                                value={props.values.description}
-                                placeholder="Description"
+                                onChangeText={props.handleChange('title')}
+                                onBlur={props.handleBlur('title')}
+                                value={props.values.title}
+                                placeholder="Title"
                             />
-                            {props.touched.description && props.errors.description ?
+                            {props.touched.title && props.errors.title ?
                             <Text style={{ color: 'red' }} >
-                                {props.errors.description}
+                                {props.errors.title}
                             </Text>
                             : null }
                             <Button
@@ -110,13 +115,6 @@ export default class Add extends React.PureComponent<Props, State> {
                         </View>
                     )}
                 </Formik>
-                <DateTimePicker
-                    isVisible={this.state.isDateTimePickerVisible}
-                    onConfirm={this.handleDatePicked}
-                    onCancel={this.hideDateTimePicker}
-                    date={this.state.startDate.toDate()}
-                    mode={this.state.allDay ? 'date' : 'datetime'}
-                />
             </View>
         );
     }
