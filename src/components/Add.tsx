@@ -1,10 +1,11 @@
 import React from 'react';
-import {TextInput, View, Button, Text, TouchableOpacity} from 'react-native';
+import {TextInput, View, Text, TouchableOpacity} from 'react-native';
 import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { CalendarEvent } from '../types';
 import DateTimeButton from './DateTimeButton';
+import { Button, Icon, CheckBox } from 'react-native-elements';
 
 export interface Props {
     navigation: {
@@ -49,8 +50,8 @@ export default class Add extends React.PureComponent<Props, State> {
     toggleAllDay = () => this.setState((previousState) => {
         let endDate = null;
         if (previousState.allDay) {
-            endDate = previousState.startDate.clone().add(1, 'hour');
-            console.log('endDate', endDate);
+            endDate = previousState.startDate.clone().add(1, 'hours');
+            console.log('endDate', previousState.startDate, endDate);
         }
 
         return ({
@@ -61,7 +62,7 @@ export default class Add extends React.PureComponent<Props, State> {
 
     render() {
         return (
-            <View style={{flex: 1, backgroundColor: 'lightgray'}}>
+            <View style={{flex: 1, backgroundColor: 'gray'}}>
                 <Formik
                     initialValues={{ title: '' }}
                     validationSchema={ValidationSchema}
@@ -88,15 +89,34 @@ export default class Add extends React.PureComponent<Props, State> {
                 >
                     {props => (
                         <View style={{ flex: 1, justifyContent: "center", marginHorizontal: 40 }}>
-                            <DateTimeButton showTime={this.state.allDay} date={this.state.startDate} onDateChanged={(date: Moment) => this.setState({startDate: date})} />
-                            <TouchableOpacity onPress={this.toggleAllDay}>
-                                <Text>{`All Day: ${this.state.allDay}`}</Text>
-                            </TouchableOpacity>
+                            <View style={{ backgroundColor: 'lightgray' }}>
+                                <CheckBox
+                                    right
+                                    title='All Day'
+                                    onPress={this.toggleAllDay}
+                                    checked={this.state.allDay}
+                                    iconRight
+                                    checkedColor='#C2272D'
+                                    textStyle={{ color:'#C2272D' }}
+                                    containerStyle={{ backgroundColor: 'lightgray', padding: 0, justifyContent: 'flex-end', border: 0 }}
+                                />
+                            </View>
+                            <DateTimeButton
+                                showTime={this.state.allDay}
+                                date={this.state.startDate}
+                                onDateChanged={(date: Moment) => this.setState({startDate: date})}
+                                title='Start'
+                            />
                             {!this.state.allDay && this.state.endDate &&
-                            <DateTimeButton showTime={this.state.allDay} date={this.state.endDate} onDateChanged={(date: Moment) => this.setState({endDate: date})} />
+                                <DateTimeButton
+                                    showTime={this.state.allDay}
+                                    date={this.state.endDate}
+                                    onDateChanged={(date: Moment) => this.setState({endDate: date})}
+                                    title='End'
+                                />
                             }
                             <TextInput
-                                style={{ height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'orange', padding: 5 }}
+                                style={{ height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'beige', padding: 5 }}
                                 onChangeText={props.handleChange('title')}
                                 onBlur={props.handleBlur('title')}
                                 value={props.values.title}
@@ -109,8 +129,14 @@ export default class Add extends React.PureComponent<Props, State> {
                             : null }
                             <Button
                                 onPress={props.handleSubmit as any}
-                                title="Add"
+                                title='Add'
+                                raised
                                 disabled={props.isSubmitting}
+                                style={{ backgroundColor: 'lightgray' }}
+                                titleStyle={{ marginLeft: 5, color: '#C2272D', fontSize: 16 }}
+                                icon={<Icon name='calendar-plus' type='material-community' color='#C2272D' size={20} />}
+                                containerStyle={{ borderColor: 'white'}}
+                                type='outline'
                             />
                         </View>
                     )}
