@@ -88,35 +88,36 @@ export default class Add extends React.PureComponent<Props, State> {
                     }}
                 >
                     {props => (
-                        <View style={{ flex: 1, justifyContent: "center", marginHorizontal: 40 }}>
-                            <View style={{ backgroundColor: 'lightgray' }}>
-                                <CheckBox
-                                    right
-                                    title='All Day'
-                                    onPress={this.toggleAllDay}
-                                    checked={this.state.allDay}
-                                    iconRight
-                                    checkedColor='#C2272D'
-                                    textStyle={{ color:'#C2272D' }}
-                                    containerStyle={{ backgroundColor: 'lightgray', padding: 0, justifyContent: 'flex-end', border: 0 }}
-                                />
-                            </View>
+                        <View style={{ flex: 1, justifyContent: "center", marginHorizontal: 40, backgroundColor: 'lightgray' }}>
+                            <CheckBox
+                                right
+                                title='All Day'
+                                onPress={this.toggleAllDay}
+                                checked={this.state.allDay}
+                                iconRight
+                                checkedColor='#C2272D'
+                                textStyle={{ color:'white' }}
+                                containerStyle={{ backgroundColor: 'lightgray', padding: 0, justifyContent: 'flex-end', borderColor: 'lightgray' }}
+                            />
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                             <DateTimeButton
                                 showTime={this.state.allDay}
                                 date={this.state.startDate}
                                 onDateChanged={(date: Moment) => this.setState({startDate: date})}
-                                title='Start'
                             />
+                            {!this.state.allDay && this.state.endDate &&
+                                <Text style={{ color: 'white' }}>-</Text>
+                            }
                             {!this.state.allDay && this.state.endDate &&
                                 <DateTimeButton
                                     showTime={this.state.allDay}
                                     date={this.state.endDate}
                                     onDateChanged={(date: Moment) => this.setState({endDate: date})}
-                                    title='End'
                                 />
                             }
+                            </View>
                             <TextInput
-                                style={{ height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'beige', padding: 5 }}
+                                style={{ color: 'darkgray', height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'beige', padding: 5 }}
                                 onChangeText={props.handleChange('title')}
                                 onBlur={props.handleBlur('title')}
                                 value={props.values.title}
@@ -133,10 +134,10 @@ export default class Add extends React.PureComponent<Props, State> {
                                 raised
                                 disabled={props.isSubmitting}
                                 style={{ backgroundColor: 'lightgray' }}
-                                titleStyle={{ marginLeft: 5, color: '#C2272D', fontSize: 16 }}
+                                titleStyle={{ marginLeft: 5, color: 'white', fontSize: 16 }}
                                 icon={<Icon name='calendar-plus' type='material-community' color='#C2272D' size={20} />}
-                                containerStyle={{ borderColor: 'white'}}
-                                type='outline'
+                                type='solid'
+                                buttonStyle={{ backgroundColor: 'lightgray', borderWidth: 0 }}
                             />
                         </View>
                     )}

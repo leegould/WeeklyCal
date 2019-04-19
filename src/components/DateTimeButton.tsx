@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import moment, { Moment } from 'moment';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { Button, Icon } from 'react-native-elements';
@@ -8,7 +8,6 @@ export interface Props {
     date: Moment,
     showTime: boolean,
     onDateChanged: Function,
-    title: string,
 };
 
 interface State {
@@ -39,16 +38,14 @@ export default class DateTimeButton extends React.PureComponent<Props, State> {
     render() {
         return (
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'lightgray' }}>
-                <Text style={{ color: 'white', marginLeft: 10 }}>{this.props.title}</Text>
                 <Button
                     onPress={this.showDateTimePicker as any}
-                    title={this.state.date.format(this.props.showTime ? 'DD-MM-YYYY' : 'DD-MM-YYYY HH:mm')}
-                    style={{ backgroundColor: 'lightgray', borderColor: 'white' }}
+                    title={this.state.date.format(this.props.showTime ? 'DD-MM-YYYY' : 'DD-MM-YY HH:mm')}
                     raised
                     titleStyle={{ marginLeft: 5, color: 'white', fontSize: 14 }}
                     icon={<Icon name='calendar' type='material-community' color='#C2272D' size={18} />}
-                    type='outline'
-                    containerStyle={{ borderColor: 'white'}}
+                    type='solid'
+                    buttonStyle={{ backgroundColor: 'lightgray', borderWidth: 0 }}
                 />
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
