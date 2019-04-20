@@ -3,31 +3,6 @@ import {StyleSheet, View, FlatList, Animated, TouchableWithoutFeedback} from 're
 import { Icon } from 'react-native-elements'
 import { Day } from '../types';
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'beige',
-        padding: 5,
-        margin: 5,
-        borderRadius: 5,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        borderColor: 'grey',
-        borderBottomWidth: 0.5,
-        marginBottom: 5,
-    },
-    header: {
-        color: 'gray',
-    },
-    eventTitle: {
-        color: 'gray',
-    },
-});
-
 type Props = {
     isFetching: boolean,
     day: Day,
@@ -112,3 +87,27 @@ export default class DayEvents extends Component<Props, State> {
     }
 }
 
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'beige',
+        padding: 5,
+        margin: 5,
+        borderRadius: 5,
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+    },
+    row: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderColor: 'grey',
+        borderBottomWidth: 0.5,
+        marginBottom: 5,
+    },
+    header: {
+        color: 'gray',
+    },
+    eventTitle: {
+        color: 'gray',
+    },
+});

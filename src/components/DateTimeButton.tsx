@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import moment, { Moment } from 'moment';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import { Button, Icon } from 'react-native-elements';
@@ -37,15 +37,14 @@ export default class DateTimeButton extends React.PureComponent<Props, State> {
 
     render() {
         return (
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'lightgray' }}>
+            <View style={styles.container}>
                 <Button
                     onPress={this.showDateTimePicker as any}
                     title={this.state.date.format(this.props.showTime ? 'DD-MM-YYYY' : 'DD-MM-YY HH:mm')}
-                    raised
-                    titleStyle={{ marginLeft: 5, color: 'white', fontSize: 14 }}
+                    titleStyle={styles.title}
                     icon={<Icon name='calendar' type='material-community' color='#C2272D' size={18} />}
                     type='solid'
-                    buttonStyle={{ backgroundColor: 'lightgray', borderWidth: 0 }}
+                    buttonStyle={styles.button}
                 />
                 <DateTimePicker
                     isVisible={this.state.isDateTimePickerVisible}
@@ -58,3 +57,21 @@ export default class DateTimeButton extends React.PureComponent<Props, State> {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: 'lightgray'
+    },
+    button: {
+        backgroundColor: 'lightgray',
+        borderWidth: 0
+    },
+    title: {
+        marginLeft: 5,
+        color: 'white',
+        fontSize: 14
+    },
+});
