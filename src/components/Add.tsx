@@ -88,57 +88,60 @@ export default class Add extends React.PureComponent<Props, State> {
                     }}
                 >
                     {props => (
-                        <View style={{ flex: 1, justifyContent: "center", marginHorizontal: 40, backgroundColor: 'lightgray' }}>
-                            <CheckBox
-                                right
-                                title='All Day'
-                                onPress={this.toggleAllDay}
-                                checked={this.state.allDay}
-                                iconRight
-                                checkedColor='#C2272D'
-                                textStyle={{ color:'white' }}
-                                containerStyle={{ backgroundColor: 'lightgray', padding: 0, justifyContent: 'flex-end', borderColor: 'lightgray' }}
-                            />
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                            <DateTimeButton
-                                showTime={this.state.allDay}
-                                date={this.state.startDate}
-                                onDateChanged={(date: Moment) => this.setState({startDate: date})}
-                            />
-                            {!this.state.allDay && this.state.endDate &&
-                                <Text style={{ color: 'white' }}>-</Text>
-                            }
-                            {!this.state.allDay && this.state.endDate &&
-                                <DateTimeButton
-                                    showTime={this.state.allDay}
-                                    date={this.state.endDate}
-                                    onDateChanged={(date: Moment) => this.setState({endDate: date})}
+                        <View style={{ flex: 1, justifyContent: "center", marginHorizontal: 40 }}>
+                            <View style={{ backgroundColor: 'lightgray' }}>
+                                <CheckBox
+                                    right
+                                    title='All Day'
+                                    onPress={this.toggleAllDay}
+                                    checked={this.state.allDay}
+                                    iconRight
+                                    checkedColor='#C2272D'
+                                    textStyle={{ color:'white' }}
+                                    containerStyle={{ backgroundColor: 'lightgray', padding: 0, justifyContent: 'flex-end', borderColor: 'lightgray' }}
                                 />
-                            }
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginLeft: 5 }}>
+                                    <Text style={{ color: 'white' }}>{this.state.allDay ? 'Date' : 'From'}</Text>
+                                    <DateTimeButton
+                                        showTime={this.state.allDay}
+                                        date={this.state.startDate}
+                                        onDateChanged={(date: Moment) => this.setState({startDate: date})}
+                                    />
+                                </View>
+                                {!this.state.allDay && this.state.endDate &&
+                                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginLeft: 5 }}>
+                                        <Text style={{ color: 'white' }}>To</Text>
+                                        <DateTimeButton
+                                            showTime={this.state.allDay}
+                                            date={this.state.endDate}
+                                            onDateChanged={(date: Moment) => this.setState({endDate: date})}
+                                        />
+                                    </View>
+                                }
+                                <TextInput
+                                    style={{ color: 'darkgray', height: 40, backgroundColor: 'beige', padding: 5 }}
+                                    onChangeText={props.handleChange('title')}
+                                    onBlur={props.handleBlur('title')}
+                                    value={props.values.title}
+                                    placeholder="Title"
+                                />
+                                {props.touched.title && props.errors.title ?
+                                <Text style={{ color: 'red' }} >
+                                    {props.errors.title}
+                                </Text>
+                                : null }
+                                <Button
+                                    onPress={props.handleSubmit as any}
+                                    title='Add'
+                                    raised
+                                    disabled={props.isSubmitting}
+                                    style={{ backgroundColor: 'lightgray' }}
+                                    titleStyle={{ marginLeft: 5, color: 'white', fontSize: 16 }}
+                                    icon={<Icon name='calendar-plus' type='material-community' color='#C2272D' size={20} />}
+                                    type='solid'
+                                    buttonStyle={{ backgroundColor: 'lightgray', borderWidth: 0 }}
+                                />
                             </View>
-                            <TextInput
-                                style={{ color: 'darkgray', height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: 'beige', padding: 5 }}
-                                onChangeText={props.handleChange('title')}
-                                onBlur={props.handleBlur('title')}
-                                value={props.values.title}
-                                placeholder="Title"
-                            />
-                            {props.touched.title && props.errors.title ?
-                            <Text style={{ color: 'red' }} >
-                                {props.errors.title}
-                            </Text>
-                            : null }
-                            <Button
-                                onPress={props.handleSubmit as any}
-                                title='Add'
-                                raised
-                                disabled={props.isSubmitting}
-                                style={{ backgroundColor: 'lightgray' }}
-                                titleStyle={{ marginLeft: 5, color: 'white', fontSize: 16 }}
-                                icon={<Icon name='calendar-plus' type='material-community' color='#C2272D' size={20} />}
-                                type='solid'
-                                buttonStyle={{ backgroundColor: 'lightgray', borderWidth: 0 }}
-                            />
                         </View>
                     )}
                 </Formik>
