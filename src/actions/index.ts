@@ -48,13 +48,17 @@ export const addEvent = (event: CalendarEvent) => {
         dispatch(addEventStart());
 
         try {
+            console.log('addEvent.start', event);
+            const eventEndDate = event.allDay ? event.startDate : event.endDate;
+
+            const startDate = moment(event.startDate).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+            const endDate = moment(eventEndDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+
             const newEventId = await RNCalendarEvents.saveEvent(event.title, {
                 startDate: event.startDate,
-                endDate: event.endDate,
+                endDate: eventEndDate,
+                allDay: event.allDay,
             });
-
-            const startDate = moment(event.startDate).startOf().format('YYYY-MM-DDTHH:mm:ss.sssZ');
-            const endDate = moment(event.endDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
 
             const dayEvents = await RNCalendarEvents.fetchAllEvents(
                 startDate,
@@ -62,9 +66,9 @@ export const addEvent = (event: CalendarEvent) => {
             );
 
             // The above does not seem to include the new event we just added.. so get that by id and add it!
-            const newEvent = await RNCalendarEvents.findEventById(newEventId);
+            // const newEvent = await RNCalendarEvents.findEventById(newEventId);
 
-            dayEvents.push(newEvent);
+            // dayEvents.push(newEvent);
 
             const day = {
                 date: moment(event.startDate),

@@ -71,8 +71,8 @@ export default class Add extends React.PureComponent<Props, State> {
                             const event: CalendarEvent = {
                                 title: values.title,
                                 startDate: this.state.startDate.toDate(),
-                                endDate: null,
                                 allDay: true,
+                                endDate: undefined,
                             };
                             if (!this.state.allDay && this.state.endDate) {
                                 event.allDay = false;

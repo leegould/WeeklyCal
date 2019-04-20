@@ -32,7 +32,7 @@ export default class DateTimeButton extends React.PureComponent<Props, State> {
         console.log('A date has been picked: ', date);
         this.setState({ date: moment(date) });
         this.hideDateTimePicker();
-        this.props.onDateChanged(date);
+        this.props.onDateChanged(moment(date));
     };
 
     render() {

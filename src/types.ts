@@ -7,7 +7,7 @@ export type ActionType = {
 
 export type CalendarEvent = {
     startDate: Date,
-    endDate: Date | null,
+    endDate: Date | undefined,
     allDay: boolean,
     title: string,
 };
