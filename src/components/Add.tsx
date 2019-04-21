@@ -17,7 +17,7 @@ export interface Props {
 interface State {
     title: string,
     startDate: Moment,
-    endDate: Moment | null,
+    endDate: Moment,
     allDay: boolean,
 };
 
@@ -39,26 +39,21 @@ export default class Add extends React.PureComponent<Props, State> {
 
     constructor(props: Props) {
         super(props);
+
+        const startDate = (props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
+        const endDate = moment(startDate).hours(16).minute(0).second(0);
+
         this.state = {
             title: '',
-            startDate: (props.navigation.getParam('date', moment()) as Moment).startOf('day').add(12, 'hours'),
-            endDate: null,
+            startDate,
+            endDate,
             allDay: true,
         }
     }
 
-    toggleAllDay = () => this.setState((previousState) => {
-        let endDate = null;
-        if (previousState.allDay) {
-            endDate = previousState.startDate.clone().add(1, 'hours');
-            console.log('endDate', previousState.startDate, endDate);
-        }
-
-        return ({
-            allDay: !previousState.allDay,
-            endDate,
-        });
-    });
+    toggleAllDay = () => this.setState((previousState: State) => ({
+        allDay: !previousState.allDay,
+    }));
 
     render() {
         return (
@@ -74,7 +69,7 @@ export default class Add extends React.PureComponent<Props, State> {
                                 allDay: true,
                                 endDate: undefined,
                             };
-                            if (!this.state.allDay && this.state.endDate) {
+                            if (!this.state.allDay) {
                                 event.allDay = false;
                                 event.endDate = this.state.endDate.toDate();
                             }
@@ -108,7 +103,7 @@ export default class Add extends React.PureComponent<Props, State> {
                                         onDateChanged={(date: Moment) => this.setState({startDate: date})}
                                     />
                                 </View>
-                                {!this.state.allDay && this.state.endDate &&
+                                {!this.state.allDay &&
                                     <View style={styles.dateContainer}>
                                         <Text style={styles.text}>To</Text>
                                         <DateTimeButton

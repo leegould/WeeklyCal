@@ -19,7 +19,7 @@ export default class DateTimeButton extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
-            date: props.date.startOf('day').add(12, 'hours'),
+            date: props.date, //.startOf('day').add(12, 'hours'),
             isDateTimePickerVisible: false,
         }
     }
