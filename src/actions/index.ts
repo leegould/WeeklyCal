@@ -54,7 +54,7 @@ export const addEvent = (event: CalendarEvent) => {
             const startDate = moment(event.startDate).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
             const endDate = moment(eventEndDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
 
-            const newEventId = await RNCalendarEvents.saveEvent(event.title, {
+            await RNCalendarEvents.saveEvent(event.title, {
                 startDate: event.startDate,
                 endDate: eventEndDate,
                 allDay: event.allDay,

@@ -14,15 +14,15 @@ export interface Props {
     onAddEvent: Function,
 };
 
-interface State {
-    title: string,
-    startDate: Moment,
-    endDate: Moment,
-    allDay: boolean,
-};
+interface State { 
+    allDay: boolean;
+}
 
 interface Values {
     title: string;
+    startDate: Moment;
+    endDate: Moment;
+    // allDay: boolean; // This doesn't work for updating the form when the value changes
 };
 
 const ValidationSchema = Yup.object().shape({
@@ -30,6 +30,10 @@ const ValidationSchema = Yup.object().shape({
         .min(2, 'Too Short!')
         .max(100, 'Too Long!')
         .required('Required'),
+    startDate: Yup.date().required('Required'),
+    endDate: Yup.date().when('startDate', (st: Date) => {
+        return Yup.date().min(st, 'Must be after start!');
+    }),
 });
 
 export default class Add extends React.PureComponent<Props, State> {
@@ -39,16 +43,10 @@ export default class Add extends React.PureComponent<Props, State> {
 
     constructor(props: Props) {
         super(props);
-
-        const startDate = (props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
-        const endDate = moment(startDate).hours(16).minute(0).second(0);
-
+        
         this.state = {
-            title: '',
-            startDate,
-            endDate,
             allDay: true,
-        }
+        };
     }
 
     toggleAllDay = () => this.setState((previousState: State) => ({
@@ -56,22 +54,30 @@ export default class Add extends React.PureComponent<Props, State> {
     }));
 
     render() {
+        const date = (this.props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
+
         return (
             <View style={{flex: 1, backgroundColor: 'gray'}}>
                 <Formik
-                    initialValues={{ title: '' }}
+                    initialValues={{
+                        title: '',
+                        startDate: moment(date).hours(10).minute(0).second(0),
+                        endDate: moment(date).hours(16).minute(0).second(0),
+                        // allDay: true,
+                    }}
                     validationSchema={ValidationSchema}
                     onSubmit={(values: Values, formikActions) => {
+                        console.log('values', values);
                         setTimeout(() => {
                             const event: CalendarEvent = {
                                 title: values.title,
-                                startDate: this.state.startDate.toDate(),
-                                allDay: true,
+                                startDate: values.startDate.toDate(),
+                                allDay: this.state.allDay,
                                 endDate: undefined,
                             };
                             if (!this.state.allDay) {
                                 event.allDay = false;
-                                event.endDate = this.state.endDate.toDate();
+                                event.endDate = values.endDate.toDate();
                             }
 
                             this.props.onAddEvent(event);
@@ -99,20 +105,38 @@ export default class Add extends React.PureComponent<Props, State> {
                                     <Text style={styles.text}>{this.state.allDay ? 'Date' : 'From'}</Text>
                                     <DateTimeButton
                                         showTime={this.state.allDay}
-                                        date={this.state.startDate}
-                                        onDateChanged={(date: Moment) => this.setState({startDate: date})}
+                                        date={props.values.startDate}
+                                        onDateChanged={(date: Moment) => {
+                                            props.handleChange('startDate');
+                                            props.values.startDate = date;
+                                            // this.setState({startDate: date});
+                                        }}
                                     />
                                 </View>
+                                {props.touched.startDate && props.errors.startDate ?
+                                <Text style={styles.errorText} >
+                                    {props.errors.startDate}
+                                </Text>
+                                : null }
                                 {!this.state.allDay &&
                                     <View style={styles.dateContainer}>
                                         <Text style={styles.text}>To</Text>
                                         <DateTimeButton
                                             showTime={this.state.allDay}
-                                            date={this.state.endDate}
-                                            onDateChanged={(date: Moment) => this.setState({endDate: date})}
+                                            date={props.values.endDate}
+                                            onDateChanged={(date: Moment) => {
+                                                props.handleChange('endDate');
+                                                props.values.endDate = date;
+                                                // this.setState({endDate: date});
+                                            }}
                                         />
                                     </View>
                                 }
+                                {!this.state.allDay && props.touched.endDate && props.errors.endDate ?
+                                <Text style={styles.errorText} >
+                                    {props.errors.endDate}
+                                </Text>
+                                : null }
                                 <TextInput
                                     style={styles.textInput}
                                     onChangeText={props.handleChange('title')}
