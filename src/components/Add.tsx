@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, View, Text, StyleSheet, Switch } from 'react-native';
+import { TextInput, View, Text, StyleSheet, Switch, Animated } from 'react-native';
 import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -16,6 +16,7 @@ export interface Props {
 
 interface State { 
     allDay: boolean;
+    anim: Animated.Value;
 }
 
 interface Values {
@@ -46,12 +47,34 @@ export default class Add extends React.PureComponent<Props, State> {
         
         this.state = {
             allDay: true,
+            anim: new Animated.Value(0),
         };
     }
 
-    toggleAllDay = () => this.setState((previousState: State) => ({
-        allDay: !previousState.allDay,
-    }));
+    toggleAllDay = () => this.setState((previousState: State) => {
+        if (!previousState.allDay) {
+            this.hide();
+        } else {
+            this.show();
+        }
+        return {
+            allDay: !previousState.allDay,
+        }
+    });
+
+    show() {
+        Animated.timing(this.state.anim, {
+            toValue: 1,
+            duration: 250,
+        }).start()
+    }
+
+    hide() {
+        Animated.timing(this.state.anim, {
+            toValue: 0,
+            duration: 250,
+        }).start()
+    }
 
     render() {
         const date = (this.props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
@@ -116,19 +139,27 @@ export default class Add extends React.PureComponent<Props, State> {
                                     {props.errors.startDate}
                                 </Text>
                                 : null }
-                                {!this.state.allDay &&
-                                    <View style={styles.rowContainer}>
-                                        <Text style={styles.text}>To</Text>
-                                        <DateTimeButton
-                                            showTime={this.state.allDay}
-                                            date={props.values.endDate}
-                                            onDateChanged={(date: Moment) => {
-                                                props.handleChange('endDate');
-                                                props.values.endDate = date;
-                                            }}
-                                        />
-                                    </View>
-                                }
+                                <Animated.View style={
+                                    [styles.rowContainer,
+                                        {
+                                            opacity: this.state.anim,
+                                            height: this.state.anim.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [0, 40]
+                                            })
+                                        }
+                                    ]}
+                                >
+                                    <Text style={styles.text}>To</Text>
+                                    <DateTimeButton
+                                        showTime={this.state.allDay}
+                                        date={props.values.endDate}
+                                        onDateChanged={(date: Moment) => {
+                                            props.handleChange('endDate');
+                                            props.values.endDate = date;
+                                        }}
+                                    />
+                                </Animated.View>
                                 {!this.state.allDay && props.touched.endDate && props.errors.endDate ?
                                 <Text style={styles.errorText} >
                                     {props.errors.endDate}
@@ -192,7 +223,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginLeft: 5
+        marginLeft: 5,
+        height: 40,
     },
     switchInput: {
         transform: [{ scaleX: .8 }, { scaleY: .8 }]
