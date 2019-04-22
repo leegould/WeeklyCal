@@ -1,9 +1,9 @@
 import React from 'react';
-import { TextInput, View, Text, StyleSheet } from 'react-native';
+import { TextInput, View, Text, StyleSheet, Switch } from 'react-native';
 import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { Button, Icon, CheckBox } from 'react-native-elements';
+import { Button, Icon } from 'react-native-elements';
 import { CalendarEvent } from '../types';
 import DateTimeButton from './DateTimeButton';
 
@@ -91,17 +91,16 @@ export default class Add extends React.PureComponent<Props, State> {
                     {props => (
                         <View style={styles.container}>
                             <View style={styles.subcontainer}>
-                                <CheckBox
-                                    right
-                                    title='All Day'
-                                    onPress={this.toggleAllDay}
-                                    checked={this.state.allDay}
-                                    iconRight
-                                    checkedColor='#C2272D'
-                                    textStyle={styles.text}
-                                    containerStyle={styles.checkboxContainer}
-                                />
-                                <View style={styles.dateContainer}>
+                                <View style={styles.rowContainer}>
+                                    <Text style={styles.text}>All Day</Text>
+                                    <Switch
+                                        onValueChange={this.toggleAllDay}
+                                        value={this.state.allDay}
+                                        onTintColor='#C2272D'
+                                        style={styles.switchInput}
+                                    />
+                                </View>
+                                <View style={styles.rowContainer}>
                                     <Text style={styles.text}>{this.state.allDay ? 'Date' : 'From'}</Text>
                                     <DateTimeButton
                                         showTime={this.state.allDay}
@@ -109,7 +108,6 @@ export default class Add extends React.PureComponent<Props, State> {
                                         onDateChanged={(date: Moment) => {
                                             props.handleChange('startDate');
                                             props.values.startDate = date;
-                                            // this.setState({startDate: date});
                                         }}
                                     />
                                 </View>
@@ -119,7 +117,7 @@ export default class Add extends React.PureComponent<Props, State> {
                                 </Text>
                                 : null }
                                 {!this.state.allDay &&
-                                    <View style={styles.dateContainer}>
+                                    <View style={styles.rowContainer}>
                                         <Text style={styles.text}>To</Text>
                                         <DateTimeButton
                                             showTime={this.state.allDay}
@@ -127,7 +125,6 @@ export default class Add extends React.PureComponent<Props, State> {
                                             onDateChanged={(date: Moment) => {
                                                 props.handleChange('endDate');
                                                 props.values.endDate = date;
-                                                // this.setState({endDate: date});
                                             }}
                                         />
                                     </View>
@@ -176,7 +173,8 @@ const styles = StyleSheet.create({
     subcontainer: {
         backgroundColor: 'lightgray',
         paddingBottom: 5,
-        borderRadius: 5
+        borderRadius: 5,
+        paddingTop: 5,
     },
     text: {
         color:'white'
@@ -190,11 +188,14 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         borderColor: 'lightgray'
     },
-    dateContainer: {
+    rowContainer: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginLeft: 5
+    },
+    switchInput: {
+        transform: [{ scaleX: .8 }, { scaleY: .8 }]
     },
     textInput: {
         color: 'darkgray',
