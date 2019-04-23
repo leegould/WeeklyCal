@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, FlatList, Animated, TouchableWithoutFeedback} from 'react-native';
+import {StyleSheet, View, Text, FlatList, Animated, TouchableWithoutFeedback} from 'react-native';
 import { Icon } from 'react-native-elements'
 import { Day } from '../types';
 
@@ -76,10 +76,11 @@ export default class DayEvents extends Component<Props, State> {
                         renderItem={({item}) => {
                             // console.log('Day.item', item);
                             return(
-                                <Animated.View style={[styles.eventContainer, {backgroundColor: item.calendar.color, opacity: this.state.fade}]}>
-                                    <Animated.Text style={[styles.eventTitle, {opacity: this.state.fade}]}>
+                                <Animated.View style={[styles.eventContainer, {opacity: this.state.fade}]}>
+                                    <View style={[styles.eventCalendar, { backgroundColor: item.calendar.color }]} />
+                                    <Text style={styles.eventTitle}>
                                         {item.title}
-                                    </Animated.Text>
+                                    </Text>
                                 </Animated.View>
                             );
                         }}
@@ -111,9 +112,17 @@ const styles = StyleSheet.create({
         color: 'gray',
     },
     eventContainer: {
-        borderRadius: 2,
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         marginBottom: 2,
         padding: 2,
+    },
+    eventCalendar: {
+        width: 5,
+        height: 5,
+        borderRadius: 2,
+        marginRight: 3,
     },
     eventTitle: {
         color: 'gray',
