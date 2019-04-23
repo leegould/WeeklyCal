@@ -74,10 +74,13 @@ export default class DayEvents extends Component<Props, State> {
                         data={this.props.day.events}
                         keyExtractor={(item, index) => `event_key_${index}`}
                         renderItem={({item}) => {
+                            // console.log('Day.item', item);
                             return(
-                                <Animated.Text style={[styles.eventTitle, {opacity: this.state.fade}]}>
-                                    {item.title}
-                                </Animated.Text>
+                                <Animated.View style={[styles.eventContainer, {backgroundColor: item.calendar.color, opacity: this.state.fade}]}>
+                                    <Animated.Text style={[styles.eventTitle, {opacity: this.state.fade}]}>
+                                        {item.title}
+                                    </Animated.Text>
+                                </Animated.View>
                             );
                         }}
                     />
@@ -106,6 +109,11 @@ const styles = StyleSheet.create({
     },
     header: {
         color: 'gray',
+    },
+    eventContainer: {
+        borderRadius: 2,
+        marginBottom: 2,
+        padding: 2,
     },
     eventTitle: {
         color: 'gray',

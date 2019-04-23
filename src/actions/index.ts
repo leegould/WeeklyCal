@@ -1,6 +1,6 @@
 import moment, { Moment } from 'moment';
 import RNCalendarEvents from 'react-native-calendar-events';
-import { Day, CalendarEvent } from '../types';
+import { Day, SimpleCalendarEvent } from '../types';
 
 export const CHANGE_WEEK_DATE = 'CHANGE_WEEK_DATE';
 export const EVENTS_FETCH_STARTED = 'EVENTS_FETCH_STARTED';
@@ -43,7 +43,7 @@ export const changeWeekDate = (date: Moment) => {
     }
 }
 
-export const addEvent = (event: CalendarEvent) => {
+export const addEvent = (event: SimpleCalendarEvent) => {
     return async (dispatch: Function) => {
         dispatch(addEventStart());
 

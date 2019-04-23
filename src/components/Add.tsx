@@ -4,7 +4,7 @@ import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Icon } from 'react-native-elements';
-import { CalendarEvent } from '../types';
+import { SimpleCalendarEvent } from '../types';
 import DateTimeButton from './DateTimeButton';
 
 export interface Props {
@@ -92,12 +92,13 @@ export default class Add extends React.PureComponent<Props, State> {
                     onSubmit={(values: Values, formikActions) => {
                         console.log('values', values);
                         setTimeout(() => {
-                            const event: CalendarEvent = {
+                            const event: SimpleCalendarEvent = {
                                 title: values.title,
                                 startDate: values.startDate.toDate(),
                                 allDay: this.state.allDay,
                                 endDate: undefined,
                             };
+
                             if (!this.state.allDay) {
                                 event.allDay = false;
                                 event.endDate = values.endDate.toDate();

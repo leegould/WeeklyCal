@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import Add from '../components/Add';
 import { addEvent } from '../actions';
-import { CalendarEvent } from '../types';
+import { SimpleCalendarEvent } from '../types';
 
 const mapDispatchToProps = (dispatch: any) => ({
-    onAddEvent: (event: CalendarEvent) => {
+    onAddEvent: (event: SimpleCalendarEvent) => {
       dispatch(addEvent(event));
     },
 });
