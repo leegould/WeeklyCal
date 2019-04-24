@@ -10,6 +10,7 @@ import DateTimeButton from './DateTimeButton';
 export interface Props {
     navigation: {
         getParam: Function,
+        goBack: Function,
     },
     onAddEvent: Function,
 };
@@ -80,7 +81,7 @@ export default class Add extends React.PureComponent<Props, State> {
         const date = (this.props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
 
         return (
-            <View style={{flex: 1, backgroundColor: 'gray'}}>
+            <View style={{flex: 1, backgroundColor: '#00000080'}}>
                 <Formik
                     initialValues={{
                         title: '',
@@ -178,15 +179,25 @@ export default class Add extends React.PureComponent<Props, State> {
                                     {props.errors.title}
                                 </Text>
                                 : null }
-                                <Button
-                                    onPress={props.handleSubmit as any}
-                                    title='Add'
-                                    disabled={props.isSubmitting}
-                                    titleStyle={styles.buttonTitle}
-                                    icon={<Icon name='calendar-plus' type='material-community' color='#C2272D' size={20} />}
-                                    type='solid'
-                                    buttonStyle={{ backgroundColor: 'lightgray', borderWidth: 0 }}
-                                />
+                                <View style={styles.rowButtons}>
+                                    <Button
+                                        onPress={() => this.props.navigation.goBack()}
+                                        title='Cancel'
+                                        titleStyle={styles.buttonTitle}
+                                        icon={<Icon name='close-circle' type='material-community' color='#C2272D' size={20} />}                                   
+                                        type='solid'
+                                        buttonStyle={styles.button}
+                                    />
+                                    <Button
+                                        onPress={props.handleSubmit as any}
+                                        title='Add'
+                                        disabled={props.isSubmitting}
+                                        titleStyle={styles.buttonTitle}
+                                        icon={<Icon name='calendar-plus' type='material-community' color='#C2272D' size={20} />}
+                                        type='solid'
+                                        buttonStyle={styles.button}
+                                    />
+                                </View>
                             </View>
                         </View>
                     )}
@@ -219,6 +230,11 @@ const styles = StyleSheet.create({
         padding: 0,
         justifyContent: 'flex-end',
         borderColor: 'lightgray'
+    },
+    rowButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
     },
     rowContainer: {
         flexDirection: 'row',

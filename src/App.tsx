@@ -36,7 +36,6 @@ const mapNavigationStateParamsToProps = (SomeComponent: any) => {
 const MainStack = createStackNavigator({
     Home: Swiper,
     Options: Options,
-    Add: Add,
     Calendar: {
         screen: mapNavigationStateParamsToProps(Calendar),
         headerMode: 'screen',
@@ -58,27 +57,18 @@ const MainStack = createStackNavigator({
     },
 });
 
-// const RootStack = createStackNavigator(
-//     {
-//         Main: {
-//             screen: MainStack,
-//         },
-//         Calendar: {
-//             screen: mapNavigationStateParamsToProps(Calendar),
-//         },
-//     },
-//     {
-//       mode: 'modal',
-//       headerMode: 'none',
-//       navigationOptions: {
-//           headerStyle: {
-//               backgroundColor: 'purple',
-//           },
-//       }
-//     }
-//   );
+const MainNavigator = createStackNavigator({
+    Home: MainStack,
+    Add: Add,
+},
+{
+    headerMode: 'none',
+    mode: 'modal',
+    transparentCard: true,
+    cardStyle: { opacity: 1 },
+});
 
-const AppContainer = createAppContainer(MainStack);
+const AppContainer = createAppContainer(MainNavigator);
 
 export default class App extends React.PureComponent {
     render() {
