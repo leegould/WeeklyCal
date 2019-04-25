@@ -79,12 +79,13 @@ export default class Add extends React.PureComponent<Props, State> {
 
     render() {
         const date = (this.props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
+        const title = (this.props.navigation.getParam('title', '') as string);
 
         return (
             <View style={{flex: 1, backgroundColor: '#00000080'}}>
                 <Formik
                     initialValues={{
-                        title: '',
+                        title: title,
                         startDate: moment(date).hours(10).minute(0).second(0),
                         endDate: moment(date).hours(16).minute(0).second(0),
                         // allDay: true,
@@ -121,7 +122,7 @@ export default class Add extends React.PureComponent<Props, State> {
                                     <Switch
                                         onValueChange={this.toggleAllDay}
                                         value={this.state.allDay}
-                                        onTintColor='#C2272D'
+                                        trackColor={{true: '#C2272D', false: ''}}
                                         style={styles.switchInput}
                                     />
                                 </View>

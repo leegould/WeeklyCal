@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, FlatList, Animated, TouchableWithoutFeedback} from 'react-native';
+import {StyleSheet, View, Text, FlatList, Animated, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
 import { Icon } from 'react-native-elements'
+import moment from 'moment';
 import { Day } from '../types';
 
 type Props = {
@@ -75,13 +76,18 @@ export default class DayEvents extends Component<Props, State> {
                         keyExtractor={(item, index) => `event_key_${index}`}
                         renderItem={({item}) => {
                             // console.log('Day.item', item);
+                            const { startDate, title, ...event } = item;
                             return(
-                                <Animated.View style={[styles.eventContainer, {opacity: this.state.fade}]}>
-                                    <View style={[styles.eventCalendar, { backgroundColor: item.calendar.color }]} />
-                                    <Text style={styles.eventTitle}>
-                                        {item.title}
-                                    </Text>
-                                </Animated.View>
+                                <TouchableOpacity onPress={
+                                    () => this.props.navigation.navigate('Add', { date: moment(startDate), title, event })
+                                }>
+                                    <Animated.View style={[styles.eventContainer, {opacity: this.state.fade}]}>
+                                        <View style={[styles.eventCalendar, { backgroundColor: item.calendar.color }]} />
+                                        <Text style={styles.eventTitle}>
+                                            {item.title}
+                                        </Text>
+                                    </Animated.View>
+                                </TouchableOpacity>
                             );
                         }}
                     />
