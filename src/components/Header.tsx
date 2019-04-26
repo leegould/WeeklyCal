@@ -69,7 +69,7 @@ export default class Header extends PureComponent<Props, State> {
                             </Text>
                         </Animated.View>
                     </TouchableWithoutFeedback>
-                    <Icon name='calendar-plus' type='material-community' color='lightgray' onPress={() => this.props.navigation.navigate('Add', { date: startDate })} size={40} />
+                    <Icon name='calendar-plus' type='material-community' color='lightgray' onPress={() => this.props.navigation.navigate('Event', { date: startDate })} size={40} />
                 </View>
             </SafeAreaView>
         );

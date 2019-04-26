@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Text, FlatList, Animated, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
 import { Icon } from 'react-native-elements'
 import moment from 'moment';
-import { Day } from '../types';
+import { Day, CalendarEvent } from '../types';
 
 type Props = {
     isFetching: boolean,
@@ -56,7 +56,12 @@ export default class DayEvents extends Component<Props, State> {
     }
 
     onAdd() {
-        this.props.navigation.navigate('Add', { date: this.props.day.date });
+        this.props.navigation.navigate('Event', { date: this.props.day.date });
+    }
+
+    onEdit(item: CalendarEvent) {
+        const { startDate } = item;
+        this.props.navigation.navigate('Event', { date: moment(startDate), event: item })
     }
 
     render() {
@@ -76,10 +81,9 @@ export default class DayEvents extends Component<Props, State> {
                         keyExtractor={(item, index) => `event_key_${index}`}
                         renderItem={({item}) => {
                             // console.log('Day.item', item);
-                            const { startDate, title, ...event } = item;
                             return(
                                 <TouchableOpacity onPress={
-                                    () => this.props.navigation.navigate('Add', { date: moment(startDate), title, event })
+                                    () => this.onEdit(item)
                                 }>
                                     <Animated.View style={[styles.eventContainer, {opacity: this.state.fade}]}>
                                         <View style={[styles.eventCalendar, { backgroundColor: item.calendar.color }]} />

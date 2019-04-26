@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import allReducers from './reducers';
 import Swiper from './containers/Swiper';
 import Options from './components/Options';
-import Add from './containers/Add';
+import Event from './containers/Event';
 import Calendar from './containers/Calendar';
 
 console.disableYellowBox = true;
@@ -59,7 +59,7 @@ const MainStack = createStackNavigator({
 
 const MainNavigator = createStackNavigator({
     Home: MainStack,
-    Add: Add,
+    Event: Event,
 },
 {
     headerMode: 'none',

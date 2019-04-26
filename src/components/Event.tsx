@@ -4,7 +4,7 @@ import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Icon } from 'react-native-elements';
-import { SimpleCalendarEvent } from '../types';
+import { SimpleCalendarEvent, CalendarEvent } from '../types';
 import DateTimeButton from './DateTimeButton';
 
 export interface Props {
@@ -46,9 +46,15 @@ export default class Add extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
         
+        const event = (this.props.navigation.getParam('event', '') as CalendarEvent);
+
+        console.log('ctor', event, event.allDay);
+
+        const allDay = event ? event.allDay : true;
+
         this.state = {
-            allDay: true,
-            anim: new Animated.Value(0),
+            allDay,
+            anim: new Animated.Value(allDay ? 0 : 1),
         };
     }
 
@@ -79,15 +85,16 @@ export default class Add extends React.PureComponent<Props, State> {
 
     render() {
         const date = (this.props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
-        const title = (this.props.navigation.getParam('title', '') as string);
+        const event = (this.props.navigation.getParam('event', '') as CalendarEvent);
 
+        console.log('event', event.title, event);
         return (
             <View style={{flex: 1, backgroundColor: '#00000080'}}>
                 <Formik
                     initialValues={{
-                        title: title,
-                        startDate: moment(date).hours(10).minute(0).second(0),
-                        endDate: moment(date).hours(16).minute(0).second(0),
+                        title: event.title ? event.title : '',
+                        startDate: event.startDate ? moment(event.startDate) : moment(date).hours(10).minute(0).second(0),
+                        endDate: event.endDate ? moment(event.endDate) : moment(date).hours(16).minute(0).second(0),
                         // allDay: true,
                     }}
                     validationSchema={ValidationSchema}

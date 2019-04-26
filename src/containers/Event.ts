@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Add from '../components/Add';
+import Add from '../components/Event';
 import { addEvent } from '../actions';
 import { SimpleCalendarEvent } from '../types';
 
