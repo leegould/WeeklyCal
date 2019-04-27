@@ -4,7 +4,7 @@ import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Icon } from 'react-native-elements';
-import { SimpleCalendarEvent, CalendarEvent } from '../types';
+import { CalendarEvent } from '../types';
 import DateTimeButton from './DateTimeButton';
 
 export interface Props {
@@ -13,6 +13,7 @@ export interface Props {
         goBack: Function,
     },
     onAddEvent: Function,
+    onEditEvent: Function,
 };
 
 interface State { 
@@ -47,9 +48,6 @@ export default class Add extends React.PureComponent<Props, State> {
         super(props);
         
         const event = (this.props.navigation.getParam('event', '') as CalendarEvent);
-
-        console.log('ctor', event, event.allDay);
-
         const allDay = event ? event.allDay : true;
 
         this.state = {
@@ -86,6 +84,7 @@ export default class Add extends React.PureComponent<Props, State> {
     render() {
         const date = (this.props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
         const event = (this.props.navigation.getParam('event', '') as CalendarEvent);
+        const existingId = event.id;
 
         console.log('event', event.title, event);
         return (
@@ -101,7 +100,7 @@ export default class Add extends React.PureComponent<Props, State> {
                     onSubmit={(values: Values, formikActions) => {
                         console.log('values', values);
                         setTimeout(() => {
-                            const event: SimpleCalendarEvent = {
+                            const event: CalendarEvent = {
                                 title: values.title,
                                 startDate: values.startDate.toDate(),
                                 allDay: this.state.allDay,
@@ -113,11 +112,16 @@ export default class Add extends React.PureComponent<Props, State> {
                                 event.endDate = values.endDate.toDate();
                             }
 
-                            this.props.onAddEvent(event);
+                            if (existingId) {
+                                event.id = existingId;
+                                this.props.onEditEvent(event);
+                            } else {
+                                this.props.onAddEvent(event);
+                            }
                             
                             formikActions.setSubmitting(false); // turn off disabled
 
-                            // TODO : close screen on success..
+                            this.props.navigation.goBack();
                         }, 500);
                     }}
                 >
@@ -189,6 +193,14 @@ export default class Add extends React.PureComponent<Props, State> {
                                 : null }
                                 <View style={styles.rowButtons}>
                                     <Button
+                                        onPress={() => console.log('delete.press', event)}
+                                        title='Delete'
+                                        titleStyle={styles.buttonTitle}
+                                        icon={<Icon name='delete-forever' type='material-community' color='#C2272D' size={20} />}                                   
+                                        type='solid'
+                                        buttonStyle={styles.button}
+                                    />
+                                    <Button
                                         onPress={() => this.props.navigation.goBack()}
                                         title='Cancel'
                                         titleStyle={styles.buttonTitle}
@@ -198,7 +210,7 @@ export default class Add extends React.PureComponent<Props, State> {
                                     />
                                     <Button
                                         onPress={props.handleSubmit as any}
-                                        title='Add'
+                                        title={existingId ? 'Save' : 'Add'}
                                         disabled={props.isSubmitting}
                                         titleStyle={styles.buttonTitle}
                                         icon={<Icon name='calendar-plus' type='material-community' color='#C2272D' size={20} />}

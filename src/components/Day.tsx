@@ -86,7 +86,7 @@ export default class DayEvents extends Component<Props, State> {
                                     () => this.onEdit(item)
                                 }>
                                     <Animated.View style={[styles.eventContainer, {opacity: this.state.fade}]}>
-                                        <View style={[styles.eventCalendar, { backgroundColor: item.calendar.color }]} />
+                                        <View style={[styles.eventCalendar, { backgroundColor: item.calendar ? item.calendar.color : 'transparent' }]} />
                                         <Text style={styles.eventTitle}>
                                             {item.title}
                                         </Text>

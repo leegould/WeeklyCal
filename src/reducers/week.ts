@@ -8,6 +8,7 @@ import {
     ADD_EVENT_ERROR,
 } from '../actions';
 import { ActionType } from '../types';
+import { EDIT_EVENT_STARTED, EDIT_EVENT_ERROR, EDIT_EVENT_SUCCESS } from '../actions/index';
 
 const initialState = {
     isFetching: false,
@@ -57,6 +58,29 @@ export default function weekReducer(state = initialState, action: ActionType) {
             }); 
         case ADD_EVENT_ERROR:
             console.error('ADD_EVENT_ERROR', ...action.payload);
+            return state;
+        case EDIT_EVENT_STARTED:
+            return Object.assign({}, state, {
+                isFetching: true,
+            })
+        case EDIT_EVENT_SUCCESS:
+            const newWeekEdit = Object.assign({}, state.week);
+            console.log('EDIT_EVENT_SUCCESS.Initial', action.payload, newWeekEdit);
+            for(let i = 0; i < newWeekEdit.days.length;i++) {
+                const dayInWeek = newWeekEdit.days[i];
+                if (dayInWeek.date.isSame(action.payload.date, 'day')) {
+                    console.log('EDIT_EVENT_SUCCESS.found', dayInWeek, newWeekEdit.days[i].events, action.payload.events);
+                    newWeekEdit.days[i].events = action.payload.events;
+                    break;
+                }
+            }
+            console.log('EDIT_EVENT_SUCCESS', newWeekEdit);
+            return Object.assign({}, state, {
+                isFetching: false,
+                week: newWeekEdit,
+            }); 
+        case EDIT_EVENT_ERROR:
+            console.error('EDIT_EVENT_ERROR', ...action.payload);
             return state;
         default:
             return state;

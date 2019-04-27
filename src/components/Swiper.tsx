@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, Animated, PanResponder, StatusBar } from 'react-native';
+// @ts-ignore
 import RNCalendarEvents from 'react-native-calendar-events';
 import moment from 'moment';
 import Week from './Week';

@@ -1,6 +1,7 @@
 import moment, { Moment } from 'moment';
+// @ts-ignore
 import RNCalendarEvents from 'react-native-calendar-events';
-import { Day, SimpleCalendarEvent } from '../types';
+import { Day, CalendarEvent } from '../types';
 
 export const CHANGE_WEEK_DATE = 'CHANGE_WEEK_DATE';
 export const EVENTS_FETCH_STARTED = 'EVENTS_FETCH_STARTED';
@@ -9,6 +10,9 @@ export const EVENTS_FETCH_ERROR = 'EVENTS_FETCH_ERROR';
 export const ADD_EVENT_STARTED = 'ADD_EVENT_STARTED';
 export const ADD_EVENT_SUCCESS = 'ADD_EVENT_SUCCESS';
 export const ADD_EVENT_ERROR = 'ADD_EVENT_ERROR';
+export const EDIT_EVENT_STARTED = 'EDIT_EVENT_STARTED';
+export const EDIT_EVENT_SUCCESS = 'EDIT_EVENT_SUCCESS';
+export const EDIT_EVENT_ERROR = 'EDIT_EVENT_ERROR';
 
 // https://alligator.io/redux/redux-thunk/
 export const changeWeekDate = (date: Moment) => {
@@ -43,14 +47,13 @@ export const changeWeekDate = (date: Moment) => {
     }
 }
 
-export const addEvent = (event: SimpleCalendarEvent) => {
+export const addEvent = (event: CalendarEvent) => {
     return async (dispatch: Function) => {
         dispatch(addEventStart());
 
         try {
             console.log('addEvent.start', event);
             const eventEndDate = event.allDay ? event.startDate : event.endDate;
-
             const startDate = moment(event.startDate).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
             const endDate = moment(eventEndDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
 
@@ -78,6 +81,41 @@ export const addEvent = (event: SimpleCalendarEvent) => {
             dispatch(addEventSuccess(day));
         } catch (err) {
             dispatch(addEventError(err));
+        }
+    }
+}
+
+export const editEvent = (event: CalendarEvent) => {
+    return async (dispatch: Function) => {
+        dispatch(editEventStart());
+
+        try {
+            console.log('editEvent.start', event);
+
+            const eventEndDate = event.allDay ? event.startDate : event.endDate;
+            const startDate = moment(event.startDate).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+            const endDate = moment(eventEndDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+
+            await RNCalendarEvents.saveEvent(event.title, {
+                id: event.id,
+                startDate: event.startDate,
+                endDate: eventEndDate,
+                allDay: event.allDay,
+            });
+
+            const dayEvents = await RNCalendarEvents.fetchAllEvents(
+                startDate,
+                endDate,
+            );
+
+            const day = {
+                date: moment(event.startDate),
+                events: dayEvents,
+            } as Day;
+
+            dispatch(editEventSuccess(day));
+        } catch (err) {
+            dispatch(editEventError(err));
         }
     }
 }
@@ -127,6 +165,32 @@ export const addEventSuccess = (event: any) => {
 export const addEventError = (error: Error) => {
     const action = {
         type: ADD_EVENT_ERROR,
+        payload: {
+            error
+        }
+    }
+    return action;
+}
+
+export const editEventStart = () => {
+    const action = {
+        type: EDIT_EVENT_STARTED,
+    }
+    return action;
+}
+
+export const editEventSuccess = (event: any) => {
+    console.log('editEventSuccess', event);
+    const action = {
+        type: EDIT_EVENT_SUCCESS,
+        payload: event,
+    }
+    return action;
+}
+
+export const editEventError = (error: Error) => {
+    const action = {
+        type: EDIT_EVENT_ERROR,
         payload: {
             error
         }
