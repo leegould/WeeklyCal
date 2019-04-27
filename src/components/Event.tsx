@@ -86,7 +86,6 @@ export default class Add extends React.PureComponent<Props, State> {
         const event = (this.props.navigation.getParam('event', '') as CalendarEvent);
         const existingId = event.id;
 
-        console.log('event', event.title, event);
         return (
             <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#00000080'}} behavior='padding'>
                 <Formik
