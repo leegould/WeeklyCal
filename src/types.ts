@@ -13,6 +13,7 @@ export type CalendarEvent = {
     id?: string,
     calendar?: {
         id: string,
+        allowsModifications: boolean,
         title: string,
         color: string,
     },

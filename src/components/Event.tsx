@@ -85,6 +85,7 @@ export default class Add extends React.PureComponent<Props, State> {
         const date = (this.props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
         const event = (this.props.navigation.getParam('event', '') as CalendarEvent);
         const existingId = event.id;
+        const allowsUpdate = event.calendar ? event.calendar.allowsModifications : true;
 
         return (
             <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#00000080'}} behavior='padding'>
@@ -192,6 +193,7 @@ export default class Add extends React.PureComponent<Props, State> {
                                 </Text>
                                 : null }
                                 <View style={styles.rowButtons}>
+                                    {existingId && allowsUpdate &&
                                     <Button
                                         onPress={() => console.log('delete.press', event)}
                                         title='Delete'
@@ -200,6 +202,7 @@ export default class Add extends React.PureComponent<Props, State> {
                                         type='solid'
                                         buttonStyle={styles.button}
                                     />
+                                    }
                                     <Button
                                         onPress={() => this.props.navigation.goBack()}
                                         title='Cancel'
@@ -208,6 +211,7 @@ export default class Add extends React.PureComponent<Props, State> {
                                         type='solid'
                                         buttonStyle={styles.button}
                                     />
+                                    {allowsUpdate &&
                                     <Button
                                         onPress={props.handleSubmit as any}
                                         title={existingId ? 'Save' : 'Add'}
@@ -217,6 +221,7 @@ export default class Add extends React.PureComponent<Props, State> {
                                         type='solid'
                                         buttonStyle={styles.button}
                                     />
+                                    }
                                 </View>
                             </View>
                         </View>
