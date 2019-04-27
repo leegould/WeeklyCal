@@ -185,6 +185,7 @@ export default class Add extends React.PureComponent<Props, State> {
                                     onBlur={props.handleBlur('title')}
                                     value={props.values.title}
                                     placeholder="Title"
+                                    autoFocus
                                 />
                                 {props.touched.title && props.errors.title ?
                                 <Text style={styles.errorText} >
