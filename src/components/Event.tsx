@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, View, Text, StyleSheet, Switch, Animated } from 'react-native';
+import { TextInput, View, Text, StyleSheet, Switch, Animated, KeyboardAvoidingView } from 'react-native';
 import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -88,7 +88,7 @@ export default class Add extends React.PureComponent<Props, State> {
 
         console.log('event', event.title, event);
         return (
-            <View style={{flex: 1, backgroundColor: '#00000080'}}>
+            <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#00000080'}} behavior='padding'>
                 <Formik
                     initialValues={{
                         title: event.title ? event.title : '',
@@ -222,7 +222,7 @@ export default class Add extends React.PureComponent<Props, State> {
                         </View>
                     )}
                 </Formik>
-            </View>
+            </KeyboardAvoidingView>
         );
     }
 }
