@@ -6,9 +6,14 @@ import {
     ADD_EVENT_STARTED,
     ADD_EVENT_SUCCESS,
     ADD_EVENT_ERROR,
+    EDIT_EVENT_STARTED,
+    EDIT_EVENT_ERROR,
+    EDIT_EVENT_SUCCESS,
+    DELETE_EVENT_STARTED,
+    DELETE_EVENT_SUCCESS,
+    DELETE_EVENT_ERROR,
 } from '../actions';
 import { ActionType } from '../types';
-import { EDIT_EVENT_STARTED, EDIT_EVENT_ERROR, EDIT_EVENT_SUCCESS } from '../actions/index';
 
 const initialState = {
     isFetching: false,
@@ -81,6 +86,29 @@ export default function weekReducer(state = initialState, action: ActionType) {
             }); 
         case EDIT_EVENT_ERROR:
             console.error('EDIT_EVENT_ERROR', ...action.payload);
+            return state;
+        case DELETE_EVENT_STARTED:
+            return Object.assign({}, state, {
+                isFetching: true,
+            });
+        case DELETE_EVENT_SUCCESS:
+            const newWeekDel = Object.assign({}, state.week);
+            console.log('DELETE_EVENT_SUCCESS.Initial', action.payload, newWeekDel);
+            for(let i = 0; i < newWeekDel.days.length;i++) {
+                const dayInWeek = newWeekDel.days[i];
+                if (dayInWeek.date.isSame(action.payload.date, 'day')) {
+                    console.log('DELETE_EVENT_SUCCESS.found', dayInWeek, newWeekDel.days[i].events, action.payload.events);
+                    newWeekDel.days[i].events = action.payload.events;
+                    break;
+                }
+            }
+            console.log('DELETE_EVENT_SUCCESS', newWeekDel);
+            return Object.assign({}, state, {
+                isFetching: false,
+                week: newWeekDel,
+            }); 
+        case DELETE_EVENT_ERROR:
+            console.error('DELETE_EVENT_ERROR', ...action.payload);
             return state;
         default:
             return state;

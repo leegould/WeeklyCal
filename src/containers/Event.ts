@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Add from '../components/Event';
-import { addEvent, editEvent } from '../actions';
+import { addEvent, editEvent, deleteEvent } from '../actions';
 import { CalendarEvent } from '../types';
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -9,6 +9,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     onEditEvent: (event: CalendarEvent) => {
       dispatch(editEvent(event));
+    },
+    onDeleteEvent: (event: CalendarEvent) => {
+      dispatch(deleteEvent(event));
     }
 });
 

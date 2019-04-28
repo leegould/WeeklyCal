@@ -13,6 +13,9 @@ export const ADD_EVENT_ERROR = 'ADD_EVENT_ERROR';
 export const EDIT_EVENT_STARTED = 'EDIT_EVENT_STARTED';
 export const EDIT_EVENT_SUCCESS = 'EDIT_EVENT_SUCCESS';
 export const EDIT_EVENT_ERROR = 'EDIT_EVENT_ERROR';
+export const DELETE_EVENT_STARTED = 'DELETE_EVENT_STARTED';
+export const DELETE_EVENT_SUCCESS = 'DELETE_EVENT_SUCCESS';
+export const DELETE_EVENT_ERROR = 'DELETE_EVENT_ERROR';
 
 // https://alligator.io/redux/redux-thunk/
 export const changeWeekDate = (date: Moment) => {
@@ -120,6 +123,36 @@ export const editEvent = (event: CalendarEvent) => {
     }
 }
 
+export const deleteEvent = (event: CalendarEvent) => {
+    return async (dispatch: Function) => {
+        dispatch(deleteEventStart());
+
+        try {
+            console.log('editEvent.start', event);
+
+            const eventEndDate = event.allDay ? event.startDate : event.endDate;
+            const startDate = moment(event.startDate).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+            const endDate = moment(eventEndDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+
+            await RNCalendarEvents.removeEvent(event.id, {});
+
+            const dayEvents = await RNCalendarEvents.fetchAllEvents(
+                startDate,
+                endDate,
+            );
+
+            const day = {
+                date: moment(event.startDate),
+                events: dayEvents,
+            } as Day;
+
+            dispatch(editEventSuccess(day));
+        } catch (err) {
+            dispatch(editEventError(err));
+        }
+    }
+}
+
 export const eventsFetchStarted = () => {
     const action = {
         type: EVENTS_FETCH_STARTED,
@@ -191,6 +224,32 @@ export const editEventSuccess = (event: any) => {
 export const editEventError = (error: Error) => {
     const action = {
         type: EDIT_EVENT_ERROR,
+        payload: {
+            error
+        }
+    }
+    return action;
+}
+
+export const deleteEventStart = () => {
+    const action = {
+        type: DELETE_EVENT_STARTED,
+    }
+    return action;
+}
+
+export const deleteEventSuccess = (event: any) => {
+    console.log('deleteEventSuccess', event);
+    const action = {
+        type: DELETE_EVENT_SUCCESS,
+        payload: event,
+    }
+    return action;
+}
+
+export const deleteEventError = (error: Error) => {
+    const action = {
+        type: DELETE_EVENT_ERROR,
         payload: {
             error
         }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, View, Text, StyleSheet, Switch, Animated, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { TextInput, View, Text, StyleSheet, Switch, Animated, KeyboardAvoidingView, TouchableOpacity, Alert } from 'react-native';
 import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -14,6 +14,7 @@ export interface Props {
     },
     onAddEvent: Function,
     onEditEvent: Function,
+    onDeleteEvent: Function,
 };
 
 interface State { 
@@ -199,7 +200,17 @@ export default class Add extends React.PureComponent<Props, State> {
                                     <View style={styles.rowButtons}>
                                         {existingId && allowsUpdate &&
                                         <Button
-                                            onPress={() => console.log('delete.press', event)}
+                                            onPress={() => {
+                                                console.log('onDeletePress', event);
+                                                Alert.alert('Delete Event', 'Are you sure you want to delete this event?',
+                                                [
+                                                    {text: 'No', onPress: () => { console.log('cancelled'); }, style: 'cancel'},
+                                                    {text: 'Yes', onPress: () => {
+                                                        this.props.navigation.goBack();
+                                                        this.props.onDeleteEvent(event);
+                                                    }},
+                                                ])
+                                            }}
                                             title='Delete'
                                             titleStyle={styles.buttonTitle}
                                             icon={<Icon name='delete-forever' type='material-community' color='#C2272D' size={20} />}                                   
