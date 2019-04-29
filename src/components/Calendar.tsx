@@ -20,7 +20,7 @@ export default class CalendarModal extends PureComponent<Props> {
 
     render() {
         return (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'gray' }}>
                 <Calendar
                     current={this.props.data.week.days[0].date.format('YYYY-MM-DD')}
                     onDayPress={(day: any) => {

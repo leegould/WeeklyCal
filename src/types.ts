@@ -3,7 +3,7 @@ import { Moment } from 'moment';
 export type ActionType = {
     type: string,
     payload: any,
-}
+};
 
 export type CalendarEvent = {
     startDate: Date,
@@ -22,7 +22,7 @@ export type CalendarEvent = {
 export type Day = {
     date: Moment,
     events: CalendarEvent[],
-}
+};
 
 export type Week = {
     week: {
@@ -35,4 +35,24 @@ export type WeekState = {
     week: {
         days: Day[],
     },
+};
+
+export type Calendar = {
+    id: string,
+    title: string,
+    color: string,
+    show: boolean,
+};
+
+export type AllCalendars = {
+    showAll: boolean,
+    calendars: Calendar[],
+};
+
+export type AllCalendarsState = {
+    isFetching: boolean,
+    allCalendars: {
+        showAll: boolean,
+        calendars: Calendar[],
+    }
 };

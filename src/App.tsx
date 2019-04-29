@@ -6,7 +6,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import allReducers from './reducers';
 import Swiper from './containers/Swiper';
-import Options from './components/Options';
+import Options from './containers/Options';
 import Event from './containers/Event';
 import Calendar from './containers/Calendar';
 
