@@ -3,15 +3,14 @@ import {
     CALENDAR_FETCH_SUCCESS,
     CALENDAR_FETCH_ERROR,
 } from '../actions';
-import { ActionType, AllCalendarsState } from '../types';
+import { ActionType, CalendarsState } from '../types';
 
 const initialState = {
     isFetching: false,
-    allCalendars: {
-        showAll: true,
-        calendars: []
-    }
-} as AllCalendarsState;
+    showAll: true,
+    allCalendars: [],
+    selectedCalendars: [],
+} as CalendarsState;
 
 export default function calendarReducer(state = initialState, action: ActionType) {
     switch (action.type) {
@@ -24,10 +23,8 @@ export default function calendarReducer(state = initialState, action: ActionType
             // console.log('CALENDAR_FETCH_SUCCESS', calendars);
             return Object.assign({}, state, {
                 isFetching: false,
-                allCalendars: {
-                    showAll: state.allCalendars.showAll,
-                    calendars,
-                },
+                showAll: state.showAll,
+                allCalendars: calendars,
             }); 
         case CALENDAR_FETCH_ERROR:
             console.error('CALENDAR_FETCH_ERROR', ...action.payload);

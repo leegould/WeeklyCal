@@ -40,19 +40,18 @@ export type WeekState = {
 export type Calendar = {
     id: string,
     title: string,
+    source: string,
     color: string,
     show: boolean,
 };
 
-export type AllCalendars = {
-    showAll: boolean,
+export type Calendars = {
     calendars: Calendar[],
 };
 
-export type AllCalendarsState = {
+export type CalendarsState = {
     isFetching: boolean,
-    allCalendars: {
-        showAll: boolean,
-        calendars: Calendar[],
-    }
+    showAll: boolean,
+    allCalendars: Calendar[],
+    selectedCalendars: Calendar[],
 };
