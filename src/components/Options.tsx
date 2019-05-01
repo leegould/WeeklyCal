@@ -51,7 +51,9 @@ export default class Options extends React.PureComponent<Props, State> {
     });
 
     toggleCalendar(item: Calendar) {
-        if (this.props.data.selectedCalendars.findIndex(x => x.id === item.id) > -1) {
+        const index = this.props.data.selectedCalendars.findIndex(({ id }) => id === item.id);
+        console.log('toggleCalendar', index, item, this.props.data.selectedCalendars);
+        if (index > -1) {
             this.props.onDeselectCalendar(item);
         } else {
             this.props.onSelectCalendar(item);
@@ -97,7 +99,6 @@ export default class Options extends React.PureComponent<Props, State> {
                         style={{ opacity: this.state.anim }}
                         data={this.props.data.allCalendars}
                         renderItem={({item}: {item: Calendar}) => {
-                                const value = this.props.data.selectedCalendars.findIndex(x => x.id === item.id) > -1;
                                 return(
                                     <ListItem
                                         key={item.id}
@@ -107,7 +108,7 @@ export default class Options extends React.PureComponent<Props, State> {
                                             <Switch
                                                 onValueChange={() => this.toggleCalendar(item)}
                                                 // this.props.data.selectedCalendars.findIndex(x => x.id === item.id) > -1
-                                                value={this.props.data.selectedCalendars.findIndex(x => x.id === item.id) < 0}
+                                                value={this.props.data.selectedCalendars.findIndex(({ id }) => id === item.id) < 0}
                                                 trackColor={{true: '#C2272D', false: ''}}
                                                 style={styles.switchInput}
                                             />
