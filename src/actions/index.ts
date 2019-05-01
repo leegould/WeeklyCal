@@ -1,9 +1,8 @@
 import moment, { Moment } from 'moment';
 // @ts-ignore
 import RNCalendarEvents from 'react-native-calendar-events';
-import { Day, CalendarEvent } from '../types';
+import { Day, CalendarEvent, Calendar } from '../types';
 
-export const CHANGE_WEEK_DATE = 'CHANGE_WEEK_DATE';
 export const EVENTS_FETCH_STARTED = 'EVENTS_FETCH_STARTED';
 export const EVENTS_FETCH_SUCCESS = 'EVENTS_FETCH_SUCCESS';
 export const EVENTS_FETCH_ERROR = 'EVENTS_FETCH_ERROR';
@@ -19,6 +18,8 @@ export const DELETE_EVENT_ERROR = 'DELETE_EVENT_ERROR';
 export const CALENDAR_FETCH_STARTED = 'CALENDAR_FETCH_STARTED';
 export const CALENDAR_FETCH_SUCCESS = 'CALENDAR_FETCH_SUCCESS';
 export const CALENDAR_FETCH_ERROR ='CALENDAR_FETCH_ERROR';
+export const CALENDAR_SELECT = 'CALENDAR_SELECT';
+export const CALENDAR_DESELECT = 'CALENDAR_DESELECT';
 
 // https://alligator.io/redux/redux-thunk/
 export const changeWeekDate = (date: Moment) => {
@@ -172,6 +173,18 @@ export const fetchCalendars = () => {
     }
 }
 
+export const selectCalendar = (calendar: Calendar) => {
+    return async (dispatch: Function) => {
+        dispatch(calendarSelect(calendar));
+    }
+}
+
+export const deselectCalendar = (calendar: Calendar) => {
+    return async (dispatch: Function) => {
+        dispatch(calendarDeselect(calendar));
+    }
+}
+
 export const eventsFetchStarted = () => {
     const action = {
         type: EVENTS_FETCH_STARTED,
@@ -298,6 +311,22 @@ export const calendarFetchError = (error: Error) => {
         payload: {
             error
         }
+    }
+    return action;
+}
+
+export const calendarSelect = (calendar: Calendar) => {
+    const action = {
+        type: CALENDAR_SELECT,
+        payload: calendar,
+    }
+    return action;
+}
+
+export const calendarDeselect = (calendar: Calendar) => {
+    const action = {
+        type: CALENDAR_DESELECT,
+        payload: calendar,
     }
     return action;
 }

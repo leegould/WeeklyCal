@@ -45,10 +45,6 @@ export type Calendar = {
     show: boolean,
 };
 
-export type Calendars = {
-    calendars: Calendar[],
-};
-
 export type CalendarsState = {
     isFetching: boolean,
     showAll: boolean,

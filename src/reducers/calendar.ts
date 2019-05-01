@@ -2,8 +2,10 @@ import {
     CALENDAR_FETCH_STARTED,
     CALENDAR_FETCH_SUCCESS,
     CALENDAR_FETCH_ERROR,
+    CALENDAR_SELECT,
+    CALENDAR_DESELECT,
 } from '../actions';
-import { ActionType, CalendarsState } from '../types';
+import { ActionType, CalendarsState, Calendar } from '../types';
 
 const initialState = {
     isFetching: false,
@@ -29,6 +31,15 @@ export default function calendarReducer(state = initialState, action: ActionType
         case CALENDAR_FETCH_ERROR:
             console.error('CALENDAR_FETCH_ERROR', ...action.payload);
             return state;
+        case CALENDAR_SELECT:
+            return Object.assign({}, state, {
+                selectedCalendars: state.selectedCalendars.push(action.payload),
+            });
+        case CALENDAR_DESELECT:
+            const calendar = action.payload as Calendar;
+            return Object.assign({}, state, {
+                selectedCalendars: state.selectedCalendars.filter(x => x.id !== calendar.id),
+            });
         default:
             return state;
     }

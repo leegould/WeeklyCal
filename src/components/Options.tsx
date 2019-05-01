@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, FlatList, Switch, StyleSheet, Animated } from 'react-native';
+import { View, Switch, StyleSheet, Animated } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { CalendarsState, Calendar } from '../types';
 
@@ -9,6 +9,8 @@ type Props = {
     }
     data: CalendarsState,
     onFetchCalendars: Function,
+    onSelectCalendar: Function,
+    onDeselectCalendar: Function,
 };
 
 type State = {
@@ -48,6 +50,14 @@ export default class Options extends React.PureComponent<Props, State> {
         }
     });
 
+    toggleCalendar(item: Calendar) {
+        if (this.props.data.selectedCalendars.findIndex(x => x.id === item.id) > -1) {
+            this.props.onDeselectCalendar(item);
+        } else {
+            this.props.onSelectCalendar(item);
+        }
+    }
+
     show() {
         Animated.timing(this.state.anim, {
             toValue: 1,
@@ -85,24 +95,27 @@ export default class Options extends React.PureComponent<Props, State> {
                     {!this.state.showAll &&
                     <Animated.FlatList
                         style={{ opacity: this.state.anim }}
-                        // containerStyle={{opacity: this.state.anim }}
                         data={this.props.data.allCalendars}
-                        renderItem={({item}: {item: Calendar}) =>
-                            <ListItem
-                                key={item.id}
-                                title={item.title}
-                                subtitle={item.source}
-                                rightAvatar={
-                                    <Switch
-                                        // onValueChange={this.toggleAllDay}
-                                        // this.props.data.selectedCalendars.findIndex(x => x.id === item.id) > -1
-                                        value={false}
-                                        trackColor={{true: '#C2272D', false: ''}}
-                                        style={styles.switchInput}
-                                    />
-                                }
-                            >
-                            </ListItem>
+                        renderItem={({item}: {item: Calendar}) => {
+                                const value = this.props.data.selectedCalendars.findIndex(x => x.id === item.id) > -1;
+                                return(
+                                    <ListItem
+                                        key={item.id}
+                                        title={item.title}
+                                        subtitle={item.source}
+                                        rightAvatar={
+                                            <Switch
+                                                onValueChange={() => this.toggleCalendar(item)}
+                                                // this.props.data.selectedCalendars.findIndex(x => x.id === item.id) > -1
+                                                value={this.props.data.selectedCalendars.findIndex(x => x.id === item.id) < 0}
+                                                trackColor={{true: '#C2272D', false: ''}}
+                                                style={styles.switchInput}
+                                            />
+                                        }
+                                    >
+                                    </ListItem>
+                                );
+                            }
                         }
                         keyExtractor={(item: Calendar, index: number) => item.id}
                     />
