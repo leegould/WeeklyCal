@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import Options from '../components/Options';
-import { fetchCalendars } from '../actions';
-import { selectCalendar, deselectCalendar } from '../actions/index';
+import { fetchCalendars, toggleCalendar, toggleShowAllCalendars } from '../actions';
 import { Calendar } from '../types';
 
 const mapStateToProps = (state: any) => {
@@ -12,12 +11,12 @@ const mapDispatchToProps = (dispatch: any) => ({
     onFetchCalendars: () => {
         dispatch(fetchCalendars());
     },
-    onSelectCalendar: (calendar: Calendar) => {
-        dispatch(selectCalendar(calendar));
+    onToggleShowAll: () => {
+        dispatch(toggleShowAllCalendars());
     },
-    onDeselectCalendar: (calendar: Calendar) => {
-        dispatch(deselectCalendar(calendar));
-    }
+    onToggleCalendar: (calendar: Calendar) => {
+        dispatch(toggleCalendar(calendar));
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Options);

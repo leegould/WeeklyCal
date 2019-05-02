@@ -9,12 +9,11 @@ type Props = {
     }
     data: CalendarsState,
     onFetchCalendars: Function,
-    onSelectCalendar: Function,
-    onDeselectCalendar: Function,
+    onToggleShowAll: Function,
+    onToggleCalendar: Function,
 };
 
 type State = {
-    showAll: boolean,
     anim: Animated.Value,
 };
 
@@ -27,7 +26,6 @@ export default class Options extends React.PureComponent<Props, State> {
         super(props);
 
         this.state = {
-            showAll: true,
             anim: new Animated.Value(this.props.data.showAll ? 0 : 1),
         };
 
@@ -39,65 +37,61 @@ export default class Options extends React.PureComponent<Props, State> {
         }
     }
 
-    toggleAllDay = () => this.setState((previousState: State) => {
-        if (!previousState.showAll) {
-            this.hide();
-        } else {
+    toggleAllDay() {
+        if (this.props && this.props.data.showAll) {
             this.show();
+        } else {
+            this.hide();
         }
-        return {
-            showAll: !previousState.showAll,
-        }
-    });
+        this.props.onToggleShowAll();
+    }
 
     toggleCalendar(item: Calendar) {
-        const index = this.props.data.selectedCalendars.findIndex(({ id }) => id === item.id);
-        console.log('toggleCalendar', index, item, this.props.data.selectedCalendars);
-        if (index > -1) {
-            this.props.onDeselectCalendar(item);
-        } else {
-            this.props.onSelectCalendar(item);
-        }
+        this.props.onToggleCalendar(item);
     }
 
     show() {
         Animated.timing(this.state.anim, {
             toValue: 1,
-            duration: 1250,
+            duration: 250,
         }).start()
     }
 
     hide() {
         Animated.timing(this.state.anim, {
             toValue: 0,
-            duration: 1250,
+            duration: 250,
         }).start()
     }
 
 
     render() {
-        console.log('Options.render.data', this.props.data);
+        // console.log('Options.render.data', this.props.data);
 
         return (
             <View style={{ flex: 1,  backgroundColor: 'gray' }}>
                 {!this.props.data.isFetching &&
-                <View style={{ flex: 1, marginVertical: 20 }}>
+                <View style={{ flex: 1, marginVertical: 5 }}>
                     <ListItem
                         key={'showAll'}
                         title={'Show All Calendars'}
                         rightAvatar={
                             <Switch
-                                onValueChange={this.toggleAllDay}
-                                value={this.state.showAll}
+                                onValueChange={() => this.toggleAllDay()}
+                                value={this.props.data.showAll}
                                 trackColor={{true: '#C2272D', false: ''}}
                                 style={styles.switchInput}
                             />
                         }
+                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
+                        titleStyle={{ color: 'white' }}
+                        subtitleStyle={{ color: 'white' }}
                     />
-                    {!this.state.showAll &&
+                    {!this.props.data.showAll &&
                     <Animated.FlatList
                         style={{ opacity: this.state.anim }}
                         data={this.props.data.allCalendars}
+                        scrollEnabled={false}
                         renderItem={({item}: {item: Calendar}) => {
                                 return(
                                     <ListItem
@@ -108,13 +102,15 @@ export default class Options extends React.PureComponent<Props, State> {
                                             <Switch
                                                 onValueChange={() => this.toggleCalendar(item)}
                                                 // this.props.data.selectedCalendars.findIndex(x => x.id === item.id) > -1
-                                                value={this.props.data.selectedCalendars.findIndex(({ id }) => id === item.id) < 0}
+                                                value={this.props.data.selectedCalendars.includes(item.id)}
                                                 trackColor={{true: '#C2272D', false: ''}}
                                                 style={styles.switchInput}
                                             />
                                         }
-                                    >
-                                    </ListItem>
+                                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 0.5, borderBottomColor: 'gray' }}
+                                        titleStyle={{ color: 'white' }}
+                                        subtitleStyle={{ color: 'white' }}
+                                    />
                                 );
                             }
                         }

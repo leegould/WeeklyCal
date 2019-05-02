@@ -49,5 +49,5 @@ export type CalendarsState = {
     isFetching: boolean,
     showAll: boolean,
     allCalendars: Calendar[],
-    selectedCalendars: Calendar[],
+    selectedCalendars: string[],
 };

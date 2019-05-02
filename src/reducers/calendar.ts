@@ -2,8 +2,8 @@ import {
     CALENDAR_FETCH_STARTED,
     CALENDAR_FETCH_SUCCESS,
     CALENDAR_FETCH_ERROR,
-    CALENDAR_SELECT,
-    CALENDAR_DESELECT,
+    CALENDAR_SHOW_ALL_TOGGLE,
+    CALENDAR_TOGGLE,
 } from '../actions';
 import { ActionType, CalendarsState, Calendar } from '../types';
 
@@ -31,14 +31,21 @@ export default function calendarReducer(state = initialState, action: ActionType
         case CALENDAR_FETCH_ERROR:
             console.error('CALENDAR_FETCH_ERROR', ...action.payload);
             return state;
-        case CALENDAR_SELECT:
+        case CALENDAR_SHOW_ALL_TOGGLE:
             return Object.assign({}, state, {
-                selectedCalendars: state.selectedCalendars.push(action.payload),
+                showAll: !state.showAll,
             });
-        case CALENDAR_DESELECT:
-            const calendar = action.payload as Calendar;
+        case CALENDAR_TOGGLE:
+            const acalendar = action.payload as Calendar;
+            const selectedCalendars = state.selectedCalendars;
+            if (state.selectedCalendars.includes(acalendar.id)) {
+                selectedCalendars.splice(selectedCalendars.indexOf(acalendar.id), 1);
+            } else {
+                selectedCalendars.push(acalendar.id);
+            }
+            // console.log('CALENDAR_TOGGLE', selectedCalendars);
             return Object.assign({}, state, {
-                selectedCalendars: state.selectedCalendars.filter(x => x.id !== calendar.id),
+                selectedCalendars,
             });
         default:
             return state;

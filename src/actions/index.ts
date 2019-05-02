@@ -18,8 +18,8 @@ export const DELETE_EVENT_ERROR = 'DELETE_EVENT_ERROR';
 export const CALENDAR_FETCH_STARTED = 'CALENDAR_FETCH_STARTED';
 export const CALENDAR_FETCH_SUCCESS = 'CALENDAR_FETCH_SUCCESS';
 export const CALENDAR_FETCH_ERROR ='CALENDAR_FETCH_ERROR';
-export const CALENDAR_SELECT = 'CALENDAR_SELECT';
-export const CALENDAR_DESELECT = 'CALENDAR_DESELECT';
+export const CALENDAR_TOGGLE = 'CALENDAR_TOGGLE';
+export const CALENDAR_SHOW_ALL_TOGGLE = 'CALENDAR_SHOW_ALL_TOGGLE';
 
 // https://alligator.io/redux/redux-thunk/
 export const changeWeekDate = (date: Moment) => {
@@ -173,15 +173,15 @@ export const fetchCalendars = () => {
     }
 }
 
-export const selectCalendar = (calendar: Calendar) => {
+export const toggleShowAllCalendars = () => {
     return async (dispatch: Function) => {
-        dispatch(calendarSelect(calendar));
+        dispatch(toggleShowAllCalendarsAction());
     }
 }
 
-export const deselectCalendar = (calendar: Calendar) => {
+export const toggleCalendar = (calendar: Calendar) => {
     return async (dispatch: Function) => {
-        dispatch(calendarDeselect(calendar));
+        dispatch(toggleCalendarAction(calendar));
     }
 }
 
@@ -315,17 +315,16 @@ export const calendarFetchError = (error: Error) => {
     return action;
 }
 
-export const calendarSelect = (calendar: Calendar) => {
+export const toggleShowAllCalendarsAction = () => {
     const action = {
-        type: CALENDAR_SELECT,
-        payload: calendar,
+        type: CALENDAR_SHOW_ALL_TOGGLE,
     }
     return action;
 }
 
-export const calendarDeselect = (calendar: Calendar) => {
+export const toggleCalendarAction = (calendar: Calendar) => {
     const action = {
-        type: CALENDAR_DESELECT,
+        type: CALENDAR_TOGGLE,
         payload: calendar,
     }
     return action;
