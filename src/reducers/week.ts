@@ -12,8 +12,10 @@ import {
     DELETE_EVENT_STARTED,
     DELETE_EVENT_SUCCESS,
     DELETE_EVENT_ERROR,
+    CALENDAR_SHOW_ALL_TOGGLE,
+    CALENDAR_TOGGLE,
 } from '../actions';
-import { ActionType } from '../types';
+import { ActionType, WeekState, Calendar, Day } from '../types';
 
 const initialState = {
     isFetching: false,
@@ -21,11 +23,15 @@ const initialState = {
         days: [...Array(7).keys()].map(i => {
             return ({
                 date: moment().add(i, 'days'),
-                events: null,
+                events: undefined,
             });
-        }),
+        }) as Day[],
+    },
+    calendars: {
+        showAll: true,
+        selectedCalendars: [],
     }
-};
+} as WeekState;
 
 export default function weekReducer(state = initialState, action: ActionType) {
     switch (action.type) {
@@ -110,6 +116,29 @@ export default function weekReducer(state = initialState, action: ActionType) {
         case DELETE_EVENT_ERROR:
             console.error('DELETE_EVENT_ERROR', ...action.payload);
             return state;
+        case CALENDAR_SHOW_ALL_TOGGLE:
+            return Object.assign({}, state, {
+                calendars: {
+                    showAll: !state.calendars.showAll,
+                    selectedCalendars: state.calendars.selectedCalendars,
+                }
+            });
+        case CALENDAR_TOGGLE:
+            const acalendar = action.payload as Calendar;
+            const selectedCalendars = state.calendars.selectedCalendars;
+            console.log('week.reducer.CALENDAR_TOGGLE', state, selectedCalendars)
+            if (state.calendars.selectedCalendars.includes(acalendar.id)) {
+                selectedCalendars.splice(selectedCalendars.indexOf(acalendar.id), 1);
+            } else {
+                selectedCalendars.push(acalendar.id);
+            }
+            // console.log('CALENDAR_TOGGLE', selectedCalendars);
+            return Object.assign({}, state, {
+                calendars: {
+                    showAll: state.calendars.showAll,
+                    selectedCalendars,
+                }
+            });
         default:
             return state;
     }

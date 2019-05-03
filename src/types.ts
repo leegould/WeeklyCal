@@ -21,7 +21,7 @@ export type CalendarEvent = {
 
 export type Day = {
     date: Moment,
-    events: CalendarEvent[],
+    events?: CalendarEvent[],
 };
 
 export type Week = {
@@ -35,6 +35,10 @@ export type WeekState = {
     week: {
         days: Day[],
     },
+    calendars: {
+        showAll: boolean,
+        selectedCalendars: string[],
+    }
 };
 
 export type Calendar = {

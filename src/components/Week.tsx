@@ -55,6 +55,8 @@ export default class Week extends PureComponent<Props, State> {
     render() {
         const { data, navigation } = this.props;
 
+        console.log('week.render', data);
+
         return (
             <View style={styles.container}>
                 <View style={styles.main}>
