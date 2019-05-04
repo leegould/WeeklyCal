@@ -60,17 +60,17 @@ export default class NavigationSwiper extends PureComponent<Props> {
                 if (drag) {
                     if(!this.props.data.isFetching) {
                         if (drag === 'right') {
-                            this.props.onChangeDate(this.props.data.week.days[0].date.add(-7, 'days'));
+                            this.props.onChangeDate(this.props.data.week.days[0].date.add(-7, 'days'),  this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
                         }
                         if (drag === 'left') {
-                            this.props.onChangeDate(this.props.data.week.days[0].date.add(7, 'days'));
+                            this.props.onChangeDate(this.props.data.week.days[0].date.add(7, 'days'), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
                         }
                     }
                 }
             },
         });
 
-        this.props.onChangeDate(moment()); // Load initial week.
+        this.props.onChangeDate(moment(), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars); // Load initial week.
     }
 
     async componentDidMount() {
@@ -80,7 +80,7 @@ export default class NavigationSwiper extends PureComponent<Props> {
             if (status !== 'authorized') {
                 const askForStatus = await RNCalendarEvents.authorizeEventStore();
                 console.log('askForStatus', askForStatus);
-                this.props.onChangeDate(moment()); // Load initial week.
+                this.props.onChangeDate(moment(), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars); // Load initial week.
             }
         }
         catch (err) {

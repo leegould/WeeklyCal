@@ -9,8 +9,8 @@ const mapStateToProps = (state: any) => {
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
-    onChangeDate: (date: Moment) => {
-        dispatch(changeWeekDate(date));
+    onChangeDate: (date: Moment, showAll: boolean, selectedCalendars: string[]) => {
+        dispatch(changeWeekDate(date, showAll, selectedCalendars));
     },
 });
 

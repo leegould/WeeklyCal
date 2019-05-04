@@ -38,7 +38,7 @@ export default function calendarReducer(state = initialState, action: ActionType
         case CALENDAR_TOGGLE:
             const acalendar = action.payload as Calendar;
             const selectedCalendars = state.selectedCalendars;
-            if (state.selectedCalendars.includes(acalendar.id)) {
+            if (state.selectedCalendars.indexOf(acalendar.id) > -1) {
                 selectedCalendars.splice(selectedCalendars.indexOf(acalendar.id), 1);
             } else {
                 selectedCalendars.push(acalendar.id);

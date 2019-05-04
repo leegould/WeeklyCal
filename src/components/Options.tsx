@@ -102,7 +102,7 @@ export default class Options extends React.PureComponent<Props, State> {
                                             <Switch
                                                 onValueChange={() => this.toggleCalendar(item)}
                                                 // this.props.data.selectedCalendars.findIndex(x => x.id === item.id) > -1
-                                                value={this.props.data.selectedCalendars.includes(item.id)}
+                                                value={this.props.data.selectedCalendars.indexOf(item.id) > -1}
                                                 // trackColor={{true: '#C2272D', false: ''}}
                                                 trackColor={{true: item.color, false: item.color}}
                                                 style={styles.switchInput}

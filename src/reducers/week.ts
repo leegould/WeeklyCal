@@ -127,7 +127,7 @@ export default function weekReducer(state = initialState, action: ActionType) {
             const acalendar = action.payload as Calendar;
             const selectedCalendars = state.calendars.selectedCalendars;
             console.log('week.reducer.CALENDAR_TOGGLE', state, selectedCalendars)
-            if (state.calendars.selectedCalendars.includes(acalendar.id)) {
+            if (state.calendars.selectedCalendars.indexOf(acalendar.id) > -1) {
                 selectedCalendars.splice(selectedCalendars.indexOf(acalendar.id), 1);
             } else {
                 selectedCalendars.push(acalendar.id);

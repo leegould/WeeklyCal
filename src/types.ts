@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { CalendarEventReadable } from 'react-native-calendar-events';
 
 export type ActionType = {
     type: string,
@@ -21,7 +22,7 @@ export type CalendarEvent = {
 
 export type Day = {
     date: Moment,
-    events?: CalendarEvent[],
+    events?: CalendarEventReadable[],
 };
 
 export type Week = {

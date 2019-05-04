@@ -25,7 +25,7 @@ export default class CalendarModal extends PureComponent<Props> {
                     current={this.props.data.week.days[0].date.format('YYYY-MM-DD')}
                     onDayPress={(day: any) => {
                         // console.log('Calendar.onDayPress', day)
-                        this.props.onChangeDate(moment(day.dateString));
+                        this.props.onChangeDate(moment(day.dateString), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
                         const backAction = NavigationActions.back();
                         this.props.navigation.dispatch(backAction);
                     }}

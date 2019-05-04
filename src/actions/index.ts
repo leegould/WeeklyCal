@@ -1,6 +1,6 @@
 import moment, { Moment } from 'moment';
 // @ts-ignore
-import RNCalendarEvents from 'react-native-calendar-events';
+import RNCalendarEvents, { CalendarEventReadable } from 'react-native-calendar-events';
 import { Day, CalendarEvent, Calendar } from '../types';
 
 export const EVENTS_FETCH_STARTED = 'EVENTS_FETCH_STARTED';
@@ -22,7 +22,7 @@ export const CALENDAR_TOGGLE = 'CALENDAR_TOGGLE';
 export const CALENDAR_SHOW_ALL_TOGGLE = 'CALENDAR_SHOW_ALL_TOGGLE';
 
 // https://alligator.io/redux/redux-thunk/
-export const changeWeekDate = (date: Moment) => {
+export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars: string[]) => {
     return async (dispatch: Function) => {
         dispatch(eventsFetchStarted());
 
@@ -32,9 +32,11 @@ export const changeWeekDate = (date: Moment) => {
                 const aDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD'));
                 const startDate = aDate.startOf().format('YYYY-MM-DDTHH:mm:ss.sssZ');
                 const endDate = aDate.endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+                const calendarIds = showAll ? undefined : selectedCalendars;
                 const events = await RNCalendarEvents.fetchAllEvents(
                     startDate,
-                    endDate,    
+                    endDate, 
+                    calendarIds, 
                 );
                 // console.log('aDate', aDate, events, startDate, endDate);
                 days.push({
@@ -60,13 +62,13 @@ export const addEvent = (event: CalendarEvent) => {
 
         try {
             console.log('addEvent.start', event);
-            const eventEndDate = event.allDay ? event.startDate : event.endDate;
+            const eventEndDate = !event.allDay && event.endDate ? event.endDate : event.startDate;
             const startDate = moment(event.startDate).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
             const endDate = moment(eventEndDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
 
             await RNCalendarEvents.saveEvent(event.title, {
-                startDate: event.startDate,
-                endDate: eventEndDate,
+                startDate: event.startDate.toISOString(),
+                endDate: eventEndDate.toISOString(),
                 allDay: event.allDay,
             });
 
@@ -99,14 +101,14 @@ export const editEvent = (event: CalendarEvent) => {
         try {
             console.log('editEvent.start', event);
 
-            const eventEndDate = event.allDay ? event.startDate : event.endDate;
+            const eventEndDate = !event.allDay && event.endDate ? event.endDate : event.startDate;
             const startDate = moment(event.startDate).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
             const endDate = moment(eventEndDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
 
             await RNCalendarEvents.saveEvent(event.title, {
                 id: event.id,
-                startDate: event.startDate,
-                endDate: eventEndDate,
+                startDate: event.startDate.toISOString(),
+                endDate: eventEndDate.toISOString(),
                 allDay: event.allDay,
             });
 
@@ -131,6 +133,11 @@ export const deleteEvent = (event: CalendarEvent) => {
     return async (dispatch: Function) => {
         dispatch(deleteEventStart());
 
+        if (!event.id) {
+            dispatch(deleteEventError(new Error('Event has no id!')));
+            return;
+        }
+
         try {
             console.log('deleteEvent.start', event);
 
@@ -138,7 +145,7 @@ export const deleteEvent = (event: CalendarEvent) => {
             const startDate = moment(event.startDate).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
             const endDate = moment(eventEndDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
 
-            await RNCalendarEvents.removeEvent(event.id, {});
+            await RNCalendarEvents.removeEvent(event.id, undefined);
 
             const dayEvents = await RNCalendarEvents.fetchAllEvents(
                 startDate,
@@ -150,9 +157,9 @@ export const deleteEvent = (event: CalendarEvent) => {
                 events: dayEvents,
             } as Day;
 
-            dispatch(editEventSuccess(day));
+            dispatch(deleteEventSuccess(day));
         } catch (err) {
-            dispatch(editEventError(err));
+            dispatch(deleteEventError(err));
         }
     }
 }

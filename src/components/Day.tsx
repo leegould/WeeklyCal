@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Text, FlatList, Animated, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
 import { Icon } from 'react-native-elements'
 import moment from 'moment';
-import { Day, CalendarEvent } from '../types';
+import { Day } from '../types';
+import { CalendarEventReadable } from 'react-native-calendar-events';
 
 type Props = {
     isFetching: boolean,
@@ -59,7 +60,7 @@ export default class DayEvents extends Component<Props, State> {
         this.props.navigation.navigate('Event', { date: this.props.day.date });
     }
 
-    onEdit(item: CalendarEvent) {
+    onEdit(item: CalendarEventReadable) {
         const { startDate } = item;
         this.props.navigation.navigate('Event', { date: moment(startDate), event: item })
     }
