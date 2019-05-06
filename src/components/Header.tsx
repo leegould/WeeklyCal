@@ -60,7 +60,7 @@ export default class Header extends PureComponent<Props, State> {
         return (
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.header}>
-                    <Icon name='settings-applications' type='material' color='lightgray' onPress={() => this.props.navigation.navigate('Options')} size={40} />
+                    <Icon name='settings-applications' type='material' color='lightgray' onPress={() => this.props.navigation.navigate('Options', { date: startDate })} size={40} />
                     <TouchableWithoutFeedback onPress={() => { this.props.navigation.navigate('Calendar', { day: startDate }); }}>
                         <Animated.View style={[styles.headerMiddle, {opacity: this.state.fade}]}>
                             <Icon name='calendar-range' type='material-community' color='#C2272D' size={24} />

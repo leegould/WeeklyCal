@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Switch, StyleSheet, Animated } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import { CalendarsState, Calendar } from '../types';
 
 type Props = {
     navigation: {
+        getParam: Function,
         navigate: Function,
     }
     data: CalendarsState,
@@ -17,6 +18,7 @@ type Props = {
 
 type State = {
     anim: Animated.Value,
+    selectedDate: Moment,
 };
 
 export default class Options extends React.PureComponent<Props, State> {
@@ -27,8 +29,11 @@ export default class Options extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        const selectedDate = (this.props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
+
         this.state = {
             anim: new Animated.Value(this.props.data.showAll ? 0 : 1),
+            selectedDate,
         };
 
         try {
@@ -46,13 +51,13 @@ export default class Options extends React.PureComponent<Props, State> {
             this.hide();
         }
         this.props.onToggleShowAll();
-        this.props.onChangeDate(moment(), this.props.data.showAll, this.props.data.selectedCalendars);
+        this.props.onChangeDate(this.state.selectedDate, this.props.data.showAll, this.props.data.selectedCalendars);
     }
 
     toggleCalendar(item: Calendar) {
         this.props.onToggleCalendar(item);
         // TODO : how to get selected date? pass in?
-        this.props.onChangeDate(moment(), this.props.data.showAll, this.props.data.selectedCalendars);
+        this.props.onChangeDate(this.state.selectedDate, this.props.data.showAll, this.props.data.selectedCalendars);
     }
 
     show() {

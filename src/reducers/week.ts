@@ -126,13 +126,11 @@ export default function weekReducer(state = initialState, action: ActionType) {
         case CALENDAR_TOGGLE:
             const acalendar = action.payload as Calendar;
             const selectedCalendars = [...state.calendars.selectedCalendars];
-            console.log('week.reducer.CALENDAR_TOGGLE', state, selectedCalendars, acalendar.id);
             if (state.calendars.selectedCalendars.indexOf(acalendar.id) > -1) {
                 selectedCalendars.splice(selectedCalendars.indexOf(acalendar.id), 1);
             } else {
                 selectedCalendars.push(acalendar.id);
             }
-            // console.log('CALENDAR_TOGGLE', selectedCalendars);
             return Object.assign({}, state, {
                 calendars: {
                     showAll: state.calendars.showAll,
