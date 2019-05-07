@@ -1,7 +1,7 @@
 import moment, { Moment } from 'moment';
 // @ts-ignore
 import RNCalendarEvents, { CalendarEventReadable } from 'react-native-calendar-events';
-import { Day, CalendarEvent, Calendar } from '../types';
+import { Day, CalendarEvent, Calendar, WeekState } from '../types';
 
 export const EVENTS_FETCH_STARTED = 'EVENTS_FETCH_STARTED';
 export const EVENTS_FETCH_SUCCESS = 'EVENTS_FETCH_SUCCESS';
@@ -181,14 +181,32 @@ export const fetchCalendars = () => {
 }
 
 export const toggleShowAllCalendars = () => {
-    return async (dispatch: Function) => {
-        dispatch(toggleShowAllCalendarsAction());
+    return async (dispatch: any) => {
+        await dispatch(toggleShowAllCalendarsAction());
     }
 }
 
 export const toggleCalendar = (calendar: Calendar) => {
     return async (dispatch: Function) => {
         dispatch(toggleCalendarAction(calendar));
+    }
+}
+
+export const toggleShowAllAndUpdateWeek = () => {
+    return async (dispatch: any, getState: () => any) => {
+        await dispatch(toggleShowAllCalendars());
+        const { calendars: { showAll, selectedCalendars }, week: { week: { days } } } = getState();
+        console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
+        await dispatch(changeWeekDate(days[0].date, showAll, selectedCalendars));
+    }
+}
+
+export const toggleCalendarAndUpdateWeek = (calendar: Calendar) => {
+    return async (dispatch: any, getState: () => any) => {
+        await dispatch(toggleCalendar(calendar));
+        const { calendars: { showAll, selectedCalendars }, week: { week: { days } } } = getState();
+        console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
+        await dispatch(changeWeekDate(days[0].date, showAll, selectedCalendars));
     }
 }
 

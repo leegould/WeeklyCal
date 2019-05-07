@@ -12,8 +12,8 @@ type Props = {
     data: CalendarsState,
     onFetchCalendars: Function,
     onChangeDate: Function,
-    onToggleShowAll: Function,
-    onToggleCalendar: Function,
+    onToggleShowAllAndUpdateWeek: Function,
+    onToggleCalendarAndUpdateWeek: Function,
 };
 
 type State = {
@@ -50,14 +50,15 @@ export default class Options extends React.PureComponent<Props, State> {
         } else {
             this.hide();
         }
-        this.props.onToggleShowAll();
-        this.props.onChangeDate(this.state.selectedDate, this.props.data.showAll, this.props.data.selectedCalendars);
+        this.props.onToggleShowAllAndUpdateWeek();
+        // this.props.onToggleShowAll();
+        // this.props.onChangeDate(this.state.selectedDate, this.props.data.showAll, this.props.data.selectedCalendars);
     }
 
     toggleCalendar(item: Calendar) {
-        this.props.onToggleCalendar(item);
+        this.props.onToggleCalendarAndUpdateWeek(item);
         // TODO : how to get selected date? pass in?
-        this.props.onChangeDate(this.state.selectedDate, this.props.data.showAll, this.props.data.selectedCalendars);
+        // this.props.onChangeDate(this.state.selectedDate, this.props.data.showAll, this.props.data.selectedCalendars);
     }
 
     show() {
@@ -73,7 +74,6 @@ export default class Options extends React.PureComponent<Props, State> {
             duration: 250,
         }).start()
     }
-
 
     render() {
         // console.log('Options.render.data', this.props.data);

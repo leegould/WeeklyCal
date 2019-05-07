@@ -117,12 +117,15 @@ export default function weekReducer(state = initialState, action: ActionType) {
             console.error('DELETE_EVENT_ERROR', ...action.payload);
             return state;
         case CALENDAR_SHOW_ALL_TOGGLE:
-            return Object.assign({}, state, {
+            console.log('CALENDAR_SHOW_ALL_TOGGLE', state);
+            const newState = Object.assign({}, state, {
                 calendars: {
                     showAll: !state.calendars.showAll,
                     selectedCalendars: state.calendars.selectedCalendars,
                 }
             });
+            console.log('CALENDAR_SHOW_ALL_TOGGLE', newState);
+            return newState;
         case CALENDAR_TOGGLE:
             const acalendar = action.payload as Calendar;
             const selectedCalendars = [...state.calendars.selectedCalendars];

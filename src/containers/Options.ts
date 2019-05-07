@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { Moment } from 'moment';
 import Options from '../components/Options';
-import { fetchCalendars, toggleCalendar, toggleShowAllCalendars, changeWeekDate } from '../actions';
+import { fetchCalendars, changeWeekDate, toggleShowAllAndUpdateWeek, toggleCalendarAndUpdateWeek } from '../actions';
 import { Calendar } from '../types';
 
 const mapStateToProps = (state: any) => {
@@ -15,12 +15,12 @@ const mapDispatchToProps = (dispatch: any) => ({
     onChangeDate: (date: Moment, showAll: boolean, selectedCalendars: string[]) => {
         dispatch(changeWeekDate(date, showAll, selectedCalendars));
     },
-    onToggleShowAll: () => {
-        dispatch(toggleShowAllCalendars());
+    onToggleShowAllAndUpdateWeek: () => {
+        dispatch(toggleShowAllAndUpdateWeek());
     },
-    onToggleCalendar: (calendar: Calendar) => {
-        dispatch(toggleCalendar(calendar));
-    },
+    onToggleCalendarAndUpdateWeek: (calendar: Calendar) => {
+        dispatch(toggleCalendarAndUpdateWeek(calendar));
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Options);
