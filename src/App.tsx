@@ -1,5 +1,5 @@
 
-import React, { PureComponent } from "react";
+import React from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
@@ -8,17 +8,16 @@ import allReducers from './reducers';
 import Swiper from './containers/Swiper';
 import Options from './containers/Options';
 import Event from './containers/Event';
-import Calendar from './containers/Calendar';
 
 console.disableYellowBox = true;
 
-type Props = {
-    navigation: {
-        state: {
-            params: any
-        }
-    },
-};
+// type Props = {
+//     navigation: {
+//         state: {
+//             params: any
+//         }
+//     },
+// };
 
 const store = createStore(allReducers, applyMiddleware(thunk));
 
