@@ -22,24 +22,20 @@ type Props = {
 
 const store = createStore(allReducers, applyMiddleware(thunk));
 
-const mapNavigationStateParamsToProps = (SomeComponent: any) => {
-    return class extends PureComponent<Props> {
-        static navigationOptions = SomeComponent.navigationOptions; // better use hoist-non-react-statics
-        render() {
-            const {navigation} = this.props
-            const {state: {params}} = navigation
-            return <SomeComponent {...this.props} {...params} />
-        }
-    }
-}
+// const mapNavigationStateParamsToProps = (SomeComponent: any) => {
+//     return class extends PureComponent<Props> {
+//         static navigationOptions = SomeComponent.navigationOptions; // better use hoist-non-react-statics
+//         render() {
+//             const {navigation} = this.props
+//             const {state: {params}} = navigation
+//             return <SomeComponent {...this.props} {...params} />
+//         }
+//     }
+// }
 
 const MainStack = createStackNavigator({
     Home: Swiper,
     Options: Options,
-    Calendar: {
-        screen: mapNavigationStateParamsToProps(Calendar),
-        headerMode: 'screen',
-    },
 },
 {
     initialRouteName: 'Home',

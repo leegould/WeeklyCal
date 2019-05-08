@@ -36,7 +36,7 @@ export default class Week extends PureComponent<Props, State> {
             this.state.fade,            
             {
                 toValue: 1,                   
-                duration: 250,              
+                duration: 150,              
             }
         ).start();
     }
@@ -47,7 +47,7 @@ export default class Week extends PureComponent<Props, State> {
             this.state.fade,            
             {
                 toValue: 0,                   
-                duration: 250,              
+                duration: 150,              
             }
         ).start();
     }

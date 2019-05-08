@@ -1,18 +1,22 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Animated, TouchableWithoutFeedback, Text } from 'react-native';
+import moment from 'moment';
 import { Icon } from 'react-native-elements'
 import { SafeAreaView } from 'react-navigation';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 import { WeekState } from '../types';
 
 type Props = {
     navigation: {
         navigate: Function,
     }
-    data: WeekState
+    data: WeekState,
+    onChangeDate: Function,
 };
 
 type State = {
     fade: Animated.Value,
+    isDateTimePickerVisible: boolean,
 };
 
 export default class Header extends PureComponent<Props, State> {
@@ -20,6 +24,7 @@ export default class Header extends PureComponent<Props, State> {
         super(props);
         this.state = {
             fade: new Animated.Value(1),
+            isDateTimePickerVisible: false,
         }
     }
 
@@ -37,7 +42,7 @@ export default class Header extends PureComponent<Props, State> {
             this.state.fade,            
             {
                 toValue: 1,                   
-                duration: 250,              
+                duration: 150,              
             }
         ).start();
     }
@@ -48,10 +53,20 @@ export default class Header extends PureComponent<Props, State> {
             this.state.fade,            
             {
                 toValue: 0,                   
-                duration: 250,              
+                duration: 150,              
             }
         ).start();
     }
+
+    showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
+
+    hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
+
+    handleDatePicked = (date: Date) => {
+        console.log('A date has been picked: ', date);
+        this.hideDateTimePicker();
+        this.props.onChangeDate(moment(date), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+    };
 
     render() {
         const startDate = this.props.data.week.days[0].date;
@@ -61,7 +76,7 @@ export default class Header extends PureComponent<Props, State> {
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.header}>
                     <Icon name='settings-applications' type='material' color='lightgray' onPress={() => this.props.navigation.navigate('Options', { date: startDate })} size={40} />
-                    <TouchableWithoutFeedback onPress={() => { this.props.navigation.navigate('Calendar', { day: startDate }); }}>
+                    <TouchableWithoutFeedback onPress={this.showDateTimePicker}>
                         <Animated.View style={[styles.headerMiddle, {opacity: this.state.fade}]}>
                             <Icon name='calendar-range' type='material-community' color='#C2272D' size={24} />
                             <Text style={styles.headerText}>
@@ -70,6 +85,13 @@ export default class Header extends PureComponent<Props, State> {
                         </Animated.View>
                     </TouchableWithoutFeedback>
                     <Icon name='calendar-plus' type='material-community' color='lightgray' onPress={() => this.props.navigation.navigate('Event', { date: startDate })} size={40} />
+                    <DateTimePicker
+                        isVisible={this.state.isDateTimePickerVisible}
+                        onConfirm={this.handleDatePicked}
+                        onCancel={this.hideDateTimePicker}
+                        date={startDate.toDate()}
+                        mode={'date'}
+                    />
                 </View>
             </SafeAreaView>
         );
