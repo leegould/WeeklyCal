@@ -1,36 +1,52 @@
 
 import React from "react";
 import { createStackNavigator, createAppContainer } from "react-navigation";
+import AsyncStorage from '@react-native-community/async-storage';
 import { Provider } from 'react-redux';
+// // @ts-ignore
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2';
 import { createStore, applyMiddleware } from 'redux';
+import { persistStore, persistReducer, createTransform } from 'redux-persist';
 import thunk from 'redux-thunk';
 import allReducers from './reducers';
 import Swiper from './containers/Swiper';
 import Options from './containers/Options';
 import Event from './containers/Event';
+// import { WeekState } from './types';
 
 console.disableYellowBox = true;
 
-// type Props = {
-//     navigation: {
-//         state: {
-//             params: any
-//         }
+// const WeekTransform = createTransform(
+//     // transform state on its way to being serialized and persisted.
+//     (inboundState, key) => {
+//       // convert mySet to an Array.
+//       return { ...inboundState, mySet: [...inboundState.mySet] };
 //     },
-// };
+//     // transform state being rehydrated
+//     (outboundState: WeekState, key) => {
+//         // convert mySet back to a Set.
+//         const { week } = outboundState;
+//         return { ...outboundState, week: {
+//             days: [
+//                 { } as Day,
+//             ]
+//         };
+//     },
+//     // define which reducers this transform gets called for.
+//     { whitelist: ['week'] }
+// );
 
-const store = createStore(allReducers, applyMiddleware(thunk));
+const persistConfig = {
+    key: 'root',
+    storage: AsyncStorage,
+    stateReconciler: autoMergeLevel2,
+    // transforms: [WeekTransform],
+};
 
-// const mapNavigationStateParamsToProps = (SomeComponent: any) => {
-//     return class extends PureComponent<Props> {
-//         static navigationOptions = SomeComponent.navigationOptions; // better use hoist-non-react-statics
-//         render() {
-//             const {navigation} = this.props
-//             const {state: {params}} = navigation
-//             return <SomeComponent {...this.props} {...params} />
-//         }
-//     }
-// }
+const pReducer = persistReducer(persistConfig, allReducers);
+const store = createStore(pReducer, applyMiddleware(thunk));
+const persistor = persistStore(store);
 
 const MainStack = createStackNavigator({
     Home: Swiper,
@@ -69,7 +85,9 @@ export default class App extends React.PureComponent {
     render() {
         return (
             <Provider store={store}>
-                <AppContainer />
+                <PersistGate loading={null} persistor={persistor}>
+                    <AppContainer />
+                </PersistGate>
             </Provider>
         );
     }
