@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, View, Text, StyleSheet, Switch, Animated, KeyboardAvoidingView, TouchableOpacity, Alert } from 'react-native';
+import { TextInput, View, Text, StyleSheet, Switch, Animated, KeyboardAvoidingView, TouchableOpacity, Alert, Platform } from 'react-native';
 import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -89,7 +89,7 @@ export default class Add extends React.PureComponent<Props, State> {
         const allowsUpdate = event.calendar ? event.calendar.allowsModifications : true;
 
         return (
-            <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#00000080'}} behavior='padding'>
+            <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#00000080', justifyContent: 'center' }} behavior={Platform.select({android: undefined, ios: 'padding'})}>
                 <TouchableOpacity 
                     style={{flex: 1}}
                     onPressOut={() => {this.props.navigation.goBack()}}
