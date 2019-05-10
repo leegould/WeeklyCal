@@ -60,10 +60,10 @@ export default class NavigationSwiper extends PureComponent<Props> {
                 if (drag) {
                     if(!this.props.data.isFetching) {
                         if (drag === 'right') {
-                            this.props.onChangeDate(this.props.data.week.days[0].date.add(-7, 'days'),  this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+                            this.props.onChangeDate(moment(this.props.data.week.days[0].date).add(-7, 'days'),  this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
                         }
                         if (drag === 'left') {
-                            this.props.onChangeDate(this.props.data.week.days[0].date.add(7, 'days'), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+                            this.props.onChangeDate(moment(this.props.data.week.days[0].date).add(7, 'days'), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
                         }
                     }
                 }

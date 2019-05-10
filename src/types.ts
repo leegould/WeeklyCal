@@ -21,7 +21,7 @@ export type CalendarEvent = {
 };
 
 export type Day = {
-    date: Moment,
+    date: Date,
     events?: CalendarEventReadable[],
 };
 

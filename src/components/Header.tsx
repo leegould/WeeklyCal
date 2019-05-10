@@ -69,8 +69,8 @@ export default class Header extends PureComponent<Props, State> {
     };
 
     render() {
-        const startDate = this.props.data.week.days[0].date;
-        const endDate = this.props.data.week.days[6].date;
+        const startDate = moment(this.props.data.week.days[0].date);
+        const endDate = moment(this.props.data.week.days[6].date);
 
         return (
             <SafeAreaView style={styles.safeArea}>

@@ -22,7 +22,7 @@ const initialState = {
     week: {
         days: [...Array(7).keys()].map(i => {
             return ({
-                date: moment().add(i, 'days'),
+                date: moment().add(i, 'days').toDate(),
                 events: undefined,
             });
         }) as Day[],
@@ -56,7 +56,7 @@ export default function weekReducer(state = initialState, action: ActionType) {
             console.log('ADD_EVENT_SUCCESS.Initial', action.payload, newWeek);
             for(let i = 0; i < newWeek.days.length;i++) {
                 const dayInWeek = newWeek.days[i];
-                if (dayInWeek.date.isSame(action.payload.date, 'day')) {
+                if (moment(dayInWeek.date).isSame(action.payload.date, 'day')) {
                     console.log('ADD_EVENT_SUCCESS.found', dayInWeek, newWeek.days[i].events, action.payload.events);
                     newWeek.days[i].events = action.payload.events;
                     break;
@@ -79,7 +79,7 @@ export default function weekReducer(state = initialState, action: ActionType) {
             console.log('EDIT_EVENT_SUCCESS.Initial', action.payload, newWeekEdit);
             for(let i = 0; i < newWeekEdit.days.length;i++) {
                 const dayInWeek = newWeekEdit.days[i];
-                if (dayInWeek.date.isSame(action.payload.date, 'day')) {
+                if (moment(dayInWeek.date).isSame(action.payload.date, 'day')) {
                     console.log('EDIT_EVENT_SUCCESS.found', dayInWeek, newWeekEdit.days[i].events, action.payload.events);
                     newWeekEdit.days[i].events = action.payload.events;
                     break;
@@ -102,7 +102,7 @@ export default function weekReducer(state = initialState, action: ActionType) {
             console.log('DELETE_EVENT_SUCCESS.Initial', action.payload, newWeekDel);
             for(let i = 0; i < newWeekDel.days.length;i++) {
                 const dayInWeek = newWeekDel.days[i];
-                if (dayInWeek.date.isSame(action.payload.date, 'day')) {
+                if (moment(dayInWeek.date).isSame(action.payload.date, 'day')) {
                     console.log('DELETE_EVENT_SUCCESS.found', dayInWeek, newWeekDel.days[i].events, action.payload.events);
                     newWeekDel.days[i].events = action.payload.events;
                     break;

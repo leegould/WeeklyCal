@@ -57,7 +57,7 @@ export default class DayEvents extends Component<Props, State> {
     }
 
     onAdd() {
-        this.props.navigation.navigate('Event', { date: this.props.day.date });
+        this.props.navigation.navigate('Event', { date: moment(this.props.day.date) });
     }
 
     onEdit(item: CalendarEventReadable) {
@@ -72,7 +72,7 @@ export default class DayEvents extends Component<Props, State> {
             <Animated.View style={[styles.container, {opacity: this.state.fade}]}>
                 <TouchableWithoutFeedback onPress={() => this.onAdd()}>
                     <View style={styles.row}>
-                        <Animated.Text style={[styles.header, {opacity: this.state.fade}]}>{`${this.props.day.date.format('ddd')} ${this.props.day.date.format('DD')}`}</Animated.Text>
+                        <Animated.Text style={[styles.header, {opacity: this.state.fade}]}>{`${moment(this.props.day.date).format('ddd')} ${moment(this.props.day.date).format('DD')}`}</Animated.Text>
                         <Icon name='calendar-plus' type='material-community' color='green' onPress={() => this.onAdd()} size={18} />
                     </View>
                 </TouchableWithoutFeedback>
