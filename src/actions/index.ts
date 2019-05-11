@@ -28,8 +28,20 @@ export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars
 
         try {
 
+            // BUG: change date to 1st may.. this shows a public holiday on the 6th that doesn't display.
+            // const testStartDate = moment(date.clone().startOf().format('YYYY-MM-DD')); //.format('YYYY-MM-DDTHH:mm:ss.sssZ');
+            // const testEndDate = moment(date.clone().add(6, 'days').format('YYYY-MM-DD')).endOf('day'); //.format('YYYY-MM-DDTHH:mm:ss.sssZ');
+
+            // const status = await RNCalendarEvents.authorizationStatus();
+            // const testevents = await RNCalendarEvents.fetchAllEvents(
+            //     testStartDate.toISOString(),
+            //     testEndDate.toISOString(), 
+            // );
+            // console.log('testEvents', status, testStartDate, testEndDate, testevents);
+
             const days = [];
             for (let i = 0;i < 7;i++) {
+                // const aDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD')).startOf();
                 const startDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD')).startOf();
                 const endDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD')).endOf('day');
                 const calendarIds = showAll ? undefined : selectedCalendars;
