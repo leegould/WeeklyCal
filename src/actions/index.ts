@@ -27,20 +27,20 @@ export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars
         dispatch(eventsFetchStarted());
 
         try {
+
             const days = [];
             for (let i = 0;i < 7;i++) {
-                const aDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD'));
-                const startDate = aDate.startOf().format('YYYY-MM-DDTHH:mm:ss.sssZ');
-                const endDate = aDate.endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+                const startDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD')).startOf();
+                const endDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD')).endOf('day');
                 const calendarIds = showAll ? undefined : selectedCalendars;
                 const events = await RNCalendarEvents.fetchAllEvents(
-                    startDate,
-                    endDate, 
+                    startDate.toISOString(),
+                    endDate.toISOString(), 
                     calendarIds, 
                 );
-                // console.log('aDate', aDate, events, startDate, endDate);
+                console.log('aDate', events, startDate, endDate);
                 days.push({
-                    date: aDate,
+                    date: startDate.toDate(),
                     events,
                 } as Day);
             };
@@ -83,7 +83,7 @@ export const addEvent = (event: CalendarEvent) => {
             // dayEvents.push(newEvent);
 
             const day = {
-                date: moment(event.startDate),
+                date: moment(event.startDate).toDate(),
                 events: dayEvents,
             } as Day;
 
@@ -118,7 +118,7 @@ export const editEvent = (event: CalendarEvent) => {
             );
 
             const day = {
-                date: moment(event.startDate),
+                date: moment(event.startDate).toDate(),
                 events: dayEvents,
             } as Day;
 
@@ -153,7 +153,7 @@ export const deleteEvent = (event: CalendarEvent) => {
             );
 
             const day = {
-                date: moment(event.startDate),
+                date: moment(event.startDate).toDate(),
                 events: dayEvents,
             } as Day;
 
@@ -196,7 +196,7 @@ export const toggleShowAllAndUpdateWeek = () => {
     return async (dispatch: any, getState: () => any) => {
         await dispatch(toggleShowAllCalendars());
         const { calendars: { showAll, selectedCalendars }, week: { week: { days } } } = getState();
-        console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
+        // console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
         await dispatch(changeWeekDate(days[0].date, showAll, selectedCalendars));
     }
 }
@@ -205,7 +205,7 @@ export const toggleCalendarAndUpdateWeek = (calendar: Calendar) => {
     return async (dispatch: any, getState: () => any) => {
         await dispatch(toggleCalendar(calendar));
         const { calendars: { showAll, selectedCalendars }, week: { week: { days } } } = getState();
-        console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
+        // console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
         await dispatch(changeWeekDate(days[0].date, showAll, selectedCalendars));
     }
 }
@@ -218,7 +218,7 @@ export const eventsFetchStarted = () => {
 }
 
 export const eventsFetchSuccess = (week: any) => {
-    console.log('eventsFetchSuccess', week);
+    // console.log('eventsFetchSuccess', week);
     const action = {
         type: EVENTS_FETCH_SUCCESS,
         payload: week,
@@ -244,7 +244,7 @@ export const addEventStart = () => {
 }
 
 export const addEventSuccess = (event: any) => {
-    console.log('addEventSuccess', event);
+    // console.log('addEventSuccess', event);
     const action = {
         type: ADD_EVENT_SUCCESS,
         payload: event,
@@ -270,7 +270,7 @@ export const editEventStart = () => {
 }
 
 export const editEventSuccess = (event: any) => {
-    console.log('editEventSuccess', event);
+    // console.log('editEventSuccess', event);
     const action = {
         type: EDIT_EVENT_SUCCESS,
         payload: event,
@@ -296,7 +296,7 @@ export const deleteEventStart = () => {
 }
 
 export const deleteEventSuccess = (event: any) => {
-    console.log('deleteEventSuccess', event);
+    // console.log('deleteEventSuccess', event);
     const action = {
         type: DELETE_EVENT_SUCCESS,
         payload: event,
@@ -322,7 +322,7 @@ export const calendarFetchStart = () => {
 }
 
 export const calendarFetchSuccess = (allCalendars: any) => {
-    console.log('calendarFetchSuccess', allCalendars);
+    // console.log('calendarFetchSuccess', allCalendars);
     const action = {
         type: CALENDAR_FETCH_SUCCESS,
         payload: allCalendars,
