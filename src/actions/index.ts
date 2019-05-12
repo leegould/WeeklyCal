@@ -1,7 +1,7 @@
 import moment, { Moment } from 'moment';
 // @ts-ignore
 import RNCalendarEvents, { CalendarEventReadable } from 'react-native-calendar-events';
-import { Day, CalendarEvent, Calendar, WeekState } from '../types';
+import { Day, CalendarEvent, Calendar } from '../types';
 
 export const EVENTS_FETCH_STARTED = 'EVENTS_FETCH_STARTED';
 export const EVENTS_FETCH_SUCCESS = 'EVENTS_FETCH_SUCCESS';
@@ -27,35 +27,27 @@ export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars
         dispatch(eventsFetchStarted());
 
         try {
+            const startDate = moment(date.clone().startOf().format('YYYY-MM-DD')); //.format('YYYY-MM-DDTHH:mm:ss.sssZ');
+            const endDate = moment(date.clone().add(6, 'days').format('YYYY-MM-DD')).endOf('day'); //.format('YYYY-MM-DDTHH:mm:ss.sssZ');
 
-            // BUG: change date to 1st may.. this shows a public holiday on the 6th that doesn't display.
-            // const testStartDate = moment(date.clone().startOf().format('YYYY-MM-DD')); //.format('YYYY-MM-DDTHH:mm:ss.sssZ');
-            // const testEndDate = moment(date.clone().add(6, 'days').format('YYYY-MM-DD')).endOf('day'); //.format('YYYY-MM-DDTHH:mm:ss.sssZ');
-
-            // const status = await RNCalendarEvents.authorizationStatus();
-            // const testevents = await RNCalendarEvents.fetchAllEvents(
-            //     testStartDate.toISOString(),
-            //     testEndDate.toISOString(), 
-            // );
-            // console.log('testEvents', status, testStartDate, testEndDate, testevents);
+            const status = await RNCalendarEvents.authorizationStatus();
+            const events = await RNCalendarEvents.fetchAllEvents(
+                startDate.toISOString(),
+                endDate.toISOString(), 
+            );
+            console.log('testEvents', status, startDate, endDate, events);
 
             const days = [];
             for (let i = 0;i < 7;i++) {
-                // const aDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD')).startOf();
-                const startDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD')).startOf();
-                const endDate = moment(date.clone().add(i, 'days').format('YYYY-MM-DD')).endOf('day');
-                const calendarIds = showAll ? undefined : selectedCalendars;
-                const events = await RNCalendarEvents.fetchAllEvents(
-                    startDate.toISOString(),
-                    endDate.toISOString(), 
-                    calendarIds, 
-                );
-                console.log('aDate', events, startDate, endDate);
+                const dayDate = moment(startDate.clone().add(i, 'days'));
+                const dayEvents = events.filter(x => moment(x.startDate).isSame(dayDate, 'day'));
+
+                console.log('day', dayDate, dayEvents);
                 days.push({
-                    date: startDate.toDate(),
-                    events,
+                    date: dayDate.toDate(),
+                    events: dayEvents,
                 } as Day);
-            };
+            }
 
             const week = {
                 days
@@ -75,18 +67,18 @@ export const addEvent = (event: CalendarEvent) => {
         try {
             console.log('addEvent.start', event);
             const eventEndDate = !event.allDay && event.endDate ? event.endDate : event.startDate;
-            const startDate = moment(event.startDate).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
-            const endDate = moment(eventEndDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+            const startDate = moment(event.startDate);
+            const endDate = moment(eventEndDate);
 
             await RNCalendarEvents.saveEvent(event.title, {
-                startDate: event.startDate.toISOString(),
-                endDate: eventEndDate.toISOString(),
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
                 allDay: event.allDay,
             });
 
             const dayEvents = await RNCalendarEvents.fetchAllEvents(
-                startDate,
-                endDate,
+                startDate.toISOString(),
+                moment(startDate.clone()).endOf('day').toISOString(),
             );
 
             // The above does not seem to include the new event we just added.. so get that by id and add it!
@@ -114,19 +106,19 @@ export const editEvent = (event: CalendarEvent) => {
             console.log('editEvent.start', event);
 
             const eventEndDate = !event.allDay && event.endDate ? event.endDate : event.startDate;
-            const startDate = moment(event.startDate).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
-            const endDate = moment(eventEndDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+            const startDate = moment(event.startDate);
+            const endDate = moment(eventEndDate);
 
             await RNCalendarEvents.saveEvent(event.title, {
                 id: event.id,
-                startDate: event.startDate.toISOString(),
-                endDate: eventEndDate.toISOString(),
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
                 allDay: event.allDay,
             });
 
             const dayEvents = await RNCalendarEvents.fetchAllEvents(
-                startDate,
-                endDate,
+                startDate.toISOString(),
+                moment(startDate.clone()).endOf('day').toISOString(),
             );
 
             const day = {
@@ -153,15 +145,13 @@ export const deleteEvent = (event: CalendarEvent) => {
         try {
             console.log('deleteEvent.start', event);
 
-            const eventEndDate = event.allDay ? event.startDate : event.endDate;
-            const startDate = moment(event.startDate).startOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
-            const endDate = moment(eventEndDate).endOf('day').format('YYYY-MM-DDTHH:mm:ss.sssZ');
+            const startDate = moment(event.startDate);
 
             await RNCalendarEvents.removeEvent(event.id, undefined);
 
             const dayEvents = await RNCalendarEvents.fetchAllEvents(
-                startDate,
-                endDate,
+                startDate.toISOString(),
+                moment(startDate.clone()).endOf('day').toISOString(),
             );
 
             const day = {
