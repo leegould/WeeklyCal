@@ -29,13 +29,15 @@ export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars
         try {
             const startDate = moment(date.clone().startOf().format('YYYY-MM-DD')); //.format('YYYY-MM-DDTHH:mm:ss.sssZ');
             const endDate = moment(date.clone().add(6, 'days').format('YYYY-MM-DD')).endOf('day'); //.format('YYYY-MM-DDTHH:mm:ss.sssZ');
+            const calendarIds = showAll ? undefined : selectedCalendars;
 
             const status = await RNCalendarEvents.authorizationStatus();
             const events = await RNCalendarEvents.fetchAllEvents(
                 startDate.toISOString(),
-                endDate.toISOString(), 
+                endDate.toISOString(),
+                calendarIds,
             );
-            console.log('testEvents', status, startDate, endDate, events);
+            console.log('testEvents', status, startDate, endDate, showAll, selectedCalendars, events);
 
             const days = [];
             for (let i = 0;i < 7;i++) {
