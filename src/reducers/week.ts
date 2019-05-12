@@ -53,16 +53,16 @@ export default function weekReducer(state = initialState, action: ActionType) {
             })
         case ADD_EVENT_SUCCESS:
             const newWeek = Object.assign({}, state.week);
-            console.log('ADD_EVENT_SUCCESS.Initial', action.payload, newWeek);
+            // console.log('ADD_EVENT_SUCCESS.Initial', action.payload, newWeek);
             for(let i = 0; i < newWeek.days.length;i++) {
                 const dayInWeek = newWeek.days[i];
                 if (moment(dayInWeek.date).isSame(action.payload.date, 'day')) {
-                    console.log('ADD_EVENT_SUCCESS.found', dayInWeek, newWeek.days[i].events, action.payload.events);
+                    // console.log('ADD_EVENT_SUCCESS.found', dayInWeek, newWeek.days[i].events, action.payload.events);
                     newWeek.days[i].events = action.payload.events;
                     break;
                 }
             }
-            console.log('ADD_EVENT_SUCCESS', newWeek);
+            // console.log('ADD_EVENT_SUCCESS', newWeek);
             return Object.assign({}, state, {
                 isFetching: false,
                 week: newWeek,
@@ -76,16 +76,16 @@ export default function weekReducer(state = initialState, action: ActionType) {
             })
         case EDIT_EVENT_SUCCESS:
             const newWeekEdit = Object.assign({}, state.week);
-            console.log('EDIT_EVENT_SUCCESS.Initial', action.payload, newWeekEdit);
+            // console.log('EDIT_EVENT_SUCCESS.Initial', action.payload, newWeekEdit);
             for(let i = 0; i < newWeekEdit.days.length;i++) {
                 const dayInWeek = newWeekEdit.days[i];
                 if (moment(dayInWeek.date).isSame(action.payload.date, 'day')) {
-                    console.log('EDIT_EVENT_SUCCESS.found', dayInWeek, newWeekEdit.days[i].events, action.payload.events);
+                    // console.log('EDIT_EVENT_SUCCESS.found', dayInWeek, newWeekEdit.days[i].events, action.payload.events);
                     newWeekEdit.days[i].events = action.payload.events;
                     break;
                 }
             }
-            console.log('EDIT_EVENT_SUCCESS', newWeekEdit);
+            // console.log('EDIT_EVENT_SUCCESS', newWeekEdit);
             return Object.assign({}, state, {
                 isFetching: false,
                 week: newWeekEdit,
@@ -99,16 +99,16 @@ export default function weekReducer(state = initialState, action: ActionType) {
             });
         case DELETE_EVENT_SUCCESS:
             const newWeekDel = Object.assign({}, state.week);
-            console.log('DELETE_EVENT_SUCCESS.Initial', action.payload, newWeekDel);
+            // console.log('DELETE_EVENT_SUCCESS.Initial', action.payload, newWeekDel);
             for(let i = 0; i < newWeekDel.days.length;i++) {
                 const dayInWeek = newWeekDel.days[i];
                 if (moment(dayInWeek.date).isSame(action.payload.date, 'day')) {
-                    console.log('DELETE_EVENT_SUCCESS.found', dayInWeek, newWeekDel.days[i].events, action.payload.events);
+                    // console.log('DELETE_EVENT_SUCCESS.found', dayInWeek, newWeekDel.days[i].events, action.payload.events);
                     newWeekDel.days[i].events = action.payload.events;
                     break;
                 }
             }
-            console.log('DELETE_EVENT_SUCCESS', newWeekDel);
+            // console.log('DELETE_EVENT_SUCCESS', newWeekDel);
             return Object.assign({}, state, {
                 isFetching: false,
                 week: newWeekDel,
@@ -117,7 +117,7 @@ export default function weekReducer(state = initialState, action: ActionType) {
             console.error('DELETE_EVENT_ERROR', ...action.payload);
             return state;
         case CALENDAR_SHOW_ALL_TOGGLE:
-            console.log('CALENDAR_SHOW_ALL_TOGGLE', state);
+            // console.log('CALENDAR_SHOW_ALL_TOGGLE', state);
             const newState = Object.assign({}, state, {
                 calendars: {
                     showAll: !state.calendars.showAll,

@@ -27,24 +27,23 @@ export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars
         dispatch(eventsFetchStarted());
 
         try {
-            const startDate = moment(date.clone().startOf().format('YYYY-MM-DD')); //.format('YYYY-MM-DDTHH:mm:ss.sssZ');
-            const endDate = moment(date.clone().add(6, 'days').format('YYYY-MM-DD')).endOf('day'); //.format('YYYY-MM-DDTHH:mm:ss.sssZ');
+            const startDate = moment(date.clone().startOf().format('YYYY-MM-DD'));
+            const endDate = moment(date.clone().add(6, 'days').format('YYYY-MM-DD')).endOf('day');
             const calendarIds = showAll ? undefined : selectedCalendars;
 
-            const status = await RNCalendarEvents.authorizationStatus();
             const events = await RNCalendarEvents.fetchAllEvents(
                 startDate.toISOString(),
                 endDate.toISOString(),
                 calendarIds,
             );
-            console.log('testEvents', status, startDate, endDate, showAll, selectedCalendars, events);
+
+            // console.log('changeWeekDate.fetchEvents', status, startDate, endDate, showAll, selectedCalendars, events);
 
             const days = [];
             for (let i = 0;i < 7;i++) {
                 const dayDate = moment(startDate.clone().add(i, 'days'));
                 const dayEvents = events.filter(x => moment(x.startDate).isSame(dayDate, 'day'));
 
-                // console.log('day', dayDate, dayEvents);
                 days.push({
                     date: dayDate.toDate(),
                     events: dayEvents,

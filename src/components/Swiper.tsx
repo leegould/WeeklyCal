@@ -89,7 +89,7 @@ export default class NavigationSwiper extends PureComponent<Props> {
     }
 
     render(){
-        console.log('data', this.props.data);
+        // console.log('data', this.props.data);
         return (
             <SafeAreaView style={styles.safeArea}>
                 <Animated.View style={styles.slide} {...this.panResponder.panHandlers}>
