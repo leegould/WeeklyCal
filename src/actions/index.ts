@@ -42,7 +42,7 @@ export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars
                 const dayDate = moment(startDate.clone().add(i, 'days'));
                 const dayEvents = events.filter(x => moment(x.startDate).isSame(dayDate, 'day'));
 
-                console.log('day', dayDate, dayEvents);
+                // console.log('day', dayDate, dayEvents);
                 days.push({
                     date: dayDate.toDate(),
                     events: dayEvents,
@@ -198,8 +198,8 @@ export const toggleShowAllAndUpdateWeek = () => {
     return async (dispatch: any, getState: () => any) => {
         await dispatch(toggleShowAllCalendars());
         const { calendars: { showAll, selectedCalendars }, week: { week: { days } } } = getState();
-        // console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
-        await dispatch(changeWeekDate(days[0].date, showAll, selectedCalendars));
+        console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
+        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars));
     }
 }
 
@@ -207,8 +207,8 @@ export const toggleCalendarAndUpdateWeek = (calendar: Calendar) => {
     return async (dispatch: any, getState: () => any) => {
         await dispatch(toggleCalendar(calendar));
         const { calendars: { showAll, selectedCalendars }, week: { week: { days } } } = getState();
-        // console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
-        await dispatch(changeWeekDate(days[0].date, showAll, selectedCalendars));
+        console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
+        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars));
     }
 }
 
