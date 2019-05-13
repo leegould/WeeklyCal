@@ -22,13 +22,11 @@ export type CalendarEvent = {
 
 export type Day = {
     date: Date,
-    events?: CalendarEventReadable[],
+    events: CalendarEventReadable[],
 };
 
 export type Week = {
-    week: {
-        days: Day[],
-    }
+    days: Day[],
 };
 
 export type WeekState = {

@@ -71,28 +71,29 @@ export const addEvent = (event: CalendarEvent) => {
             const startDate = moment(event.startDate);
             const endDate = moment(eventEndDate);
 
-            await RNCalendarEvents.saveEvent(event.title, {
+            const result = await RNCalendarEvents.saveEvent(event.title, {
                 startDate: startDate.toISOString(),
                 endDate: endDate.toISOString(),
                 allDay: event.allDay,
             });
 
-            const dayEvents = await RNCalendarEvents.fetchAllEvents(
-                startDate.toISOString(),
-                moment(startDate.clone()).endOf('day').toISOString(),
-            );
+            event.id = result;
+            // const dayEvents = await RNCalendarEvents.fetchAllEvents(
+            //     startDate.toISOString(),
+            //     moment(startDate.clone()).endOf('day').toISOString(),
+            // );
 
             // The above does not seem to include the new event we just added.. so get that by id and add it!
             // const newEvent = await RNCalendarEvents.findEventById(newEventId);
 
             // dayEvents.push(newEvent);
 
-            const day = {
-                date: moment(event.startDate).toDate(),
-                events: dayEvents,
-            } as Day;
+            // const day = {
+            //     date: moment(event.startDate).toDate(),
+            //     events: dayEvents,
+            // } as Day;
 
-            dispatch(addEventSuccess(day));
+            dispatch(addEventSuccess(event));
         } catch (err) {
             dispatch(addEventError(err));
         }
@@ -117,17 +118,17 @@ export const editEvent = (event: CalendarEvent) => {
                 allDay: event.allDay,
             });
 
-            const dayEvents = await RNCalendarEvents.fetchAllEvents(
-                startDate.toISOString(),
-                moment(startDate.clone()).endOf('day').toISOString(),
-            );
+            // const dayEvents = await RNCalendarEvents.fetchAllEvents(
+            //     startDate.toISOString(),
+            //     moment(startDate.clone()).endOf('day').toISOString(),
+            // );
 
-            const day = {
-                date: moment(event.startDate).toDate(),
-                events: dayEvents,
-            } as Day;
+            // const day = {
+            //     date: moment(event.startDate).toDate(),
+            //     events: dayEvents,
+            // } as Day;
 
-            dispatch(editEventSuccess(day));
+            dispatch(editEventSuccess(event));
         } catch (err) {
             dispatch(editEventError(err));
         }
@@ -146,21 +147,21 @@ export const deleteEvent = (event: CalendarEvent) => {
         try {
             console.log('deleteEvent.start', event);
 
-            const startDate = moment(event.startDate);
+            // const startDate = moment(event.startDate);
 
-            await RNCalendarEvents.removeEvent(event.id, undefined);
+            const result = await RNCalendarEvents.removeEvent(event.id, undefined);
 
-            const dayEvents = await RNCalendarEvents.fetchAllEvents(
-                startDate.toISOString(),
-                moment(startDate.clone()).endOf('day').toISOString(),
-            );
+            // const dayEvents = await RNCalendarEvents.fetchAllEvents(
+            //     startDate.toISOString(),
+            //     moment(startDate.clone()).endOf('day').toISOString(),
+            // );
 
-            const day = {
-                date: moment(event.startDate).toDate(),
-                events: dayEvents,
-            } as Day;
+            // const day = {
+            //     date: moment(event.startDate).toDate(),
+            //     events: dayEvents,
+            // } as Day;
 
-            dispatch(deleteEventSuccess(day));
+            dispatch(deleteEventSuccess(event));
         } catch (err) {
             dispatch(deleteEventError(err));
         }

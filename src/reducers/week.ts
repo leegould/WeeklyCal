@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import {
     EVENTS_FETCH_STARTED,
     EVENTS_FETCH_SUCCESS,
@@ -15,7 +15,8 @@ import {
     CALENDAR_SHOW_ALL_TOGGLE,
     CALENDAR_TOGGLE,
 } from '../actions';
-import { ActionType, WeekState, Calendar, Day } from '../types';
+import { ActionType, WeekState, Calendar, Day, CalendarEvent, Week } from '../types';
+import { CalendarEventReadable } from 'react-native-calendar-events';
 
 const initialState = {
     isFetching: false,
@@ -23,7 +24,7 @@ const initialState = {
         days: [...Array(7).keys()].map(i => {
             return ({
                 date: moment().add(i, 'days').toDate(),
-                events: undefined,
+                events: [],
             });
         }) as Day[],
     },
@@ -32,6 +33,49 @@ const initialState = {
         selectedCalendars: [],
     }
 } as WeekState;
+
+// function addWeekEvents(startDate: Moment, events: CalendarEventReadable[]) : Week {
+//     const days = [];
+//     for (let i = 0;i < 7;i++) {
+//         const dayDate = moment(startDate.clone().add(i, 'days'));
+//         const dayEvents = events.filter(x => moment(x.startDate).isSame(dayDate, 'day'));
+
+//         days.push({
+//             date: dayDate.toDate(),
+//             events: dayEvents,
+//         } as Day);
+//     }
+
+//     return {
+//         days
+//     };
+// }
+
+function addEventToWeek(week: Week, event: CalendarEvent) {
+    const eventStartDate = moment(event.startDate);
+    if (eventStartDate.isSameOrAfter(moment(week.days[0].date)) && eventStartDate.isSameOrBefore(moment(week.days[6].date))) {
+        const newCalendarEventReadable = {
+            id: event.id,
+            startDate: moment(event.startDate).toISOString(),
+            endDate: moment(event.endDate).toISOString(),
+            allDay: event.allDay,
+            title: event.title,
+            // calendar: { // TODO
+            //     id: 
+            // }
+        } as CalendarEventReadable;
+
+        for (let i = 0;i < 7;i++) {
+            const dayDate = moment(week.days[i].date);
+            if (dayDate.isSame(eventStartDate, 'day')) {
+                if (week.days[i].events !== undefined) {
+                    week.days[i].events.push(newCalendarEventReadable);
+                    break;
+                }
+            }
+        }
+    }
+}
 
 export default function weekReducer(state = initialState, action: ActionType) {
     switch (action.type) {
@@ -53,16 +97,8 @@ export default function weekReducer(state = initialState, action: ActionType) {
             })
         case ADD_EVENT_SUCCESS:
             const newWeek = Object.assign({}, state.week);
-            // console.log('ADD_EVENT_SUCCESS.Initial', action.payload, newWeek);
-            for(let i = 0; i < newWeek.days.length;i++) {
-                const dayInWeek = newWeek.days[i];
-                if (moment(dayInWeek.date).isSame(action.payload.date, 'day')) {
-                    // console.log('ADD_EVENT_SUCCESS.found', dayInWeek, newWeek.days[i].events, action.payload.events);
-                    newWeek.days[i].events = action.payload.events;
-                    break;
-                }
-            }
-            // console.log('ADD_EVENT_SUCCESS', newWeek);
+            addEventToWeek(newWeek, action.payload);
+            console.log('ADD_EVENT_SUCCESS.after', newWeek, state.week);
             return Object.assign({}, state, {
                 isFetching: false,
                 week: newWeek,
