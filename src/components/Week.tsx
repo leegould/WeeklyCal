@@ -22,6 +22,12 @@ export default class Week extends PureComponent<Props, State> {
         }
     }
 
+    // shouldComponentUpdate(nextProps: Props, nextState: State) {
+    //     // TODO : deep compare props
+    //     console.log('Week.shouldComponentUpdate')
+    //     return true;
+    // }
+
     componentDidUpdate() {
         if (this.props.data.isFetching) {
             this.fadeOut();

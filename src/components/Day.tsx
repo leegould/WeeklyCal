@@ -26,6 +26,12 @@ export default class DayEvents extends Component<Props, State> {
         }
     }
 
+    // shouldComponentUpdate(nextProps: Props, nextState: State) {
+    //     // TODO : deep compare props
+    //     console.log('Day.shouldComponentUpdate')
+    //     return true;
+    // }
+
     componentDidUpdate() {
         if (this.props.isFetching) {
             this.fadeOut();

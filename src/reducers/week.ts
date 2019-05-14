@@ -51,31 +51,31 @@ const initialState = {
 //     };
 // }
 
-function addEventToWeek(week: Week, event: CalendarEvent) {
-    const eventStartDate = moment(event.startDate);
-    if (eventStartDate.isSameOrAfter(moment(week.days[0].date)) && eventStartDate.isSameOrBefore(moment(week.days[6].date))) {
-        const newCalendarEventReadable = {
-            id: event.id,
-            startDate: moment(event.startDate).toISOString(),
-            endDate: moment(event.endDate).toISOString(),
-            allDay: event.allDay,
-            title: event.title,
-            // calendar: { // TODO
-            //     id: 
-            // }
-        } as CalendarEventReadable;
+// function addEventToWeek(week: Week, event: CalendarEventReadable) {
+//     const eventStartDate = moment(event.startDate);
+//     if (eventStartDate.isSameOrAfter(moment(week.days[0].date)) && eventStartDate.isSameOrBefore(moment(week.days[6].date))) {
+//         // const newCalendarEventReadable = {
+//         //     id: event.id,
+//         //     startDate: moment(event.startDate).toISOString(),
+//         //     endDate: moment(event.endDate).toISOString(),
+//         //     allDay: event.allDay,
+//         //     title: event.title,
+//         //     // calendar: { // TODO
+//         //     //     id: 
+//         //     // }
+//         // } as CalendarEventReadable;
 
-        for (let i = 0;i < 7;i++) {
-            const dayDate = moment(week.days[i].date);
-            if (dayDate.isSame(eventStartDate, 'day')) {
-                if (week.days[i].events !== undefined) {
-                    week.days[i].events.push(newCalendarEventReadable);
-                    break;
-                }
-            }
-        }
-    }
-}
+//         for (let i = 0;i < 7;i++) {
+//             const dayDate = moment(week.days[i].date);
+//             if (dayDate.isSame(eventStartDate, 'day')) {
+//                 if (week.days[i].events !== undefined) {
+//                     week.days[i].events.push(event);
+//                     break;
+//                 }
+//             }
+//         }
+//     }
+// }
 
 export default function weekReducer(state = initialState, action: ActionType) {
     switch (action.type) {
@@ -97,7 +97,22 @@ export default function weekReducer(state = initialState, action: ActionType) {
             })
         case ADD_EVENT_SUCCESS:
             const newWeek = Object.assign({}, state.week);
-            addEventToWeek(newWeek, action.payload);
+            // addEventToWeek(newWeek, action.payload);
+            const event = action.payload as CalendarEventReadable;
+            const eventStartDate = moment(event.startDate);
+
+            if (eventStartDate.isSameOrAfter(moment(newWeek.days[0].date)) && eventStartDate.isSameOrBefore(moment(newWeek.days[6].date))) {
+                for (let i = 0;i < 7;i++) {
+                    const dayDate = moment(newWeek.days[i].date);
+                    if (dayDate.isSame(eventStartDate, 'day')) {
+                        const clone = newWeek.days[i].events.slice(0);
+                        clone.push(event);
+                        newWeek.days[i].events = clone;
+                        break;
+                    }
+                }
+            }
+
             console.log('ADD_EVENT_SUCCESS.after', newWeek, state.week);
             return Object.assign({}, state, {
                 isFetching: false,

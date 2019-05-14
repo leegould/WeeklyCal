@@ -76,24 +76,12 @@ export const addEvent = (event: CalendarEvent) => {
                 endDate: endDate.toISOString(),
                 allDay: event.allDay,
             });
+            
+            const newEvent = await RNCalendarEvents.findEventById(result);
 
-            event.id = result;
-            // const dayEvents = await RNCalendarEvents.fetchAllEvents(
-            //     startDate.toISOString(),
-            //     moment(startDate.clone()).endOf('day').toISOString(),
-            // );
+            console.log('addedEvent', event, newEvent);
 
-            // The above does not seem to include the new event we just added.. so get that by id and add it!
-            // const newEvent = await RNCalendarEvents.findEventById(newEventId);
-
-            // dayEvents.push(newEvent);
-
-            // const day = {
-            //     date: moment(event.startDate).toDate(),
-            //     events: dayEvents,
-            // } as Day;
-
-            dispatch(addEventSuccess(event));
+            dispatch(addEventSuccess(newEvent));
         } catch (err) {
             dispatch(addEventError(err));
         }
