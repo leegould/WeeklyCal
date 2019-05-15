@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { StyleSheet, Animated, PanResponder, StatusBar } from 'react-native';
+import { StyleSheet, Animated, PanResponder, StatusBar, Dimensions } from 'react-native';
 // @ts-ignore
 import RNCalendarEvents from 'react-native-calendar-events';
 import moment from 'moment';
@@ -27,12 +27,14 @@ export default class NavigationSwiper extends PureComponent<Props> {
     }
 
     static getDirectionAndColor = ({ dx, dy }: { dx: number, dy: number }) => {
-        const draggedDown = dy > 100;
-        const draggedUp = dy < -100;
-        const draggedLeft = dx < -100;
-        const draggedRight = dx > 100;
+        const halfWindowWidth = Math.floor(Dimensions.get('window').width / 2);
+        const draggedDown = dy > halfWindowWidth;
+        const draggedUp = dy < -halfWindowWidth;
+        const draggedLeft = dx < -halfWindowWidth;
+        const draggedRight = dx > halfWindowWidth;
         let dragDirection = '';
       
+        // console.log('getDirectionAndColor', draggedDown, draggedUp, draggedLeft, draggedRight);
         if (draggedDown || draggedUp) {
             if (draggedDown) dragDirection += 'down'
             if (draggedUp) dragDirection +=  'up';
@@ -58,12 +60,15 @@ export default class NavigationSwiper extends PureComponent<Props> {
             onPanResponderMove: async (evt, gestureState) => {
                 const drag = NavigationSwiper.getDirectionAndColor(gestureState);
                 if (drag) {
+                    console.log('drag', drag);
                     if(!this.props.data.isFetching) {
                         if (drag === 'right') {
-                            this.props.onChangeDate(moment(this.props.data.week.days[0].date).add(-7, 'days'),  this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+                            console.log('dragging right');
+                            this.props.onChangeDate(moment(this.props.data.week.days[0].date).add(7, 'days'),  this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
                         }
                         if (drag === 'left') {
-                            this.props.onChangeDate(moment(this.props.data.week.days[0].date).add(7, 'days'), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+                            console.log('dragging left');
+                            this.props.onChangeDate(moment(this.props.data.week.days[0].date).add(-7, 'days'), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
                         }
                     }
                 }
