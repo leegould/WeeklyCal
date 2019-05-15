@@ -34,49 +34,6 @@ const initialState = {
     }
 } as WeekState;
 
-// function addWeekEvents(startDate: Moment, events: CalendarEventReadable[]) : Week {
-//     const days = [];
-//     for (let i = 0;i < 7;i++) {
-//         const dayDate = moment(startDate.clone().add(i, 'days'));
-//         const dayEvents = events.filter(x => moment(x.startDate).isSame(dayDate, 'day'));
-
-//         days.push({
-//             date: dayDate.toDate(),
-//             events: dayEvents,
-//         } as Day);
-//     }
-
-//     return {
-//         days
-//     };
-// }
-
-// function addEventToWeek(week: Week, event: CalendarEventReadable) {
-//     const eventStartDate = moment(event.startDate);
-//     if (eventStartDate.isSameOrAfter(moment(week.days[0].date)) && eventStartDate.isSameOrBefore(moment(week.days[6].date))) {
-//         // const newCalendarEventReadable = {
-//         //     id: event.id,
-//         //     startDate: moment(event.startDate).toISOString(),
-//         //     endDate: moment(event.endDate).toISOString(),
-//         //     allDay: event.allDay,
-//         //     title: event.title,
-//         //     // calendar: { // TODO
-//         //     //     id: 
-//         //     // }
-//         // } as CalendarEventReadable;
-
-//         for (let i = 0;i < 7;i++) {
-//             const dayDate = moment(week.days[i].date);
-//             if (dayDate.isSame(eventStartDate, 'day')) {
-//                 if (week.days[i].events !== undefined) {
-//                     week.days[i].events.push(event);
-//                     break;
-//                 }
-//             }
-//         }
-//     }
-// }
-
 export default function weekReducer(state = initialState, action: ActionType) {
     switch (action.type) {
         case EVENTS_FETCH_STARTED:
@@ -97,12 +54,11 @@ export default function weekReducer(state = initialState, action: ActionType) {
             })
         case ADD_EVENT_SUCCESS:
             const newWeek = Object.assign({}, state.week);
-            // addEventToWeek(newWeek, action.payload);
             const event = action.payload as CalendarEventReadable;
             const eventStartDate = moment(event.startDate);
 
             if (eventStartDate.isSameOrAfter(moment(newWeek.days[0].date)) && eventStartDate.isSameOrBefore(moment(newWeek.days[6].date))) {
-                for (let i = 0;i < 7;i++) {
+                for (let i = 0;i < newWeek.days.length;i++) {
                     const dayDate = moment(newWeek.days[i].date);
                     if (dayDate.isSame(eventStartDate, 'day')) {
                         const clone = newWeek.days[i].events.slice(0);
@@ -127,13 +83,21 @@ export default function weekReducer(state = initialState, action: ActionType) {
             })
         case EDIT_EVENT_SUCCESS:
             const newWeekEdit = Object.assign({}, state.week);
-            // console.log('EDIT_EVENT_SUCCESS.Initial', action.payload, newWeekEdit);
-            for(let i = 0; i < newWeekEdit.days.length;i++) {
-                const dayInWeek = newWeekEdit.days[i];
-                if (moment(dayInWeek.date).isSame(action.payload.date, 'day')) {
-                    // console.log('EDIT_EVENT_SUCCESS.found', dayInWeek, newWeekEdit.days[i].events, action.payload.events);
-                    newWeekEdit.days[i].events = action.payload.events;
-                    break;
+            const eventEdit = action.payload as CalendarEventReadable;
+            const eventEditStartDate = moment(eventEdit.startDate);
+
+            if (eventEditStartDate.isSameOrAfter(moment(newWeekEdit.days[0].date)) && eventEditStartDate.isSameOrBefore(moment(newWeekEdit.days[6].date))) {
+                for(let i = 0; i < newWeekEdit.days.length;i++) {
+                    const dayDateEdit = moment(newWeekEdit.days[i].date);
+                    if (dayDateEdit.isSame(eventEditStartDate, 'day')) {
+                        const cloneEdit = newWeekEdit.days[i].events.slice(0);
+                        const editEventIndex = cloneEdit.findIndex(x => x.id === eventEdit.id);
+                        if (editEventIndex !== -1) {
+                            cloneEdit[editEventIndex] = eventEdit;
+                        }
+                        newWeekEdit.days[i].events = cloneEdit;
+                        break;
+                    }
                 }
             }
             // console.log('EDIT_EVENT_SUCCESS', newWeekEdit);
@@ -150,15 +114,26 @@ export default function weekReducer(state = initialState, action: ActionType) {
             });
         case DELETE_EVENT_SUCCESS:
             const newWeekDel = Object.assign({}, state.week);
-            // console.log('DELETE_EVENT_SUCCESS.Initial', action.payload, newWeekDel);
-            for(let i = 0; i < newWeekDel.days.length;i++) {
-                const dayInWeek = newWeekDel.days[i];
-                if (moment(dayInWeek.date).isSame(action.payload.date, 'day')) {
-                    // console.log('DELETE_EVENT_SUCCESS.found', dayInWeek, newWeekDel.days[i].events, action.payload.events);
-                    newWeekDel.days[i].events = action.payload.events;
-                    break;
+            if (action.payload !== null) {
+                const eventDelete = action.payload as CalendarEventReadable;
+                const eventDeleteStartDate = moment(eventDelete.startDate);
+
+                if (eventDeleteStartDate.isSameOrAfter(moment(newWeekDel.days[0].date)) && eventDeleteStartDate.isSameOrBefore(moment(newWeekDel.days[6].date))) {
+                    for(let i = 0; i < newWeekDel.days.length;i++) {
+                        const dayDateEdit = moment(newWeekDel.days[i].date);
+                        if (dayDateEdit.isSame(eventDeleteStartDate, 'day')) {
+                            const cloneDel = newWeekDel.days[i].events.slice(0);
+                            const delEventIndex = cloneDel.findIndex(x => x.id === eventDelete.id);
+                            if (delEventIndex !== -1) {
+                                cloneDel.splice(delEventIndex, 1);
+                            }
+                            newWeekDel.days[i].events = cloneDel;
+                            break;
+                        }
+                    }
                 }
             }
+            
             // console.log('DELETE_EVENT_SUCCESS', newWeekDel);
             return Object.assign({}, state, {
                 isFetching: false,
