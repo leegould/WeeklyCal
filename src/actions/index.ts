@@ -20,6 +20,7 @@ export const CALENDAR_FETCH_SUCCESS = 'CALENDAR_FETCH_SUCCESS';
 export const CALENDAR_FETCH_ERROR ='CALENDAR_FETCH_ERROR';
 export const CALENDAR_TOGGLE = 'CALENDAR_TOGGLE';
 export const CALENDAR_SHOW_ALL_TOGGLE = 'CALENDAR_SHOW_ALL_TOGGLE';
+export const RESET_DATE_TOGGLE = 'RESET_DATE_TOGGLE';
 
 // https://alligator.io/redux/redux-thunk/
 export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars: string[]) => {
@@ -180,6 +181,12 @@ export const toggleCalendarAndUpdateWeek = (calendar: Calendar) => {
     }
 }
 
+export const toggleResetDateOption = () => {
+    return async (dispatch: Function) => {
+        dispatch(toggleResetDate());
+    }
+}
+
 export const eventsFetchStarted = () => {
     const action = {
         type: EVENTS_FETCH_STARTED,
@@ -321,6 +328,13 @@ export const toggleCalendarAction = (calendar: Calendar) => {
     const action = {
         type: CALENDAR_TOGGLE,
         payload: calendar,
+    }
+    return action;
+}
+
+export const toggleResetDate = () => {
+    const action = {
+        type: RESET_DATE_TOGGLE,
     }
     return action;
 }

@@ -1,11 +1,14 @@
 import { connect } from 'react-redux';
 import { Moment } from 'moment';
 import Options from '../components/Options';
-import { fetchCalendars, changeWeekDate, toggleShowAllAndUpdateWeek, toggleCalendarAndUpdateWeek } from '../actions';
+import { fetchCalendars, changeWeekDate, toggleShowAllAndUpdateWeek, toggleCalendarAndUpdateWeek, toggleResetDateOption } from '../actions';
 import { Calendar } from '../types';
 
 const mapStateToProps = (state: any) => {
-    return { data: state.calendars };
+    return { 
+        data: state.calendars,
+        options: state.options,
+    };
 };
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -20,6 +23,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     onToggleCalendarAndUpdateWeek: (calendar: Calendar) => {
         dispatch(toggleCalendarAndUpdateWeek(calendar));
+    },
+    onToggleResetDateOption: () => {
+        dispatch(toggleResetDateOption());
     }
 });
 

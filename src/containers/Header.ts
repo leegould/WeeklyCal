@@ -4,8 +4,11 @@ import Header from '../components/Header';
 import { changeWeekDate } from '../actions';
 
 const mapStateToProps = (state: any) => {
-    const { week } = state;
-    return { data: week };
+    const { week, options } = state;
+    return {
+        data: week,
+        options
+    };
 };
 
 const mapDispatchToProps = (dispatch: any) => ({

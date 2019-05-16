@@ -15,7 +15,7 @@ import {
     CALENDAR_SHOW_ALL_TOGGLE,
     CALENDAR_TOGGLE,
 } from '../actions';
-import { ActionType, WeekState, Calendar, Day, CalendarEvent, Week } from '../types';
+import { ActionType, WeekState, Calendar, Day } from '../types';
 import { CalendarEventReadable } from 'react-native-calendar-events';
 
 const initialState = {

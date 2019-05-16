@@ -54,3 +54,7 @@ export type CalendarsState = {
     allCalendars: Calendar[],
     selectedCalendars: string[],
 };
+
+export type OptionsState = {
+    resetDate: boolean,
+}

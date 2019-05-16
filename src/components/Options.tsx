@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Switch, StyleSheet, Animated } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import moment, { Moment } from 'moment';
-import { CalendarsState, Calendar } from '../types';
+import { CalendarsState, OptionsState, Calendar } from '../types';
 
 type Props = {
     navigation: {
@@ -10,10 +10,12 @@ type Props = {
         navigate: Function,
     }
     data: CalendarsState,
+    options: OptionsState,
     onFetchCalendars: Function,
     onChangeDate: Function,
     onToggleShowAllAndUpdateWeek: Function,
     onToggleCalendarAndUpdateWeek: Function,
+    onToggleResetDateOption: Function,
 };
 
 type State = {
@@ -128,6 +130,21 @@ export default class Options extends React.PureComponent<Props, State> {
                         keyExtractor={(item: Calendar, index: number) => item.id}
                     />
                     }
+                    <ListItem
+                        key={'resetDate'}
+                        title={'Longpress Selected Date to reset'}
+                        rightAvatar={
+                            <Switch
+                                onValueChange={() => this.props.onToggleResetDateOption()}
+                                value={this.props.options.resetDate}
+                                trackColor={{true: '#C2272D', false: ''}}
+                                style={styles.switchInput}
+                            />
+                        }
+                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
+                        titleStyle={{ color: 'white' }}
+                        subtitleStyle={{ color: 'white' }}
+                    />
                 </View>
                 }
             </View>

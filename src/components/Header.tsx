@@ -4,13 +4,14 @@ import moment from 'moment';
 import { Icon } from 'react-native-elements'
 import { SafeAreaView } from 'react-navigation';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { WeekState } from '../types';
+import { WeekState, OptionsState } from '../types';
 
 type Props = {
     navigation: {
         navigate: Function,
     }
     data: WeekState,
+    options: OptionsState,
     onChangeDate: Function,
 };
 
@@ -69,14 +70,20 @@ export default class Header extends PureComponent<Props, State> {
     };
 
     handleLongPress = () => {
-        console.log('Resetting to today: ', moment);
-        this.hideDateTimePicker();
-        this.props.onChangeDate(moment(), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+        if (this.props.options.resetDate) {
+            console.log('Resetting to today: ', moment);
+            this.hideDateTimePicker();
+            this.props.onChangeDate(moment(), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+        } else {
+            console.log('Resetting disabled');
+        }
     }
 
     render() {
         const startDate = moment(this.props.data.week.days[0].date);
         const endDate = moment(this.props.data.week.days[6].date);
+
+        console.log('header.render', this.props.options);
 
         return (
             <SafeAreaView style={styles.safeArea}>
