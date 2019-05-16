@@ -68,6 +68,12 @@ export default class Header extends PureComponent<Props, State> {
         this.props.onChangeDate(moment(date), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
     };
 
+    handleLongPress = () => {
+        console.log('Resetting to today: ', moment);
+        this.hideDateTimePicker();
+        this.props.onChangeDate(moment(), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+    }
+
     render() {
         const startDate = moment(this.props.data.week.days[0].date);
         const endDate = moment(this.props.data.week.days[6].date);
@@ -76,7 +82,7 @@ export default class Header extends PureComponent<Props, State> {
             <SafeAreaView style={styles.safeArea}>
                 <View style={styles.header}>
                     <Icon name='settings-applications' type='material' color='lightgray' onPress={() => this.props.navigation.navigate('Options', { date: startDate })} size={40} />
-                    <TouchableWithoutFeedback onPress={this.showDateTimePicker}>
+                    <TouchableWithoutFeedback onPress={this.showDateTimePicker} onLongPress={this.handleLongPress}>
                         <Animated.View style={[styles.headerMiddle, {opacity: this.state.fade}]}>
                             <Icon name='calendar-range' type='material-community' color='#C2272D' size={24} />
                             <Text style={styles.headerText}>
