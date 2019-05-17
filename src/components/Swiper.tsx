@@ -57,7 +57,7 @@ export default class NavigationSwiper extends PureComponent<Props> {
         this.position = new Animated.ValueXY({ x: 0, y: 0 });
         this.panResponder = PanResponder.create({
             onStartShouldSetPanResponder: () => { return !this.props.data.isFetching },
-            onMoveShouldSetPanResponder: (evt, gestureState) => { return Math.abs(gestureState.dx) >= 1 || Math.abs(gestureState.dy) >= 1 },//true,
+            onMoveShouldSetPanResponder: (evt, gestureState) => { return Math.abs(gestureState.dx) >= Math.abs(gestureState.dy * 3) }, // If the horizontal is bigger than the vertical, use this responder
             onPanResponderRelease: async (evt, gestureState) => {
                 const drag = NavigationSwiper.getDirectionAndColor(gestureState);
                 if (drag) {

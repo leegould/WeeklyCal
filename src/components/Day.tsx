@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, FlatList, Animated, TouchableWithoutFeedback, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Text, FlatList, Animated, TouchableWithoutFeedback, TouchableOpacity, PanResponder} from 'react-native';
 import { Icon } from 'react-native-elements'
 import moment from 'moment';
 import { Day } from '../types';
@@ -25,12 +25,6 @@ export default class DayEvents extends Component<Props, State> {
             fade: new Animated.Value(1),
         }
     }
-
-    // shouldComponentUpdate(nextProps: Props, nextState: State) {
-    //     // TODO : deep compare props
-    //     console.log('Day.shouldComponentUpdate')
-    //     return true;
-    // }
 
     componentDidUpdate() {
         if (this.props.isFetching) {
