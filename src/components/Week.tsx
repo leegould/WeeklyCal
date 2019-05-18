@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
 import { StyleSheet, View, Animated } from 'react-native';
-import { WeekState } from '../types';
+import { WeekState, OptionsState } from '../types';
 import Day from './Day';
 
 type Props = {
     navigation: {
         navigate: Function,
     }
-    data: WeekState
+    data: WeekState,
+    options: OptionsState,
 };
 
 type State = {
@@ -21,12 +22,6 @@ export default class Week extends PureComponent<Props, State> {
             fade: new Animated.Value(1),
         }
     }
-
-    // shouldComponentUpdate(nextProps: Props, nextState: State) {
-    //     // TODO : deep compare props
-    //     console.log('Week.shouldComponentUpdate')
-    //     return true;
-    // }
 
     componentDidUpdate() {
         if (this.props.data.isFetching) {
@@ -59,26 +54,24 @@ export default class Week extends PureComponent<Props, State> {
     }
 
     render() {
-        const { data, navigation } = this.props;
-
-        // console.log('week.render', data);
+        const { data, navigation, options } = this.props;
 
         return (
             <View style={styles.container}>
                 <View style={styles.main}>
                     <View style={styles.firstRow}>
-                        <Day day={data.week.days[0]} isToday isFetching={data.isFetching} navigation={navigation} />
+                        <Day day={data.week.days[0]} isToday isFetching={data.isFetching} navigation={navigation} options={options} />
                     </View>
                     <View style={styles.row}>
                         <View style={styles.col}>
-                            <Day day={data.week.days[1]} isFetching={data.isFetching} navigation={navigation} />
-                            <Day day={data.week.days[3]} isFetching={data.isFetching} navigation={navigation} />
-                            <Day day={data.week.days[5]} isFetching={data.isFetching} navigation={navigation} />
+                            <Day day={data.week.days[1]} isFetching={data.isFetching} navigation={navigation} options={options} />
+                            <Day day={data.week.days[3]} isFetching={data.isFetching} navigation={navigation} options={options} />
+                            <Day day={data.week.days[5]} isFetching={data.isFetching} navigation={navigation} options={options} />
                         </View>
                         <View style={styles.col}>
-                            <Day day={data.week.days[2]} isFetching={data.isFetching} navigation={navigation} />
-                            <Day day={data.week.days[4]} isFetching={data.isFetching} navigation={navigation} />
-                            <Day day={data.week.days[6]} isFetching={data.isFetching} navigation={navigation} />
+                            <Day day={data.week.days[2]} isFetching={data.isFetching} navigation={navigation} options={options} />
+                            <Day day={data.week.days[4]} isFetching={data.isFetching} navigation={navigation} options={options} />
+                            <Day day={data.week.days[6]} isFetching={data.isFetching} navigation={navigation} options={options} />
                         </View>
                     </View>
                 </View>

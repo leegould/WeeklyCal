@@ -1,9 +1,6 @@
 import {
     RESET_DATE_TOGGLE,
-    // CALENDAR_FETCH_SUCCESS,
-    // CALENDAR_FETCH_ERROR,
-    // CALENDAR_SHOW_ALL_TOGGLE,
-    // CALENDAR_TOGGLE,
+    EVENT_COLOR_TOGGLE,
 } from '../actions';
 import { ActionType, CalendarsState, OptionsState } from '../types';
 
@@ -13,6 +10,7 @@ const initialState = {
     allCalendars: [],
     selectedCalendars: [],
     resetDate: true,
+    eventColor: true,
 } as CalendarsState & OptionsState;
 
 export default function optionsReducer(state = initialState, action: ActionType) {
@@ -20,6 +18,10 @@ export default function optionsReducer(state = initialState, action: ActionType)
         case RESET_DATE_TOGGLE:
             return Object.assign({}, state, {
                 resetDate: !state.resetDate,
+            });
+        case EVENT_COLOR_TOGGLE:
+            return Object.assign({}, state, {
+                eventColor: !state.eventColor,
             });
         default:
             return state;

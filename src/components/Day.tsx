@@ -1,14 +1,15 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, FlatList, Animated, TouchableWithoutFeedback, TouchableOpacity, PanResponder} from 'react-native';
+import { StyleSheet, View, Text, FlatList, Animated, TouchableWithoutFeedback, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements'
 import moment from 'moment';
-import { Day } from '../types';
+import { Day, OptionsState } from '../types';
 import { CalendarEventReadable } from 'react-native-calendar-events';
 
 type Props = {
     isFetching: boolean,
     day: Day,
     isToday?: boolean,
+    options: OptionsState,
     navigation: {
         navigate: Function,
     }
@@ -87,7 +88,9 @@ export default class DayEvents extends Component<Props, State> {
                                     () => this.onEdit(item)
                                 }>
                                     <Animated.View style={[styles.eventContainer, {opacity: this.state.fade}]}>
+                                        {this.props.options.eventColor &&
                                         <View style={[styles.eventCalendar, { backgroundColor: item.calendar ? item.calendar.color : 'transparent' }]} />
+                                        }
                                         <Text style={styles.eventTitle}>
                                             {item.title}
                                         </Text>

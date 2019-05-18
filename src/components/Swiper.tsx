@@ -4,7 +4,7 @@ import { StyleSheet, Animated, PanResponder, StatusBar, Dimensions } from 'react
 import RNCalendarEvents from 'react-native-calendar-events';
 import moment from 'moment';
 import Week from './Week';
-import { WeekState } from '../types';
+import { WeekState, OptionsState } from '../types';
 import Header from '../containers/Header';
 import { SafeAreaView } from 'react-navigation';
 
@@ -13,6 +13,7 @@ type Props = {
         navigate: Function,
     }
     data: WeekState,
+    options: OptionsState,
     onChangeDate: Function,
 };
 
@@ -63,10 +64,10 @@ export default class NavigationSwiper extends PureComponent<Props> {
                 if (drag) {
                     if(!this.props.data.isFetching) {
                         if (drag === 'right') {
-                            this.props.onChangeDate(moment(this.props.data.week.days[0].date).add(7, 'days'),  this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+                            this.props.onChangeDate(moment(this.props.data.week.days[0].date).add(-7, 'days'),  this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
                         }
                         if (drag === 'left') {
-                            this.props.onChangeDate(moment(this.props.data.week.days[0].date).add(-7, 'days'), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+                            this.props.onChangeDate(moment(this.props.data.week.days[0].date).add(7, 'days'), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
                         }
                     }
                 }
@@ -100,7 +101,7 @@ export default class NavigationSwiper extends PureComponent<Props> {
                         barStyle="light-content"
                         backgroundColor="#6a51ae"
                     />
-                    <Week navigation={this.props.navigation} data={this.props.data}/>
+                    <Week navigation={this.props.navigation} data={this.props.data} options={this.props.options}/>
                 </Animated.View>
             </SafeAreaView>
         );

@@ -16,6 +16,7 @@ type Props = {
     onToggleShowAllAndUpdateWeek: Function,
     onToggleCalendarAndUpdateWeek: Function,
     onToggleResetDateOption: Function,
+    onToggleEventColorOptionAndUpdateWeek: Function,
 };
 
 type State = {
@@ -81,9 +82,39 @@ export default class Options extends React.PureComponent<Props, State> {
         // console.log('Options.render.data', this.props.data);
 
         return (
-            <View style={{ flex: 1,  backgroundColor: 'gray' }}>
+            <View style={{ flex: 1,  backgroundColor: 'gray', justifyContent: 'flex-start' }}>
                 {!this.props.data.isFetching &&
-                <View style={{ flex: 1, marginVertical: 5 }}>
+                <View style={{ flex: 1, marginBottom: 5 }}>
+                    <ListItem
+                        key={'resetDate'}
+                        title={'Longpress date reset'}
+                        rightAvatar={
+                            <Switch
+                                onValueChange={() => this.props.onToggleResetDateOption()}
+                                value={this.props.options.resetDate}
+                                trackColor={{true: '#C2272D', false: ''}}
+                                style={styles.switchInput}
+                            />
+                        }
+                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
+                        titleStyle={{ color: 'white' }}
+                        subtitleStyle={{ color: 'white' }}
+                    />
+                    <ListItem
+                        key={'eventColor'}
+                        title={'Colours on events'}
+                        rightAvatar={
+                            <Switch
+                                onValueChange={() => this.props.onToggleEventColorOptionAndUpdateWeek()}
+                                value={this.props.options.eventColor}
+                                trackColor={{true: '#C2272D', false: ''}}
+                                style={styles.switchInput}
+                            />
+                        }
+                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
+                        titleStyle={{ color: 'white' }}
+                        subtitleStyle={{ color: 'white' }}
+                    />
                     <ListItem
                         key={'showAll'}
                         title={'Show All Calendars'}
@@ -99,7 +130,6 @@ export default class Options extends React.PureComponent<Props, State> {
                         titleStyle={{ color: 'white' }}
                         subtitleStyle={{ color: 'white' }}
                     />
-                    {!this.props.data.showAll &&
                     <Animated.FlatList
                         style={{ opacity: this.state.anim }}
                         data={this.props.data.allCalendars}
@@ -128,22 +158,6 @@ export default class Options extends React.PureComponent<Props, State> {
                             }
                         }
                         keyExtractor={(item: Calendar, index: number) => item.id}
-                    />
-                    }
-                    <ListItem
-                        key={'resetDate'}
-                        title={'Longpress Selected Date to reset'}
-                        rightAvatar={
-                            <Switch
-                                onValueChange={() => this.props.onToggleResetDateOption()}
-                                value={this.props.options.resetDate}
-                                trackColor={{true: '#C2272D', false: ''}}
-                                style={styles.switchInput}
-                            />
-                        }
-                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
-                        titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white' }}
                     />
                 </View>
                 }

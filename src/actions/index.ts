@@ -21,6 +21,7 @@ export const CALENDAR_FETCH_ERROR ='CALENDAR_FETCH_ERROR';
 export const CALENDAR_TOGGLE = 'CALENDAR_TOGGLE';
 export const CALENDAR_SHOW_ALL_TOGGLE = 'CALENDAR_SHOW_ALL_TOGGLE';
 export const RESET_DATE_TOGGLE = 'RESET_DATE_TOGGLE';
+export const EVENT_COLOR_TOGGLE = 'EVENT_COLOR_TOGGLE';
 
 // https://alligator.io/redux/redux-thunk/
 export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars: string[]) => {
@@ -187,6 +188,21 @@ export const toggleResetDateOption = () => {
     }
 }
 
+export const toggleEventColorOption = () => {
+    return async (dispatch: Function) => {
+        dispatch(toggleEventColor());
+    }
+}
+
+export const toggleEventColorOptionAndUpdateWeek = () => {
+    return async (dispatch: Function, getState: () => any) => {
+        await dispatch(toggleEventColorOption());
+        const { calendars: { showAll, selectedCalendars }, week: { week: { days } } } = getState();
+        // console.log('toggleEventColorOptionAndUpdateWeek.getState', days[0].date, showAll, selectedCalendars);
+        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars));
+    }
+}
+
 export const eventsFetchStarted = () => {
     const action = {
         type: EVENTS_FETCH_STARTED,
@@ -335,6 +351,13 @@ export const toggleCalendarAction = (calendar: Calendar) => {
 export const toggleResetDate = () => {
     const action = {
         type: RESET_DATE_TOGGLE,
+    }
+    return action;
+}
+
+export const toggleEventColor = () => {
+    const action = {
+        type: EVENT_COLOR_TOGGLE,
     }
     return action;
 }
