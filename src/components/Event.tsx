@@ -133,6 +133,9 @@ export default class Add extends React.PureComponent<Props, State> {
                         {props => (
                             <View style={styles.container}>
                                 <View style={styles.subcontainer}>
+                                    <View style={[styles.rowContainer, styles.titleRow]}>
+                                        <Text style={styles.title}>{`${existingId ? allowsUpdate ? 'Edit' : 'View' : 'Add'} Event`}</Text>
+                                    </View>
                                     <View style={styles.rowContainer}>
                                         <Text style={styles.text}>All Day</Text>
                                         <Switch
@@ -251,7 +254,7 @@ export default class Add extends React.PureComponent<Props, State> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
+        justifyContent: 'center',
         marginHorizontal: 40
     },
     subcontainer: {
@@ -259,6 +262,13 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         borderRadius: 5,
         paddingTop: 5,
+    },
+    titleRow: {
+        justifyContent: 'center',
+    },
+    title: {
+        fontSize: 18,
+        color: '#C2272D'
     },
     text: {
         color:'white'
