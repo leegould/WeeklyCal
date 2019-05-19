@@ -1,7 +1,15 @@
 import { connect } from 'react-redux';
 import { Moment } from 'moment';
 import Options from '../components/Options';
-import { fetchCalendars, changeWeekDate, toggleShowAllAndUpdateWeek, toggleCalendarAndUpdateWeek, toggleResetDateOption, toggleEventColorOptionAndUpdateWeek } from '../actions';
+import {
+    fetchCalendars,
+    changeWeekDate,
+    toggleShowAllAndUpdateWeek,
+    toggleCalendarAndUpdateWeek,
+    toggleResetDateOption,
+    toggleEventColorOptionAndUpdateWeek,
+    toggleDayAddLinkAndUpdateWeek,
+} from '../actions';
 import { Calendar } from '../types';
 
 const mapStateToProps = (state: any) => {
@@ -30,6 +38,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     onToggleEventColorOptionAndUpdateWeek: () => {
         dispatch(toggleEventColorOptionAndUpdateWeek());
     },
+    onToggleDayAddLinkAndUpdateWeek: () => {
+        dispatch(toggleDayAddLinkAndUpdateWeek());
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Options);

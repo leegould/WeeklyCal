@@ -58,4 +58,5 @@ export type CalendarsState = {
 export type OptionsState = {
     resetDate: boolean,
     eventColor: boolean,
+    dayAddLink: boolean,
 }
