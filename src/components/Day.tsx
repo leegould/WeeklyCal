@@ -12,7 +12,8 @@ type Props = {
     options: OptionsState,
     navigation: {
         navigate: Function,
-    }
+    },
+    onExpand: Function,
 };
 
 type State = {
@@ -74,8 +75,9 @@ export default class DayEvents extends Component<Props, State> {
                 {this.props.options.dayAddLink &&
                 <TouchableHighlight onPress={() => this.onAdd()} underlayColor={'beige'} hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
                     <View style={styles.row}>
-                        <Animated.Text style={[styles.header, {opacity: this.state.fade}]}>{`${moment(this.props.day.date).format('ddd')} ${moment(this.props.day.date).format('DD')}`}</Animated.Text>
                         <Icon name='calendar-plus' type='material-community' color='green' onPress={() => this.onAdd()} size={18} />
+                        <Animated.Text style={[styles.header, {opacity: this.state.fade}]}>{`${moment(this.props.day.date).format('ddd')} ${moment(this.props.day.date).format('DD')}`}</Animated.Text>
+                        <Icon name='arrow-expand' type='material-community' color='green' onPress={() => this.props.onExpand(this.props.day)} size={18} />
                     </View>
                 </TouchableHighlight>
                 }
