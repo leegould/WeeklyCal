@@ -75,7 +75,7 @@ export default class Week extends PureComponent<Props, State> {
                 }
                 {this.state.selectedDay &&
                 <Animated.View style={[styles.main, styles.singleDay, { opacity: invertedOpacity } ]}>
-                    <DayComponent day={this.state.selectedDay} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)}/>
+                    <DayComponent day={this.state.selectedDay} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)} expanded/>
                 </Animated.View>
                 }
             </View>
