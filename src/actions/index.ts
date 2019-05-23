@@ -23,6 +23,7 @@ export const CALENDAR_SHOW_ALL_TOGGLE = 'CALENDAR_SHOW_ALL_TOGGLE';
 export const RESET_DATE_TOGGLE = 'RESET_DATE_TOGGLE';
 export const EVENT_COLOR_TOGGLE = 'EVENT_COLOR_TOGGLE';
 export const DAY_ADD_LINK_TOGGLE = 'DAY_ADD_LINK_TOGGLE';
+export const ROLLING_WEEK_TOGGLE = 'ROLLING_WEEK_TOGGLE';
 
 // https://alligator.io/redux/redux-thunk/
 export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars: string[]) => {
@@ -219,6 +220,12 @@ export const toggleDayAddLinkAndUpdateWeek = () => {
     }
 }
 
+export const toggleRollingWeekOption = () => {
+    return async (dispatch: Function) => {
+        dispatch(toggleRollingWeek());
+    }
+}
+
 export const eventsFetchStarted = () => {
     const action = {
         type: EVENTS_FETCH_STARTED,
@@ -381,6 +388,13 @@ export const toggleEventColor = () => {
 export const toggleDayAddLink = () => {
     const action = {
         type: DAY_ADD_LINK_TOGGLE,
+    }
+    return action;
+}
+
+export const toggleRollingWeek = () => {
+    const action = {
+        type: ROLLING_WEEK_TOGGLE,
     }
     return action;
 }

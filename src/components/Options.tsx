@@ -132,6 +132,21 @@ export default class Options extends React.PureComponent<Props, State> {
                         subtitleStyle={{ color: 'white' }}
                     />
                     <ListItem
+                        key={'dayAddLink'}
+                        title={'Add event link per day'}
+                        rightAvatar={
+                            <Switch
+                                onValueChange={() => this.props.onToggleDayAddLinkAndUpdateWeek()}
+                                value={this.props.options.dayAddLink}
+                                trackColor={{true: '#C2272D', false: ''}}
+                                style={styles.switchInput}
+                            />
+                        }
+                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
+                        titleStyle={{ color: 'white' }}
+                        subtitleStyle={{ color: 'white' }}
+                    />
+                    <ListItem
                         key={'showAll'}
                         title={'Show All Calendars'}
                         rightAvatar={

@@ -59,4 +59,5 @@ export type OptionsState = {
     resetDate: boolean,
     eventColor: boolean,
     dayAddLink: boolean,
+    rollingWeek: boolean,
 }
