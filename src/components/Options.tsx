@@ -18,6 +18,7 @@ type Props = {
     onToggleResetDateOption: Function,
     onToggleEventColorOptionAndUpdateWeek: Function,
     onToggleDayAddLinkAndUpdateWeek: Function,
+    onToggleRollingWeek: Function,
 };
 
 type State = {
@@ -132,12 +133,12 @@ export default class Options extends React.PureComponent<Props, State> {
                         subtitleStyle={{ color: 'white' }}
                     />
                     <ListItem
-                        key={'dayAddLink'}
-                        title={'Add event link per day'}
+                        key={'rollingWeek'}
+                        title={'Rolling Week'}
                         rightAvatar={
                             <Switch
-                                onValueChange={() => this.props.onToggleDayAddLinkAndUpdateWeek()}
-                                value={this.props.options.dayAddLink}
+                                onValueChange={() => this.props.onToggleRollingWeek()}
+                                value={this.props.options.rollingWeek}
                                 trackColor={{true: '#C2272D', false: ''}}
                                 style={styles.switchInput}
                             />

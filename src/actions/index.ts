@@ -26,13 +26,20 @@ export const DAY_ADD_LINK_TOGGLE = 'DAY_ADD_LINK_TOGGLE';
 export const ROLLING_WEEK_TOGGLE = 'ROLLING_WEEK_TOGGLE';
 
 // https://alligator.io/redux/redux-thunk/
-export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars: string[]) => {
+export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars: string[], rollingWeek: boolean) => {
     return async (dispatch: Function) => {
         dispatch(eventsFetchStarted());
 
         try {
-            const startDate = moment(date.clone().startOf().format('YYYY-MM-DD'));
-            const endDate = moment(date.clone().add(6, 'days').format('YYYY-MM-DD')).endOf('day');
+            let startDate = moment(date.clone().startOf().format('YYYY-MM-DD'));
+            let endDate = moment(date.clone().add(6, 'days').format('YYYY-MM-DD')).endOf('day');
+
+            if (!rollingWeek) {
+                startDate = startDate.startOf('week');
+                endDate = startDate.endOf('week');
+                console.log('rollingWeek', startDate, endDate);
+            }
+            
             const calendarIds = showAll ? undefined : selectedCalendars;
 
             const events = await RNCalendarEvents.fetchAllEvents(
@@ -169,18 +176,18 @@ export const toggleCalendar = (calendar: Calendar) => {
 export const toggleShowAllAndUpdateWeek = () => {
     return async (dispatch: any, getState: () => any) => {
         await dispatch(toggleShowAllCalendars());
-        const { calendars: { showAll, selectedCalendars }, week: { week: { days } } } = getState();
+        const { calendars: { showAll, selectedCalendars, rollingWeek }, week: { week: { days } } } = getState();
         console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
-        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars));
+        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars, rollingWeek));
     }
 }
 
 export const toggleCalendarAndUpdateWeek = (calendar: Calendar) => {
     return async (dispatch: any, getState: () => any) => {
         await dispatch(toggleCalendar(calendar));
-        const { calendars: { showAll, selectedCalendars }, week: { week: { days } } } = getState();
+        const { calendars: { showAll, selectedCalendars, rollingWeek }, week: { week: { days } } } = getState();
         console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
-        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars));
+        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars, rollingWeek));
     }
 }
 
@@ -199,9 +206,9 @@ export const toggleEventColorOption = () => {
 export const toggleEventColorOptionAndUpdateWeek = () => {
     return async (dispatch: Function, getState: () => any) => {
         await dispatch(toggleEventColorOption());
-        const { calendars: { showAll, selectedCalendars }, week: { week: { days } } } = getState();
+        const { calendars: { showAll, selectedCalendars, rollingWeek }, week: { week: { days } } } = getState();
         // console.log('toggleEventColorOptionAndUpdateWeek.getState', days[0].date, showAll, selectedCalendars);
-        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars));
+        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars, rollingWeek));
     }
 }
 
@@ -214,15 +221,24 @@ export const toggleDayAddLinkOption = () => {
 export const toggleDayAddLinkAndUpdateWeek = () => {
     return async (dispatch: Function, getState: () => any) => {
         await dispatch(toggleDayAddLinkOption());
-        const { calendars: { showAll, selectedCalendars }, week: { week: { days } } } = getState();
-        // console.log('toggleEventColorOptionAndUpdateWeek.getState', days[0].date, showAll, selectedCalendars);
-        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars));
+        const { calendars: { showAll, selectedCalendars, rollingWeek }, week: { week: { days } } } = getState();
+        // console.log('toggleDayAddLinkAndUpdateWeek.getState', days[0].date, showAll, selectedCalendars);
+        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars, rollingWeek));
     }
 }
 
 export const toggleRollingWeekOption = () => {
     return async (dispatch: Function) => {
         dispatch(toggleRollingWeek());
+    }
+}
+
+export const toggleRollingWeekAndUpdateWeek = () => {
+    return async (dispatch: Function, getState: () => any) => {
+        await dispatch(toggleRollingWeekOption());
+        const { calendars: { showAll, selectedCalendars, rollingWeek }, week: { week: { days } } } = getState();
+        // console.log('toggleRollingWeekAndUpdateWeek.getState', days[0].date, showAll, selectedCalendars);
+        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars, rollingWeek));
     }
 }
 

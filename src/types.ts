@@ -37,6 +37,7 @@ export type WeekState = {
     calendars: {
         showAll: boolean,
         selectedCalendars: string[],
+        rollingWeek: boolean,
     }
 };
 
@@ -51,6 +52,7 @@ export type Calendar = {
 export type CalendarsState = {
     isFetching: boolean,
     showAll: boolean,
+    // rollingWeek: boolean,
     allCalendars: Calendar[],
     selectedCalendars: string[],
 };

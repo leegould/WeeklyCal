@@ -66,14 +66,14 @@ export default class Header extends PureComponent<Props, State> {
     handleDatePicked = (date: Date) => {
         console.log('A date has been picked: ', date);
         this.hideDateTimePicker();
-        this.props.onChangeDate(moment(date), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+        this.props.onChangeDate(moment(date), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars, this.props.options.rollingWeek);
     };
 
     handleLongPress = () => {
         if (this.props.options.resetDate) {
             console.log('Resetting to today: ', moment);
             this.hideDateTimePicker();
-            this.props.onChangeDate(moment(), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars);
+            this.props.onChangeDate(moment(), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars, this.props.options.rollingWeek);
         } else {
             console.log('Resetting disabled');
         }

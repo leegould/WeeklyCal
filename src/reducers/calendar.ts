@@ -4,12 +4,14 @@ import {
     CALENDAR_FETCH_ERROR,
     CALENDAR_SHOW_ALL_TOGGLE,
     CALENDAR_TOGGLE,
+    // ROLLING_WEEK_TOGGLE,
 } from '../actions';
 import { ActionType, CalendarsState, Calendar } from '../types';
 
 const initialState = {
     isFetching: false,
     showAll: true,
+    // rollingWeek: true,
     allCalendars: [],
     selectedCalendars: [],
 } as CalendarsState;
@@ -46,6 +48,10 @@ export default function calendarReducer(state = initialState, action: ActionType
             return Object.assign({}, state, {
                 selectedCalendars,
             });
+        // case ROLLING_WEEK_TOGGLE:
+        //     return Object.assign({}, state, {
+        //         rollingWeek: !state.rollingWeek,
+        //     });
         default:
             return state;
     }

@@ -9,6 +9,7 @@ import {
     toggleResetDateOption,
     toggleEventColorOptionAndUpdateWeek,
     toggleDayAddLinkAndUpdateWeek,
+    toggleRollingWeekOption,
 } from '../actions';
 import { Calendar } from '../types';
 
@@ -23,8 +24,8 @@ const mapDispatchToProps = (dispatch: any) => ({
     onFetchCalendars: () => {
         dispatch(fetchCalendars());
     },
-    onChangeDate: (date: Moment, showAll: boolean, selectedCalendars: string[]) => {
-        dispatch(changeWeekDate(date, showAll, selectedCalendars));
+    onChangeDate: (date: Moment, showAll: boolean, selectedCalendars: string[], rollingWeek: boolean) => {
+        dispatch(changeWeekDate(date, showAll, selectedCalendars, rollingWeek));
     },
     onToggleShowAllAndUpdateWeek: () => {
         dispatch(toggleShowAllAndUpdateWeek());
@@ -40,6 +41,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     onToggleDayAddLinkAndUpdateWeek: () => {
         dispatch(toggleDayAddLinkAndUpdateWeek());
+    },
+    onToggleRollingWeek: () => {
+        dispatch(toggleRollingWeekOption());
     }
 });
 

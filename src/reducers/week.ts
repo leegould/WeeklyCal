@@ -14,6 +14,7 @@ import {
     DELETE_EVENT_ERROR,
     CALENDAR_SHOW_ALL_TOGGLE,
     CALENDAR_TOGGLE,
+    ROLLING_WEEK_TOGGLE,
 } from '../actions';
 import { ActionType, WeekState, Calendar, Day } from '../types';
 import { CalendarEventReadable } from 'react-native-calendar-events';
@@ -31,6 +32,7 @@ const initialState = {
     calendars: {
         showAll: true,
         selectedCalendars: [],
+        rollingWeek: true,
     }
 } as WeekState;
 
@@ -164,6 +166,12 @@ export default function weekReducer(state = initialState, action: ActionType) {
                 calendars: {
                     showAll: state.calendars.showAll,
                     selectedCalendars,
+                }
+            });
+        case ROLLING_WEEK_TOGGLE:
+            return Object.assign({}, state, {
+                calendars: {
+                    rollingWeek: !state.calendars.rollingWeek,
                 }
             });
         default:
