@@ -89,7 +89,8 @@ export default class Options extends React.PureComponent<Props, State> {
                 <View style={{ flex: 1, marginBottom: 5 }}>
                     <ListItem
                         key={'resetDate'}
-                        title={'Longpress date reset'}
+                        title={'Allow Date Reset'}
+                        subtitle={'Hold down the calendar picker in the header to reset to todays date'}
                         rightAvatar={
                             <Switch
                                 onValueChange={() => this.props.onToggleResetDateOption()}
@@ -100,11 +101,12 @@ export default class Options extends React.PureComponent<Props, State> {
                         }
                         containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
                         titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white' }}
+                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
                     />
                     <ListItem
                         key={'eventColor'}
-                        title={'Colours on events'}
+                        title={'Event Colours'}
+                        subtitle={'Display the calendar colour next to the event'}
                         rightAvatar={
                             <Switch
                                 onValueChange={() => this.props.onToggleEventColorOptionAndUpdateWeek()}
@@ -115,11 +117,12 @@ export default class Options extends React.PureComponent<Props, State> {
                         }
                         containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
                         titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white' }}
+                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
                     />
                     <ListItem
                         key={'dayAddLink'}
-                        title={'Add event link per day'}
+                        title={'Add Link Per Day'}
+                        subtitle={'Choose if each day should display an add event shortcut'}
                         rightAvatar={
                             <Switch
                                 onValueChange={() => this.props.onToggleDayAddLinkAndUpdateWeek()}
@@ -130,11 +133,12 @@ export default class Options extends React.PureComponent<Props, State> {
                         }
                         containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
                         titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white' }}
+                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
                     />
                     <ListItem
                         key={'rollingWeek'}
                         title={'Rolling Week'}
+                        subtitle={'The first day shown of the week should be the selected day'}
                         rightAvatar={
                             <Switch
                                 onValueChange={() => this.props.onToggleRollingWeek()}
@@ -145,11 +149,12 @@ export default class Options extends React.PureComponent<Props, State> {
                         }
                         containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
                         titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white' }}
+                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
                     />
                     <ListItem
                         key={'showAll'}
                         title={'Show All Calendars'}
+                        subtitle={'Display events from all calendars, or choose specific ones'}
                         rightAvatar={
                             <Switch
                                 onValueChange={() => this.toggleAllDay()}
@@ -160,7 +165,7 @@ export default class Options extends React.PureComponent<Props, State> {
                         }
                         containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
                         titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white' }}
+                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
                     />
                     <Animated.FlatList
                         style={{ opacity: this.state.anim }}
@@ -184,7 +189,7 @@ export default class Options extends React.PureComponent<Props, State> {
                                         }
                                         containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 0.5, borderBottomColor: 'gray' }}
                                         titleStyle={{ color: 'white' }}
-                                        subtitleStyle={{ color: 'white' }}
+                                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
                                     />
                                 );
                             }
