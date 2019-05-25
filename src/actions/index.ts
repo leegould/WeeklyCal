@@ -35,8 +35,8 @@ export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars
             let endDate = moment(date.clone().add(6, 'days').format('YYYY-MM-DD')).endOf('day');
 
             if (!rollingWeek) {
-                startDate = moment(startDate).startOf('week');
-                endDate = moment(startDate).endOf('week');
+                startDate = moment(startDate).startOf('isoWeek');
+                endDate = moment(startDate).endOf('isoWeek');
                 console.log('rollingWeek', startDate, endDate);
             }
             
