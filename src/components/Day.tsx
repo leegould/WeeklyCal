@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import { StyleSheet, View, Text, FlatList, Animated, TouchableHighlight, TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements'
 import moment from 'moment';
-import { Day, OptionsState } from '../types';
+import { Day, OptionsState, CalendarEvent } from '../types';
 import { CalendarEventReadable } from 'react-native-calendar-events';
+import InlineEvent from './InlineEvent';
 
 type Props = {
     isFetching: boolean,
@@ -106,6 +107,7 @@ export default class DayEvents extends Component<Props, State> {
                         }}
                     />
                 }
+                <InlineEvent date={day.date} onAddEvent={(event: CalendarEvent) => console.log('onAddEvent.cb', event)}  />
             </Animated.View>
         );
     }
