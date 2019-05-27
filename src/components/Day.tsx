@@ -16,6 +16,7 @@ type Props = {
     },
     onExpand: Function,
     expanded?: boolean,
+    onAddEvent: Function,
 };
 
 type State = {
@@ -60,13 +61,17 @@ export default class DayEvents extends Component<Props, State> {
         ).start();
     }
 
-    onAdd() {
+    onAddClick() {
         this.props.navigation.navigate('Event', { date: moment(this.props.day.date) });
     }
 
-    onEdit(item: CalendarEventReadable) {
+    onEditClick(item: CalendarEventReadable) {
         const { startDate } = item;
         this.props.navigation.navigate('Event', { date: moment(startDate), event: item })
+    }
+
+    onAddEvent(event: CalendarEvent) {
+        this.props.onAddEvent(event);
     }
 
     render() {
@@ -75,10 +80,10 @@ export default class DayEvents extends Component<Props, State> {
 
         return(
             <Animated.View style={[styles.container, {opacity: this.state.fade}]}>
-                <TouchableHighlight onPress={() => options.dayAddLink && this.onAdd()} underlayColor={'beige'} hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
+                <TouchableHighlight onPress={() => options.dayAddLink && this.onAddClick()} underlayColor={'beige'} hitSlop={{top: 10, left: 10, bottom: 10, right: 10}}>
                     <View style={styles.row}>
                         {options.dayAddLink &&
-                        <Icon name='calendar-plus' type='material-community' color='green' onPress={() => this.onAdd()} size={expanded ? 24 : 18} />
+                        <Icon name='calendar-plus' type='material-community' color='green' onPress={() => this.onAddClick()} size={expanded ? 24 : 18} />
                         }
                         <Animated.Text style={[styles.header, { fontSize: expanded ? 20 : 14 , opacity: this.state.fade}]}>{`${moment(day.date).format('ddd')} ${moment(day.date).format('DD')}`}</Animated.Text>
                         <Icon name={`arrow-${expanded ? 'collapse' : 'expand'}`} type='material-community' color='green' onPress={() => this.props.onExpand(day)} size={expanded ? 24 : 18} />
@@ -92,7 +97,7 @@ export default class DayEvents extends Component<Props, State> {
                             // console.log('Day.item', item);
                             return(
                                 <TouchableOpacity onPress={
-                                    () => this.onEdit(item)
+                                    () => this.onEditClick(item)
                                 }>
                                     <Animated.View style={[styles.eventContainer, {opacity: this.state.fade}]}>
                                         {options.eventColor &&
@@ -107,7 +112,7 @@ export default class DayEvents extends Component<Props, State> {
                         }}
                     />
                 }
-                <InlineEvent date={day.date} onAddEvent={(event: CalendarEvent) => console.log('onAddEvent.cb', event)}  />
+                <InlineEvent date={day.date} onAddEvent={(event: CalendarEvent) => this.onAddEvent(event)} />
             </Animated.View>
         );
     }

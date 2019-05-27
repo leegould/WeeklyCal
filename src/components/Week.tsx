@@ -9,6 +9,7 @@ type Props = {
     }
     data: WeekState,
     options: OptionsState,
+    onAddEvent: Function,
 };
 
 type State = {
@@ -57,25 +58,25 @@ export default class Week extends PureComponent<Props, State> {
                 {!this.state.selectedDay &&
                 <Animated.View style={[styles.main, { opacity: this.state.dayLayout } ]}>
                     <View style={styles.firstRow}>
-                        <DayComponent day={data.week.days[0]} isToday isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)}/>
+                        <DayComponent day={data.week.days[0]} isToday isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)} onAddEvent={this.props.onAddEvent}/>
                     </View>
                     <View style={styles.row}>
                         <View style={styles.col}>
-                            <DayComponent day={data.week.days[1]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)} />
-                            <DayComponent day={data.week.days[3]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)}/>
-                            <DayComponent day={data.week.days[5]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)}/>
+                            <DayComponent day={data.week.days[1]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)} onAddEvent={this.props.onAddEvent}/>
+                            <DayComponent day={data.week.days[3]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)} onAddEvent={this.props.onAddEvent}/>
+                            <DayComponent day={data.week.days[5]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)} onAddEvent={this.props.onAddEvent}/>
                         </View>
                         <View style={styles.col}>
-                            <DayComponent day={data.week.days[2]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)}/>
-                            <DayComponent day={data.week.days[4]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)}/>
-                            <DayComponent day={data.week.days[6]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)}/>
+                            <DayComponent day={data.week.days[2]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)} onAddEvent={this.props.onAddEvent}/>
+                            <DayComponent day={data.week.days[4]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)} onAddEvent={this.props.onAddEvent}/>
+                            <DayComponent day={data.week.days[6]} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)} onAddEvent={this.props.onAddEvent}/>
                         </View>
                     </View>
                 </Animated.View>
                 }
                 {this.state.selectedDay &&
                 <Animated.View style={[styles.main, styles.singleDay, { opacity: invertedOpacity } ]}>
-                    <DayComponent day={this.state.selectedDay} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)} expanded/>
+                    <DayComponent day={this.state.selectedDay} isFetching={data.isFetching} navigation={navigation} options={options} onExpand={(day: Day) => this.onSelectDay(day)} expanded onAddEvent={this.props.onAddEvent}/>
                 </Animated.View>
                 }
             </View>

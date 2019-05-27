@@ -14,6 +14,7 @@ type Props = {
     data: WeekState,
     options: OptionsState,
     onChangeDate: Function,
+    onAddEvent: Function,
 };
 
 export default class NavigationSwiper extends PureComponent<Props> {
@@ -99,7 +100,7 @@ export default class NavigationSwiper extends PureComponent<Props> {
                     barStyle="light-content"
                     backgroundColor="#6a51ae"
                 />
-                <Week navigation={this.props.navigation} data={this.props.data} options={this.props.options}/>
+                <Week navigation={this.props.navigation} data={this.props.data} options={this.props.options} onAddEvent={this.props.onAddEvent}/>
             </Animated.View>
         );
     }

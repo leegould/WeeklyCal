@@ -6,12 +6,7 @@ import * as Yup from 'yup';
 import { CalendarEvent } from '../types';
 
 export interface Props {
-    // navigation: {
-    //     getParam: Function,
-    //     goBack: Function,
-    // },
     date: Date,
-    // event?: CalendarEvent,
     onAddEvent: Function,
     // onEditEvent: Function,
     // onDeleteEvent: Function,
@@ -23,7 +18,6 @@ interface State {
 
 interface Values {
     title: string;
-    // allDay: boolean; // This doesn't work for updating the form when the value changes
 };
 
 const ValidationSchema = Yup.object().shape({
@@ -40,10 +34,6 @@ class Inline extends React.PureComponent<Props, State> {
 
     render() {
         const { date } = this.props;
-        // const date = (this.props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
-        // const event = (this.props.navigation.getParam('event', '') as CalendarEvent);
-        // const existingId = event ? event.id : 0;
-        // const allowsUpdate = event && event.calendar ? event.calendar.allowsModifications : true;
 
         return (
             <Formik
@@ -64,34 +54,48 @@ class Inline extends React.PureComponent<Props, State> {
                             allDay: true,
                         };
 
-                        // if (existingId) {
-                        //     inlineEvent.id = existingId;
-                        //     this.props.onEditEvent(inlineEvent);
-                        // } else {
-                            this.props.onAddEvent(inlineEvent); // TODO .. does this add itself? needs container or passed in?
-                        // }
+                        this.props.onAddEvent(inlineEvent); // TODO .. does this add itself? needs container or passed in?
                         
                         formikActions.setSubmitting(false); // turn off disabled
 
+                        formikActions.resetForm();
                         // this.props.navigation.goBack();
                     }, 500);
                 }}
             >
                 {props => (
                     <View style={styles.container}>
+                        {props.errors.title ?
+                        <Text style={styles.errorText} >
+                            {props.errors.title}
+                        </Text>
+                        : null }
                         <TextInput
                             style={styles.textInput}
                             onChangeText={props.handleChange('title')}
-                            onBlur={props.handleBlur('title')}
+                            onBlur={(e) => {
+                                const fieldName = 'title';
+                                props.handleBlur(fieldName);
+
+                                setTimeout(() => {
+                                    if (props.dirty) {
+                                        const { errors } = props;
+                                        const isError = errors[fieldName];
+
+                                        if (isError) {
+                                            console.log('validation error', errors);
+                                            return;
+                                        }
+
+                                        console.log('submitting');
+                                        // props.submitForm();
+                                    }
+                                }, 0);
+                            }}
                             value={props.values.title}
                             placeholder="Title"
                             autoFocus
                         />
-                        {/* {props.touched.title && props.errors.title ?
-                        <Text style={styles.errorText} >
-                            {props.errors.title}
-                        </Text>
-                        : null } */}
                     </View>
                 )}
             </Formik>
@@ -103,9 +107,8 @@ export default Inline;
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
-        // justifyContent: 'center',
-        // marginHorizontal: 40
+        borderTopWidth: 0.5,
+        borderColor: 'grey',
     },
     errorText: {
         color: '#C2272D',
@@ -113,7 +116,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         color: 'darkgray',
-        height: 40,
+        height: 25,
         backgroundColor: 'beige',
         paddingHorizontal: 5,
     },
