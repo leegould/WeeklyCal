@@ -1,5 +1,6 @@
 import React from 'react';
 import { TextInput, View, Text, StyleSheet, Animated } from 'react-native';
+import { Icon } from 'react-native-elements'
 import moment from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -65,11 +66,6 @@ class Inline extends React.PureComponent<Props, State> {
             >
                 {props => (
                     <View style={styles.container}>
-                        {props.errors.title ?
-                        <Text style={styles.errorText} >
-                            {props.errors.title}
-                        </Text>
-                        : null }
                         <TextInput
                             style={styles.textInput}
                             onChangeText={props.handleChange('title')}
@@ -93,9 +89,12 @@ class Inline extends React.PureComponent<Props, State> {
                                 }, 0);
                             }}
                             value={props.values.title}
-                            placeholder="Title"
+                            placeholder="New Event.."
                             autoFocus
                         />
+                        {props.values.title && props.errors.title ?
+                        <Icon containerStyle={styles.icon} name={`calendar-alert`} type='material-community' color='#C2272D' size={16} />
+                        : null }
                     </View>
                 )}
             </Formik>
@@ -109,16 +108,23 @@ const styles = StyleSheet.create({
     container: {
         borderTopWidth: 0.5,
         borderColor: 'grey',
+        flexDirection: 'row',
     },
     errorText: {
         color: '#C2272D',
         paddingHorizontal: 5,
+        
     },
     textInput: {
+        flex: 1,
         color: 'darkgray',
-        height: 25,
+        height: 20,
         backgroundColor: 'beige',
         paddingHorizontal: 5,
+        marginTop: 5,
     },
+    icon: {
+        marginTop: 5,
+    }
 });
 
