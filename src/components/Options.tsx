@@ -19,6 +19,7 @@ type Props = {
     onToggleEventColorOptionAndUpdateWeek: Function,
     onToggleDayAddLinkAndUpdateWeek: Function,
     onToggleRollingWeek: Function,
+    onToggleInlineAdd: Function,
 };
 
 type State = {
@@ -143,6 +144,22 @@ export default class Options extends React.PureComponent<Props, State> {
                             <Switch
                                 onValueChange={() => this.props.onToggleRollingWeek()}
                                 value={this.props.options.rollingWeek}
+                                trackColor={{true: '#C2272D', false: ''}}
+                                style={styles.switchInput}
+                            />
+                        }
+                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
+                        titleStyle={{ color: 'white' }}
+                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
+                    />
+                    <ListItem
+                        key={'inlineAdd'}
+                        title={'Inline Add'}
+                        subtitle={'Allow quick adding of an event for each day'}
+                        rightAvatar={
+                            <Switch
+                                onValueChange={() => this.props.onToggleInlineAdd()}
+                                value={this.props.options.inlineAdd}
                                 trackColor={{true: '#C2272D', false: ''}}
                                 style={styles.switchInput}
                             />

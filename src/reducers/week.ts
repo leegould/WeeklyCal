@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import {
     EVENTS_FETCH_STARTED,
     EVENTS_FETCH_SUCCESS,
@@ -15,6 +15,7 @@ import {
     CALENDAR_SHOW_ALL_TOGGLE,
     CALENDAR_TOGGLE,
     ROLLING_WEEK_TOGGLE,
+    INLINE_ADD_TOGGLE,
 } from '../actions';
 import { ActionType, WeekState, Calendar, Day } from '../types';
 import { CalendarEventReadable } from 'react-native-calendar-events';
@@ -33,6 +34,7 @@ const initialState = {
         showAll: true,
         selectedCalendars: [],
         rollingWeek: true,
+        inlineAdd: true,
     }
 } as WeekState;
 
@@ -172,6 +174,12 @@ export default function weekReducer(state = initialState, action: ActionType) {
             return Object.assign({}, state, {
                 calendars: {
                     rollingWeek: !state.calendars.rollingWeek,
+                }
+            });
+        case INLINE_ADD_TOGGLE:
+            return Object.assign({}, state, {
+                calendars: {
+                    inlineAdd: !state.calendars.inlineAdd,
                 }
             });
         default:

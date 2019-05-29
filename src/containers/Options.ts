@@ -10,6 +10,7 @@ import {
     toggleEventColorOptionAndUpdateWeek,
     toggleDayAddLinkAndUpdateWeek,
     toggleRollingWeekOption,
+    toggleInlineAddOption,
 } from '../actions';
 import { Calendar } from '../types';
 
@@ -44,6 +45,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     },
     onToggleRollingWeek: () => {
         dispatch(toggleRollingWeekOption());
+    },
+    onToggleInlineAdd: () => {
+        dispatch(toggleInlineAddOption());
     }
 });
 

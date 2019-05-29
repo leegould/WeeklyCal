@@ -9,8 +9,6 @@ import { CalendarEvent } from '../types';
 export interface Props {
     date: Date,
     onAddEvent: Function,
-    // onEditEvent: Function,
-    // onDeleteEvent: Function,
 };
 
 interface State { 
@@ -39,10 +37,7 @@ class Inline extends React.PureComponent<Props, State> {
         return (
             <Formik
                 initialValues={{
-                    title: '' // event && event.title ? event.title : '',
-                    // startDate: event && event.startDate ? moment(event.startDate) : moment(date),
-                    // endDate: event && event.endDate ? moment(event.endDate) : moment(date),
-                    // allDay: true,
+                    title: '',
                 }}
                 validationSchema={ValidationSchema}
                 onSubmit={(values: Values, formikActions) => {
@@ -55,12 +50,11 @@ class Inline extends React.PureComponent<Props, State> {
                             allDay: true,
                         };
 
-                        this.props.onAddEvent(inlineEvent); // TODO .. does this add itself? needs container or passed in?
+                        this.props.onAddEvent(inlineEvent);
                         
                         formikActions.setSubmitting(false); // turn off disabled
 
                         formikActions.resetForm();
-                        // this.props.navigation.goBack();
                     }, 500);
                 }}
             >
@@ -84,12 +78,13 @@ class Inline extends React.PureComponent<Props, State> {
                                         }
 
                                         console.log('submitting');
-                                        // props.submitForm();
+                                        props.submitForm();
                                     }
                                 }, 0);
                             }}
                             value={props.values.title}
                             placeholder="New Event.."
+                            placeholderTextColor={'lightgrey'}
                             autoFocus
                         />
                         {props.values.title && props.errors.title ?
@@ -106,22 +101,18 @@ export default Inline;
 
 const styles = StyleSheet.create({
     container: {
-        borderTopWidth: 0.5,
-        borderColor: 'grey',
         flexDirection: 'row',
-    },
-    errorText: {
-        color: '#C2272D',
-        paddingHorizontal: 5,
-        
+        borderTopWidth: 0.5,
+        borderColor: '#C2272D',
     },
     textInput: {
         flex: 1,
-        color: 'darkgray',
+        color: 'grey',
         height: 20,
         backgroundColor: 'beige',
         paddingHorizontal: 5,
         marginTop: 5,
+        fontSize: 12,
     },
     icon: {
         marginTop: 5,

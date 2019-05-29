@@ -3,6 +3,7 @@ import {
     EVENT_COLOR_TOGGLE,
     DAY_ADD_LINK_TOGGLE,
     ROLLING_WEEK_TOGGLE,
+    INLINE_ADD_TOGGLE,
 } from '../actions';
 import { ActionType, CalendarsState, OptionsState } from '../types';
 
@@ -15,6 +16,7 @@ const initialState = {
     eventColor: true,
     dayAddLink: true,
     rollingWeek: true,
+    inlineAdd: true,
 } as CalendarsState & OptionsState;
 
 export default function optionsReducer(state = initialState, action: ActionType) {
@@ -34,6 +36,10 @@ export default function optionsReducer(state = initialState, action: ActionType)
         case ROLLING_WEEK_TOGGLE:
             return Object.assign({}, state, {
                 rollingWeek: !state.rollingWeek,
+            });
+        case INLINE_ADD_TOGGLE:
+            return Object.assign({}, state, {
+                inlineAdd: !state.inlineAdd,
             });
         default:
             return state;
