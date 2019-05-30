@@ -126,6 +126,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'beige',
         padding: 5,
         margin: 5,
+        marginBottom: 2,
         borderRadius: 5,
         flexDirection: 'column',
         justifyContent: 'flex-start',
@@ -133,9 +134,10 @@ const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderColor: 'grey',
+        borderColor: '#C2272D',
+        paddingBottom: 2,
         borderBottomWidth: 0.5,
-        marginBottom: 5,
+        marginBottom: 3,
     },
     header: {
         color: 'gray',

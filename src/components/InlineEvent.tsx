@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         height: 20,
         backgroundColor: 'beige',
         paddingHorizontal: 5,
-        marginTop: 5,
+        marginTop: 3,
         fontSize: 12,
     },
     icon: {
