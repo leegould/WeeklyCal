@@ -25,6 +25,7 @@ export const EVENT_COLOR_TOGGLE = 'EVENT_COLOR_TOGGLE';
 export const DAY_ADD_LINK_TOGGLE = 'DAY_ADD_LINK_TOGGLE';
 export const ROLLING_WEEK_TOGGLE = 'ROLLING_WEEK_TOGGLE';
 export const INLINE_ADD_TOGGLE = 'INLINE_ADD_TOGGLE';
+export const EVENT_ROW_BORDER_TOGGLE = 'EVENT_ROW_BORDER_TOGGLE';
 
 // https://alligator.io/redux/redux-thunk/
 export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars: string[], rollingWeek: boolean) => {
@@ -258,6 +259,21 @@ export const toggleInlineAddAndUpdateWeek = () => {
     }
 }
 
+export const toggleEventRowBorderOption = () => {
+    return async (dispatch: Function) => {
+        dispatch(toggleEventRowBorder());
+    }
+}
+
+export const toggleEventRowBorderAndUpdateWeek = () => {
+    return async (dispatch: Function, getState: () => any) => {
+        await dispatch(toggleEventRowBorderOption());
+        const { calendars: { showAll, selectedCalendars, rollingWeek }, week: { week: { days } } } = getState();
+        // console.log('toggleRollingWeekAndUpdateWeek.getState', days[0].date, showAll, selectedCalendars);
+        await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars, rollingWeek));
+    }
+}
+
 export const eventsFetchStarted = () => {
     const action = {
         type: EVENTS_FETCH_STARTED,
@@ -434,6 +450,13 @@ export const toggleRollingWeek = () => {
 export const toggleInlineAdd = () => {
     const action = {
         type: INLINE_ADD_TOGGLE,
+    }
+    return action;
+}
+
+export const toggleEventRowBorder = () => {
+    const action = {
+        type: EVENT_ROW_BORDER_TOGGLE,
     }
     return action;
 }

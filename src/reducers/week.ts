@@ -16,6 +16,7 @@ import {
     CALENDAR_TOGGLE,
     ROLLING_WEEK_TOGGLE,
     INLINE_ADD_TOGGLE,
+    EVENT_ROW_BORDER_TOGGLE,
 } from '../actions';
 import { ActionType, WeekState, Calendar, Day } from '../types';
 import { CalendarEventReadable } from 'react-native-calendar-events';
@@ -180,6 +181,12 @@ export default function weekReducer(state = initialState, action: ActionType) {
             return Object.assign({}, state, {
                 calendars: {
                     inlineAdd: !state.calendars.inlineAdd,
+                }
+            });
+        case EVENT_ROW_BORDER_TOGGLE:
+            return Object.assign({}, state, {
+                calendars: {
+                    eventRowBorder: !state.calendars.eventRowBorder,
                 }
             });
         default:

@@ -39,6 +39,7 @@ export type WeekState = {
         selectedCalendars: string[],
         rollingWeek: boolean,
         inlineAdd: boolean,
+        eventRowBorder: boolean,
     }
 };
 
@@ -64,4 +65,5 @@ export type OptionsState = {
     dayAddLink: boolean,
     rollingWeek: boolean,
     inlineAdd: boolean,
+    eventRowBorder: boolean,
 }

@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, Switch, StyleSheet, Animated } from 'react-native';
+import { View, Switch, StyleSheet, ScrollView, Animated } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import moment, { Moment } from 'moment';
 import { CalendarsState, OptionsState, Calendar } from '../types';
+import SwitchOption from './SwitchOption';
 
 type Props = {
     navigation: {
@@ -18,8 +19,9 @@ type Props = {
     onToggleResetDateOption: Function,
     onToggleEventColorOptionAndUpdateWeek: Function,
     onToggleDayAddLinkAndUpdateWeek: Function,
-    onToggleRollingWeek: Function,
-    onToggleInlineAdd: Function,
+    onToggleRollingWeekAndUpdateWeek: Function,
+    onToggleInlineAddAndUpdateWeek: Function,
+    onToggleEventRowBorderAndUpdateWeek: Function,
 };
 
 type State = {
@@ -50,21 +52,17 @@ export default class Options extends React.PureComponent<Props, State> {
         }
     }
 
-    toggleAllDay() {
+    toggleAllDay = () => {
         if (this.props && this.props.data.showAll) {
             this.show();
         } else {
             this.hide();
         }
         this.props.onToggleShowAllAndUpdateWeek();
-        // this.props.onToggleShowAll();
-        // this.props.onChangeDate(this.state.selectedDate, this.props.data.showAll, this.props.data.selectedCalendars);
     }
 
     toggleCalendar(item: Calendar) {
         this.props.onToggleCalendarAndUpdateWeek(item);
-        // TODO : how to get selected date? pass in?
-        // this.props.onChangeDate(this.state.selectedDate, this.props.data.showAll, this.props.data.selectedCalendars);
     }
 
     show() {
@@ -82,107 +80,51 @@ export default class Options extends React.PureComponent<Props, State> {
     }
 
     render() {
-        // console.log('Options.render.data', this.props.data);
-
         return (
             <View style={{ flex: 1,  backgroundColor: 'gray', justifyContent: 'flex-start' }}>
                 {!this.props.data.isFetching &&
-                <View style={{ flex: 1, marginBottom: 5 }}>
-                    <ListItem
-                        key={'resetDate'}
-                        title={'Allow Date Reset'}
-                        subtitle={'Hold down the calendar picker in the header to reset to todays date'}
-                        rightAvatar={
-                            <Switch
-                                onValueChange={() => this.props.onToggleResetDateOption()}
-                                value={this.props.options.resetDate}
-                                trackColor={{true: '#C2272D', false: ''}}
-                                style={styles.switchInput}
-                            />
-                        }
-                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
-                        titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
+                <ScrollView style={{ flex: 1, marginBottom: 5 }}>
+                    <SwitchOption
+                        title='Allow Date Reset'
+                        subtitle='Hold down the calendar picker in the header to reset to todays date'
+                        value={this.props.options.resetDate}
+                        onValueChange={this.props.onToggleResetDateOption}
                     />
-                    <ListItem
-                        key={'eventColor'}
-                        title={'Event Colours'}
-                        subtitle={'Display the calendar colour next to the event'}
-                        rightAvatar={
-                            <Switch
-                                onValueChange={() => this.props.onToggleEventColorOptionAndUpdateWeek()}
-                                value={this.props.options.eventColor}
-                                trackColor={{true: '#C2272D', false: ''}}
-                                style={styles.switchInput}
-                            />
-                        }
-                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
-                        titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
+                    <SwitchOption
+                        title='Event Colours'
+                        subtitle='Display the calendar colour next to the event'
+                        value={this.props.options.eventColor}
+                        onValueChange={this.props.onToggleEventColorOptionAndUpdateWeek}
                     />
-                    <ListItem
-                        key={'dayAddLink'}
-                        title={'Add Link Per Day'}
-                        subtitle={'Choose if each day should display an add event shortcut'}
-                        rightAvatar={
-                            <Switch
-                                onValueChange={() => this.props.onToggleDayAddLinkAndUpdateWeek()}
-                                value={this.props.options.dayAddLink}
-                                trackColor={{true: '#C2272D', false: ''}}
-                                style={styles.switchInput}
-                            />
-                        }
-                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
-                        titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
+                    <SwitchOption
+                        title='Add Link Per Day'
+                        subtitle='Choose if each day should display an add event shortcut'
+                        value={this.props.options.dayAddLink}
+                        onValueChange={this.props.onToggleDayAddLinkAndUpdateWeek}
                     />
-                    <ListItem
-                        key={'rollingWeek'}
-                        title={'Rolling Week'}
-                        subtitle={'The first day shown of the week should be the selected day'}
-                        rightAvatar={
-                            <Switch
-                                onValueChange={() => this.props.onToggleRollingWeek()}
-                                value={this.props.options.rollingWeek}
-                                trackColor={{true: '#C2272D', false: ''}}
-                                style={styles.switchInput}
-                            />
-                        }
-                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
-                        titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
+                    <SwitchOption
+                        title='Rolling Week'
+                        subtitle='The first day shown of the week should be the selected day'
+                        value={this.props.options.rollingWeek}
+                        onValueChange={this.props.onToggleRollingWeekAndUpdateWeek}
                     />
-                    <ListItem
-                        key={'inlineAdd'}
-                        title={'Inline Add'}
-                        subtitle={'Allow quick adding of an event for each day'}
-                        rightAvatar={
-                            <Switch
-                                onValueChange={() => this.props.onToggleInlineAdd()}
-                                value={this.props.options.inlineAdd}
-                                trackColor={{true: '#C2272D', false: ''}}
-                                style={styles.switchInput}
-                            />
-                        }
-                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
-                        titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
+                    <SwitchOption
+                        title='Inline Add'
+                        subtitle='Allow quick adding of an event for each day'
+                        value={this.props.options.inlineAdd}
+                        onValueChange={this.props.onToggleInlineAddAndUpdateWeek}
                     />
-                    <ListItem
-                        key={'showAll'}
-                        title={'Show All Calendars'}
-                        subtitle={'Display events from all calendars, or choose specific ones'}
-                        rightAvatar={
-                            <Switch
-                                onValueChange={() => this.toggleAllDay()}
-                                value={this.props.data.showAll}
-                                trackColor={{true: '#C2272D', false: ''}}
-                                style={styles.switchInput}
-                            />
-                        }
-                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 1, borderBottomColor: 'gray' }}
-                        titleStyle={{ color: 'white' }}
-                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
+                    <SwitchOption
+                        title='Event Line Separators'
+                        subtitle='Divide events in each day with a line'
+                        value={this.props.options.eventRowBorder}
+                        onValueChange={this.props.onToggleEventRowBorderAndUpdateWeek}
+                    />
+                    <SwitchOption
+                        title='Show All Calendars'
+                        subtitle='Display events from all calendars, or choose specific ones'
+                        value={this.props.data.showAll}
+                        onValueChange={this.toggleAllDay}
                     />
                     <Animated.FlatList
                         style={{ opacity: this.state.anim }}
@@ -213,7 +155,7 @@ export default class Options extends React.PureComponent<Props, State> {
                         }
                         keyExtractor={(item: Calendar, index: number) => item.id}
                     />
-                </View>
+                </ScrollView>
                 }
             </View>
         );
