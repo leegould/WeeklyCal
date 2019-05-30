@@ -1,4 +1,3 @@
-import { Moment } from 'moment';
 import { CalendarEventReadable } from 'react-native-calendar-events';
 
 export type ActionType = {
