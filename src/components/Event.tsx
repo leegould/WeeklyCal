@@ -103,7 +103,7 @@ export default class Add extends React.PureComponent<Props, State> {
                         }}
                         validationSchema={ValidationSchema}
                         onSubmit={(values: Values, formikActions) => {
-                            console.log('values', values);
+                            // console.log('values', values);
                             setTimeout(() => {
                                 const event: CalendarEvent = {
                                     title: values.title,
@@ -204,10 +204,10 @@ export default class Add extends React.PureComponent<Props, State> {
                                         {existingId && allowsUpdate &&
                                         <Button
                                             onPress={() => {
-                                                console.log('onDeletePress', event);
+                                                // console.log('onDeletePress', event);
                                                 Alert.alert('Delete Event', 'Are you sure you want to delete this event?',
                                                 [
-                                                    {text: 'No', onPress: () => { console.log('cancelled'); }, style: 'cancel'},
+                                                    {text: 'No', onPress: () => { /* console.log('cancelled'); */ }, style: 'cancel'},
                                                     {text: 'Yes', onPress: () => {
                                                         this.props.navigation.goBack();
                                                         this.props.onDeleteEvent(event);

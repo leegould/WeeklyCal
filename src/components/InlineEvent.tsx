@@ -41,7 +41,7 @@ class Inline extends React.PureComponent<Props, State> {
                 }}
                 validationSchema={ValidationSchema}
                 onSubmit={(values: Values, formikActions) => {
-                    console.log('values', values);
+                    // console.log('values', values);
                     setTimeout(() => {
                         const inlineEvent: CalendarEvent = {
                             title: values.title,
@@ -73,11 +73,11 @@ class Inline extends React.PureComponent<Props, State> {
                                         const isError = errors[fieldName];
 
                                         if (isError) {
-                                            console.log('validation error', errors);
+                                            // console.log('validation error', errors);
                                             return;
                                         }
 
-                                        console.log('submitting');
+                                        // console.log('submitting');
                                         props.submitForm();
                                     }
                                 }, 0);

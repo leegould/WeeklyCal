@@ -39,7 +39,7 @@ export const changeWeekDate = (date: Moment, showAll: boolean, selectedCalendars
             if (!rollingWeek) {
                 startDate = moment(startDate).startOf('isoWeek');
                 endDate = moment(startDate).endOf('isoWeek');
-                console.log('rollingWeek', startDate, endDate);
+                // console.log('rollingWeek', startDate, endDate);
             }
             
             const calendarIds = showAll ? undefined : selectedCalendars;
@@ -79,7 +79,7 @@ export const addEvent = (event: CalendarEvent) => {
         dispatch(addEventStart());
 
         try {
-            console.log('addEvent.start', event);
+            // console.log('addEvent.start', event);
             const eventEndDate = !event.allDay && event.endDate ? event.endDate : event.startDate;
             const startDate = moment(event.startDate);
             const endDate = moment(eventEndDate);
@@ -104,7 +104,7 @@ export const editEvent = (event: CalendarEvent) => {
         dispatch(editEventStart());
 
         try {
-            console.log('editEvent.start', event);
+            // console.log('editEvent.start', event);
 
             const eventEndDate = !event.allDay && event.endDate ? event.endDate : event.startDate;
             const startDate = moment(event.startDate);
@@ -136,7 +136,7 @@ export const deleteEvent = (event: CalendarEvent) => {
         }
 
         try {
-            console.log('deleteEvent.start', event);
+            // console.log('deleteEvent.start', event);
 
             const result = await RNCalendarEvents.removeEvent(event.id, undefined);
 
@@ -152,7 +152,7 @@ export const fetchCalendars = () => {
         dispatch(calendarFetchStart());
 
         try {
-            console.log('fetchCalendars.start');
+            // console.log('fetchCalendars.start');
 
             const calendars = await RNCalendarEvents.findCalendars();
 
@@ -179,7 +179,7 @@ export const toggleShowAllAndUpdateWeek = () => {
     return async (dispatch: any, getState: () => any) => {
         await dispatch(toggleShowAllCalendars());
         const { calendars: { showAll, selectedCalendars, rollingWeek }, week: { week: { days } } } = getState();
-        console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
+        // console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
         await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars, rollingWeek));
     }
 }
@@ -188,7 +188,7 @@ export const toggleCalendarAndUpdateWeek = (calendar: Calendar) => {
     return async (dispatch: any, getState: () => any) => {
         await dispatch(toggleCalendar(calendar));
         const { calendars: { showAll, selectedCalendars, rollingWeek }, week: { week: { days } } } = getState();
-        console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
+        // console.log('toggleShowAllAndUpdateCalendar.getState', days[0].date, showAll, selectedCalendars);
         await dispatch(changeWeekDate(moment(days[0].date), showAll, selectedCalendars, rollingWeek));
     }
 }

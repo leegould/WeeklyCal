@@ -80,15 +80,15 @@ export default class NavigationSwiper extends PureComponent<Props> {
     async componentDidMount() {
         try {
             const status = await RNCalendarEvents.authorizationStatus();
-            console.log('status', status);
+            // console.log('status', status);
             if (status !== 'authorized') {
                 const askForStatus = await RNCalendarEvents.authorizeEventStore();
-                console.log('askForStatus', askForStatus);
+                // console.log('askForStatus', askForStatus);
                 this.props.onChangeDate(moment(), this.props.data.calendars.showAll, this.props.data.calendars.selectedCalendars); // Load initial week.
             }
         }
         catch (err) {
-            console.log('componentDidMount.error', err);
+            // console.log('componentDidMount.error', err);
         }
     }
 

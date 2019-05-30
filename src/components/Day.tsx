@@ -93,6 +93,14 @@ export default class DayEvents extends Component<Props, State> {
                     <FlatList
                         data={day.events}
                         keyExtractor={(item, index) => `event_key_${index}`}
+                        ItemSeparatorComponent={() => {
+                            if (this.props.options.eventRowBorder) {
+                                return (
+                                    <View style={styles.separator} /> 
+                                );
+                            }
+                            return null;
+                        }}
                         renderItem={({item}) => {
                             // console.log('Day.item', item);
                             return(
@@ -148,6 +156,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 2,
         padding: 2,
+    },
+    separator: {
+        borderColor: 'darkgrey',
+        borderBottomWidth: 1,
     },
     eventCalendar: {
         width: 5,

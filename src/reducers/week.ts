@@ -75,7 +75,7 @@ export default function weekReducer(state = initialState, action: ActionType) {
                 }
             }
 
-            console.log('ADD_EVENT_SUCCESS.after', newWeek, state.week);
+            // console.log('ADD_EVENT_SUCCESS.after', newWeek, state.week);
             return Object.assign({}, state, {
                 isFetching: false,
                 week: newWeek,
@@ -156,7 +156,7 @@ export default function weekReducer(state = initialState, action: ActionType) {
                     selectedCalendars: state.calendars.selectedCalendars ? state.calendars.selectedCalendars : [],
                 }
             });
-            console.log('CALENDAR_SHOW_ALL_TOGGLE', newState);
+            // console.log('CALENDAR_SHOW_ALL_TOGGLE', newState);
             return newState;
         case CALENDAR_TOGGLE:
             const acalendar = action.payload as Calendar;

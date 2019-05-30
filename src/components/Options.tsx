@@ -48,7 +48,7 @@ export default class Options extends React.PureComponent<Props, State> {
             props.onFetchCalendars();
         }
         catch (err) {
-            console.log('Options.componentDidMount.error', err);
+            // console.log('Options.componentDidMount.error', err);
         }
     }
 
