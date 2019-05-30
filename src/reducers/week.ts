@@ -36,6 +36,7 @@ const initialState = {
         selectedCalendars: [],
         rollingWeek: true,
         inlineAdd: true,
+        eventRowBorder: true,
     }
 } as WeekState;
 
@@ -152,14 +153,17 @@ export default function weekReducer(state = initialState, action: ActionType) {
             const newState = Object.assign({}, state, {
                 calendars: {
                     showAll: !state.calendars.showAll,
-                    selectedCalendars: state.calendars.selectedCalendars,
+                    selectedCalendars: state.calendars.selectedCalendars ? state.calendars.selectedCalendars : [],
                 }
             });
             console.log('CALENDAR_SHOW_ALL_TOGGLE', newState);
             return newState;
         case CALENDAR_TOGGLE:
             const acalendar = action.payload as Calendar;
-            const selectedCalendars = [...state.calendars.selectedCalendars];
+            let selectedCalendars: string[] = [];
+            if (state.calendars.selectedCalendars.length > 0) {
+                selectedCalendars = [...state.calendars.selectedCalendars];
+            }
             if (state.calendars.selectedCalendars.indexOf(acalendar.id) > -1) {
                 selectedCalendars.splice(selectedCalendars.indexOf(acalendar.id), 1);
             } else {

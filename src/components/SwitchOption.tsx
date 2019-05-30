@@ -8,10 +8,13 @@ type Props = {
     subtitle: string,
     value: boolean,
     onValueChange: Function,
+    trackColor?: string,
 }
 
 export default class Option extends React.PureComponent<Props> {
     render() {
+        const trackColor = this.props.trackColor ? this.props.trackColor : '#C2272D';
+
         return(
             <ListItem
                 key={this.props.title.replace(' ', '')}
@@ -21,7 +24,7 @@ export default class Option extends React.PureComponent<Props> {
                     <Switch
                         onValueChange={() => this.props.onValueChange()}
                         value={this.props.value}
-                        trackColor={{true: '#C2272D', false: ''}}
+                        trackColor={{true: trackColor, false: trackColor}}
                         style={styles.switchInput}
                     />
                 }

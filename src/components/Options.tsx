@@ -132,23 +132,12 @@ export default class Options extends React.PureComponent<Props, State> {
                         scrollEnabled={false}
                         renderItem={({item}: {item: Calendar}) => {
                                 return(
-                                    <ListItem
-                                        key={item.id}
+                                    <SwitchOption
                                         title={item.title}
                                         subtitle={item.source}
-                                        rightAvatar={
-                                            <Switch
-                                                onValueChange={() => this.toggleCalendar(item)}
-                                                // this.props.data.selectedCalendars.findIndex(x => x.id === item.id) > -1
-                                                value={this.props.data.selectedCalendars.indexOf(item.id) > -1}
-                                                // trackColor={{true: '#C2272D', false: ''}}
-                                                trackColor={{true: item.color, false: item.color}}
-                                                style={styles.switchInput}
-                                            />
-                                        }
-                                        containerStyle={{ backgroundColor: 'lightgray', borderBottomWidth: 0.5, borderBottomColor: 'gray' }}
-                                        titleStyle={{ color: 'white' }}
-                                        subtitleStyle={{ color: 'white', fontSize: 10, marginVertical: 5 }}
+                                        value={this.props.data.selectedCalendars.indexOf(item.id) > -1}
+                                        onValueChange={() => this.toggleCalendar(item)}
+                                        trackColor={item.color}
                                     />
                                 );
                             }
