@@ -30,6 +30,7 @@ export const addEvent = (event: CalendarEvent) => {
             });
 
             const newEvent = await RNCalendarEvents.findEventById(result);
+            console.log('Added Event', newEvent);
 
             dispatch(addEventSuccess(newEvent));
         } catch (err) {

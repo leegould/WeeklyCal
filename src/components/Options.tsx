@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Switch, StyleSheet, ScrollView, Animated } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { View, StyleSheet, ScrollView, Animated } from 'react-native';
 import moment, { Moment } from 'moment';
 import { CalendarsState, OptionsState, Calendar } from '../types';
 import SwitchOption from './SwitchOption';
