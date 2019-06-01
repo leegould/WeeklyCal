@@ -36,6 +36,7 @@ export default class DateTimeButton extends React.PureComponent<Props, State> {
     };
 
     render() {
+        console.log('render', this.props);
         return (
             <View style={styles.container}>
                 <Button

@@ -1,5 +1,5 @@
 {
-  "name": "WeeklyCal",
+  "name": "weeklycal",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -44,9 +44,7 @@
     "metro-react-native-babel-preset": "^0.54.1",
     "react-native-typescript-transformer": "^1.2.12",
     "react-test-renderer": "16.8.6",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.5.1"
-  },
-  "jest": {
-    "preset": "react-native"
   }
 }
