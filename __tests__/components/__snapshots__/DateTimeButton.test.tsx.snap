@@ -252,7 +252,7 @@ exports[`renders correctly with expected args 1`] = `
         >
           <View>
             <RCTDatePicker
-              date={1559383741368}
+              date={1559383789775}
               minuteInterval={1}
               mode="datetime"
               onChange={[Function]}
