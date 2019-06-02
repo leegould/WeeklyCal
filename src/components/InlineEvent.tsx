@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, View, Text, StyleSheet, Animated } from 'react-native';
+import { TextInput, View, StyleSheet, Animated } from 'react-native';
 import { Icon } from 'react-native-elements'
 import moment from 'moment';
 import { Formik } from 'formik';

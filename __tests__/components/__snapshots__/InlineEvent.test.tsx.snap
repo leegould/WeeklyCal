@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly with expected args 1`] = `
+<View
+  style={
+    Object {
+      "borderColor": "#C2272D",
+      "borderTopWidth": 0.5,
+      "flexDirection": "row",
+    }
+  }
+>
+  <TextInput
+    allowFontScaling={true}
+    autoFocus={true}
+    onBlur={[Function]}
+    onChangeText={[Function]}
+    placeholder="New Event.."
+    placeholderTextColor="lightgrey"
+    rejectResponderTermination={true}
+    style={
+      Object {
+        "backgroundColor": "beige",
+        "color": "grey",
+        "flex": 1,
+        "fontSize": 12,
+        "height": 20,
+        "marginTop": 3,
+        "paddingHorizontal": 5,
+      }
+    }
+    underlineColorAndroid="transparent"
+    value=""
+  />
+</View>
+`;

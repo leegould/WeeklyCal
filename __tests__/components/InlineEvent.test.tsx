@@ -1,17 +1,16 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import DateTimeButton from '../../src/components/DateTimeButton';
-import moment from 'moment';
+import InlineEvent from '../../src/components/InlineEvent';
 
 test('renders correctly with expected args', () => {
     const props = {
-        date: moment('31/12/2005', 'DD/MM/YYYY'),
-        showTime: false,
-        onDateChanged: () => {},
+        date: new Date(),
+        onAddEvent: () => {},
     }
 
     const tree = renderer.create(
-        <DateTimeButton {...props} />
+        <InlineEvent {...props} />
     ).toJSON();
+
     expect(tree).toMatchSnapshot();
 });
