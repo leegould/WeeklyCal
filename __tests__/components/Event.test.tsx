@@ -1,17 +1,22 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import InlineEvent from '../../src/components/InlineEvent';
+import Event from '../../src/components/Event';
 
 jest.useFakeTimers();
 
 test('renders correctly with expected args', () => {
     const props = {
-        date: new Date(),
+        navigation: {
+            getParam: () => {},
+            goBack: () => {},
+        },
         onAddEvent: () => {},
+        onEditEvent: () => {},
+        onDeleteEvent: () => {},
     }
 
     const tree = renderer.create(
-        <InlineEvent {...props} />
+        <Event {...props} />
     ).toJSON();
 
     expect(tree).toMatchSnapshot();

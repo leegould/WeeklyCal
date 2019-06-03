@@ -3,6 +3,8 @@ import renderer from 'react-test-renderer';
 import Header from '../../src/components/Header';
 import moment from 'moment';
 
+jest.useFakeTimers();
+
 test('renders correctly with expected args', () => {
     const props = {
         navigation: {
