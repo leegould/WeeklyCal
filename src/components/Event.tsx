@@ -4,6 +4,7 @@ import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Icon } from 'react-native-elements';
+import { withMappedNavigationParams } from 'react-navigation-props-mapper'
 import { CalendarEvent } from '../types';
 import DateTimeButton from './DateTimeButton';
 
@@ -15,6 +16,8 @@ export interface Props {
     onAddEvent: Function,
     onEditEvent: Function,
     onDeleteEvent: Function,
+    event?: CalendarEvent,
+    date: Moment,
 };
 
 interface State { 
@@ -40,7 +43,7 @@ const ValidationSchema = Yup.object().shape({
     }),
 });
 
-export default class Add extends React.PureComponent<Props, State> {
+export class Event extends React.PureComponent<Props, State> {
     static navigationOptions = {
         title: 'Add Event',
     };
@@ -48,8 +51,8 @@ export default class Add extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
         
-        const event = (this.props.navigation.getParam('event', '') as CalendarEvent);
-        const allDay = event ? event.allDay : true;
+        // const event = (this.props.navigation.getParam('event', '') as CalendarEvent);
+        const allDay = this.props.event ? this.props.event.allDay : true;
 
         this.state = {
             allDay,
@@ -83,10 +86,11 @@ export default class Add extends React.PureComponent<Props, State> {
     }
 
     render() {
-        const date = (this.props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
-        const event = (this.props.navigation.getParam('event', '') as CalendarEvent);
-        const existingId = event.id;
-        const allowsUpdate = event.calendar ? event.calendar.allowsModifications : true;
+        const { date, event } = this.props;
+
+        const eventDate = moment(date).hours(10).minute(0).second(0);
+        const existingId = event ? event.id : undefined;
+        const allowsUpdate = event && event.calendar ? event.calendar.allowsModifications : true;
 
         return (
             <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#00000080', justifyContent: 'center' }} behavior={Platform.select({android: undefined, ios: 'padding'})}>
@@ -96,9 +100,9 @@ export default class Add extends React.PureComponent<Props, State> {
                 >
                     <Formik
                         initialValues={{
-                            title: event.title ? event.title : '',
-                            startDate: event.startDate ? moment(event.startDate) : moment(date).hours(10).minute(0).second(0),
-                            endDate: event.endDate ? moment(event.endDate) : moment(date).hours(16).minute(0).second(0),
+                            title: event && event.title ? event.title : '',
+                            startDate: event && event.startDate ? moment(event.startDate) : moment(eventDate).hours(10).minute(0).second(0),
+                            endDate: event && event.endDate ? moment(event.endDate) : moment(eventDate).hours(16).minute(0).second(0),
                             // allDay: true,
                         }}
                         validationSchema={ValidationSchema}
@@ -250,6 +254,8 @@ export default class Add extends React.PureComponent<Props, State> {
         );
     }
 }
+
+export default withMappedNavigationParams()(Event);
 
 const styles = StyleSheet.create({
     container: {
