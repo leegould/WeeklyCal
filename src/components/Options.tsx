@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Animated } from 'react-native';
+import { View, ScrollView, Animated } from 'react-native';
 import moment, { Moment } from 'moment';
+import { withMappedNavigationParams } from 'react-navigation-props-mapper';
 import { CalendarsState, OptionsState, Calendar } from '../types';
 import SwitchOption from './SwitchOption';
 
@@ -21,6 +22,7 @@ type Props = {
     onToggleRollingWeekAndUpdateWeek: Function,
     onToggleInlineAddAndUpdateWeek: Function,
     onToggleEventRowBorderAndUpdateWeek: Function,
+    date: Moment,
 };
 
 type State = {
@@ -28,7 +30,7 @@ type State = {
     selectedDate: Moment,
 };
 
-export default class Options extends React.PureComponent<Props, State> {
+export class Options extends React.PureComponent<Props, State> {
     static navigationOptions = {
         title: 'Options',
     };
@@ -36,7 +38,7 @@ export default class Options extends React.PureComponent<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        const selectedDate = (this.props.navigation.getParam('date', moment()) as Moment).hours(10).minute(0).second(0);
+        const selectedDate = moment(props.date).hours(10).minute(0).second(0);
 
         this.state = {
             anim: new Animated.Value(this.props.data.showAll ? 0 : 1),
@@ -47,7 +49,7 @@ export default class Options extends React.PureComponent<Props, State> {
             props.onFetchCalendars();
         }
         catch (err) {
-            // console.log('Options.componentDidMount.error', err);
+            console.warn('Options.componentDidMount.error', err);
         }
     }
 
@@ -150,8 +152,4 @@ export default class Options extends React.PureComponent<Props, State> {
     }
 }
 
-const styles = StyleSheet.create({
-    switchInput: {
-        transform: [{ scaleX: .8 }, { scaleY: .8 }]
-    },
-});
+export default withMappedNavigationParams()(Options);

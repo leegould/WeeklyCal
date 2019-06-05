@@ -3,7 +3,6 @@ import { Switch, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements';
 
 type Props = {
-    // key: string,
     title: string,
     subtitle: string,
     value: boolean,

@@ -4,7 +4,7 @@ import moment, { Moment } from 'moment';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { Button, Icon } from 'react-native-elements';
-import { withMappedNavigationParams } from 'react-navigation-props-mapper'
+import { withMappedNavigationParams } from 'react-navigation-props-mapper';
 import { CalendarEvent } from '../types';
 import DateTimeButton from './DateTimeButton';
 
