@@ -9,6 +9,7 @@ import { CalendarEvent } from '../types';
 export interface Props {
     date: Date,
     onAddEvent: Function,
+    expanded: boolean,
 };
 
 interface State { 
@@ -32,7 +33,7 @@ class Inline extends React.PureComponent<Props, State> {
     };
 
     render() {
-        const { date } = this.props;
+        const { date, expanded } = this.props;
 
         return (
             <Formik
@@ -61,7 +62,7 @@ class Inline extends React.PureComponent<Props, State> {
                 {props => (
                     <View style={styles.container}>
                         <TextInput
-                            style={styles.textInput}
+                            style={[styles.textInput, { fontSize: expanded ? 16 : 12, height: expanded ? 25 : 20 }]}
                             onChangeText={props.handleChange('title')}
                             onBlur={(e) => {
                                 const fieldName = 'title';
@@ -108,11 +109,9 @@ const styles = StyleSheet.create({
     textInput: {
         flex: 1,
         color: 'grey',
-        height: 20,
         backgroundColor: 'beige',
         paddingHorizontal: 5,
         marginTop: 3,
-        fontSize: 12,
     },
     icon: {
         marginTop: 5,

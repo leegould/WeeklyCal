@@ -19,15 +19,19 @@ exports[`renders correctly with expected args 1`] = `
     placeholderTextColor="lightgrey"
     rejectResponderTermination={true}
     style={
-      Object {
-        "backgroundColor": "beige",
-        "color": "grey",
-        "flex": 1,
-        "fontSize": 12,
-        "height": 20,
-        "marginTop": 3,
-        "paddingHorizontal": 5,
-      }
+      Array [
+        Object {
+          "backgroundColor": "beige",
+          "color": "grey",
+          "flex": 1,
+          "marginTop": 3,
+          "paddingHorizontal": 5,
+        },
+        Object {
+          "fontSize": 12,
+          "height": 20,
+        },
+      ]
     }
     underlineColorAndroid="transparent"
     value=""

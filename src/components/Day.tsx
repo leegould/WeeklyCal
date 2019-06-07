@@ -121,7 +121,7 @@ export default class DayEvents extends Component<Props, State> {
                     />
                 }
                 {options.inlineAdd &&
-                <InlineEvent date={day.date} onAddEvent={(event: CalendarEvent) => this.onAddEvent(event)} />
+                <InlineEvent date={day.date} expanded={expanded ? expanded : false} onAddEvent={(event: CalendarEvent) => this.onAddEvent(event)} />
                 }
             </Animated.View>
         );

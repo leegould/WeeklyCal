@@ -8,6 +8,7 @@ test('renders correctly with expected args', () => {
     const props = {
         date: new Date(),
         onAddEvent: () => {},
+        expanded: false,
     }
 
     const tree = renderer.create(
